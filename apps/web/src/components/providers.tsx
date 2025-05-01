@@ -15,6 +15,7 @@ export default function Providers({
 			defaultTheme="system"
 			enableSystem
 			disableTransitionOnChange
+			forcedTheme="light"
 		>
 			<QueryClientProvider client={queryClient}>
 				<ORPCContext.Provider value={orpc}>{children}</ORPCContext.Provider>
