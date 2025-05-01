@@ -46,7 +46,6 @@ export function LandingPageHeader() {
 								asChild
 							>
 								<Link href="/">
-									<Sparkles className="h-6 w-6 text-orange-500" />
 									<span className="font-bold">LookCrafted</span>
 								</Link>
 							</NavigationMenuLink>
