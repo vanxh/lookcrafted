@@ -10,7 +10,7 @@ export default function Home() {
 			<main className="flex-1">
 				<HeroSection />
 
-				<section className="py-12 md:py-16 lg:py-20">
+				<section id="showcase" className="py-12 md:py-16 lg:py-20">
 					<div className="container mx-auto mb-12 px-4 text-center md:px-6">
 						<h2 className="font-bold text-3xl tracking-tighter sm:text-4xl md:text-5xl">
 							From Selfie to Professional Headshot
