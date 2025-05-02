@@ -1,8 +1,9 @@
 "use client";
 
-import { orpc } from "@/utils/orpc";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
+
+import { orpc } from "@/utils/orpc";
 
 export function LandingPageFooter() {
 	const { status: queryStatus } = useQuery(orpc.healthCheck.queryOptions());

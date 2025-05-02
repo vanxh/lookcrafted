@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+
 import "../index.css";
+
 import Providers from "@/components/providers";
 
 const instrumentSans = Instrument_Sans({

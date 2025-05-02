@@ -1,12 +1,13 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 type ComparisonImageProps = {
-	beforeSrc: string;
-	afterSrc: string;
+	beforeSrc: string | StaticImageData;
+	afterSrc: string | StaticImageData;
 	alt: string;
 };
 

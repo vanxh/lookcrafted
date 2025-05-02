@@ -1,9 +1,19 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { CheckCircle2, Download, ScanFace, Wand2 } from "lucide-react";
 import Image from "next/image";
+
+import { Button } from "@/components/ui/button";
+
+import Example1Before2 from "@/public/example-1-before-2.webp";
+import Example1Before3 from "@/public/example-1-before-3.webp";
+import Example1Before1 from "@/public/example-1-before.webp";
+import Example1After from "@/public/example-1.webp";
+import Example2Before2 from "@/public/example-2.webp";
+import Example2Before3 from "@/public/example-2.webp";
+import Example2Before1 from "@/public/example-2.webp";
+import Example2After from "@/public/example-2.webp";
 
 export function HeroSection() {
 	return (
@@ -18,7 +28,7 @@ export function HeroSection() {
 					<div className="flex justify-center gap-2">
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example1Before1}
 								alt="Selfie 1"
 								fill
 								className="object-cover"
@@ -26,7 +36,7 @@ export function HeroSection() {
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example1Before2}
 								alt="Selfie 2"
 								fill
 								className="object-cover"
@@ -34,7 +44,7 @@ export function HeroSection() {
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example1Before3}
 								alt="Selfie 3"
 								fill
 								className="object-cover"
@@ -43,7 +53,7 @@ export function HeroSection() {
 					</div>
 					<div className="relative flex aspect-[3/4] w-full max-w-sm items-center justify-center overflow-hidden rounded-lg bg-muted">
 						<Image
-							src="/example.webp"
+							src={Example1After}
 							alt="Example headshot 1"
 							fill
 							className="object-cover"
@@ -95,7 +105,7 @@ export function HeroSection() {
 							<div className="flex w-full justify-center gap-2">
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
 									<Image
-										src="/example.webp"
+										src={Example1Before1}
 										alt="Selfie 1"
 										fill
 										className="object-cover"
@@ -103,7 +113,7 @@ export function HeroSection() {
 								</div>
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
 									<Image
-										src="/example.webp"
+										src={Example1Before2}
 										alt="Selfie 2"
 										fill
 										className="object-cover"
@@ -113,7 +123,7 @@ export function HeroSection() {
 
 							<div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-md">
 								<Image
-									src="/example.webp"
+									src={Example1After}
 									alt="Example headshot 1"
 									fill
 									className="object-cover"
@@ -125,7 +135,7 @@ export function HeroSection() {
 							<div className="flex w-full justify-center gap-2">
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
 									<Image
-										src="/example.webp"
+										src={Example2Before1}
 										alt="Selfie 3"
 										fill
 										className="object-cover"
@@ -133,7 +143,7 @@ export function HeroSection() {
 								</div>
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
 									<Image
-										src="/example.webp"
+										src={Example2Before2}
 										alt="Selfie 4"
 										fill
 										className="object-cover"
@@ -143,7 +153,7 @@ export function HeroSection() {
 
 							<div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-md">
 								<Image
-									src="/example.webp"
+									src={Example2After}
 									alt="Example headshot 2"
 									fill
 									className="object-cover"
@@ -247,7 +257,7 @@ export function HeroSection() {
 					<div className="flex justify-center gap-2">
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example2Before1}
 								alt="Selfie 4"
 								fill
 								className="object-cover"
@@ -255,7 +265,7 @@ export function HeroSection() {
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example2Before2}
 								alt="Selfie 5"
 								fill
 								className="object-cover"
@@ -263,7 +273,7 @@ export function HeroSection() {
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
 							<Image
-								src="/example.webp"
+								src={Example2Before3}
 								alt="Selfie 6"
 								fill
 								className="object-cover"
@@ -272,7 +282,7 @@ export function HeroSection() {
 					</div>
 					<div className="relative flex aspect-[3/4] w-full max-w-sm items-center justify-center overflow-hidden rounded-lg bg-muted">
 						<Image
-							src="/example.webp"
+							src={Example2After}
 							alt="Example headshot 2"
 							fill
 							className="object-cover"

@@ -2,42 +2,48 @@
 
 import { motion } from "motion/react";
 import { useEffect, useRef } from "react";
+
 import { ComparisonImage } from "./comparison-image";
+
+import Example1Before from "@/public/example-1-before.webp";
+import Example1After from "@/public/example-1.webp";
+import Example2Before from "@/public/example-2.webp";
+import Example2After from "@/public/example-2.webp";
 
 const images = [
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example1Before,
+		after: Example1After,
 		alt: "Example 1",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example2Before,
+		after: Example2After,
 		alt: "Example 2",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example1Before,
+		after: Example1After,
 		alt: "Example 3",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example2Before,
+		after: Example2After,
 		alt: "Example 4",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example1Before,
+		after: Example1After,
 		alt: "Example 5",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example2Before,
+		after: Example2After,
 		alt: "Example 6",
 	},
 	{
-		before: "/example-before.webp",
-		after: "/example.webp",
+		before: Example1Before,
+		after: Example1After,
 		alt: "Example 7",
 	},
 ];

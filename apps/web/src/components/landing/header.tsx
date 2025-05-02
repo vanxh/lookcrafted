@@ -1,5 +1,9 @@
 "use client";
 
+import { Globe, Menu } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
 	NavigationMenu,
@@ -11,9 +15,6 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Globe, Menu } from "lucide-react";
-import Link from "next/link";
-import { useState } from "react";
 
 const navLinks = [
 	{ href: "#showcase", label: "Examples" },
