@@ -90,6 +90,68 @@ export function HeroSection() {
 						</Button>
 					</div>
 
+					<div className="mt-6 flex w-full items-center justify-center gap-8 sm:flex-row sm:items-start lg:hidden">
+						<div className="flex w-full max-w-xs flex-col items-center gap-3 sm:max-w-[45%]">
+							<div className="flex w-full justify-center gap-2">
+								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
+									<Image
+										src="/example.webp"
+										alt="Selfie 1"
+										fill
+										className="object-cover"
+									/>
+								</div>
+								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
+									<Image
+										src="/example.webp"
+										alt="Selfie 2"
+										fill
+										className="object-cover"
+									/>
+								</div>
+							</div>
+
+							<div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-md">
+								<Image
+									src="/example.webp"
+									alt="Example headshot 1"
+									fill
+									className="object-cover"
+								/>
+							</div>
+						</div>
+
+						<div className="flex w-full max-w-xs flex-col items-center gap-3 sm:max-w-[45%]">
+							<div className="flex w-full justify-center gap-2">
+								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
+									<Image
+										src="/example.webp"
+										alt="Selfie 3"
+										fill
+										className="object-cover"
+									/>
+								</div>
+								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
+									<Image
+										src="/example.webp"
+										alt="Selfie 4"
+										fill
+										className="object-cover"
+									/>
+								</div>
+							</div>
+
+							<div className="relative aspect-[3/4] w-full overflow-hidden rounded-lg bg-muted shadow-md">
+								<Image
+									src="/example.webp"
+									alt="Example headshot 2"
+									fill
+									className="object-cover"
+								/>
+							</div>
+						</div>
+					</div>
+
 					<div className="mt-8 flex w-full flex-col justify-between gap-8 md:flex-row md:gap-6 lg:gap-8">
 						<div className="flex-shrink-0 text-left md:w-5/12">
 							<h2 className="mb-3 text-left font-semibold text-lg">
