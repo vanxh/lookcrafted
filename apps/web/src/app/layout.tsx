@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 
@@ -69,6 +70,8 @@ export default function RootLayout({
 				<Providers>
 					<div className="grid h-svh grid-rows-[auto_1fr]">{children}</div>
 				</Providers>
+
+				<Analytics />
 			</body>
 		</html>
 	);
