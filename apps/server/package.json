@@ -6,7 +6,7 @@
 		"check-types": "tsc --noEmit",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
 		"dev": "bun run --hot src/index.ts",
-		"start": "bun run dist/src/index.js",
+		"start": "vercel dev",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio"
 	},
