@@ -4,9 +4,10 @@
 	"type": "module",
 	"scripts": {
 		"check-types": "tsc --noEmit",
+		"build": "tsc && tsc-alias",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
 		"dev": "bun run --hot src/index.ts",
-		"start": "vercel dev",
+		"start": "bun run dist/src/index.js",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio"
 	},
