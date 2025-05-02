@@ -6,7 +6,7 @@ import type { RouterClient } from "@orpc/server";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { createContext, use } from "react";
 import { toast } from "sonner";
-import type { appRouter } from "../../../server/src/routers/index";
+import type { appRouter } from "../../../server/api/routers/index";
 
 type ORPCReactUtils = RouterUtils<RouterClient<typeof appRouter>>;
 
