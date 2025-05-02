@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const env = createEnv({
 	server: {
-		DATABASE_URL: z.string().url().optional(), // to fix build on vercel
+		DATABASE_URL: z.string().url().optional(), // placeholder to fix build on vercel
 	},
 	client: {
 		NEXT_PUBLIC_SERVER_URL: z.string().url(),
