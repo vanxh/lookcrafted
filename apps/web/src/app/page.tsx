@@ -5,7 +5,7 @@ import { ImageShowcaseContainer } from "@/components/landing/image-showcase-cont
 
 export default function Home() {
 	return (
-		<div className="flex min-h-screen w-full flex-col overflow-x-hidden">
+		<div className="flex w-full flex-col overflow-x-hidden">
 			<LandingPageHeader />
 
 			<main className="flex-1">
