@@ -6,6 +6,8 @@ import type { RouterClient } from "@orpc/server";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { createContext, use } from "react";
 import { toast } from "sonner";
+
+import { env } from "@/env";
 import type { appRouter } from "../../../server/api/routers/index";
 
 type ORPCReactUtils = RouterUtils<RouterClient<typeof appRouter>>;
@@ -26,7 +28,7 @@ export const queryClient = new QueryClient({
 });
 
 export const link = new RPCLink({
-	url: `${process.env.NEXT_PUBLIC_SERVER_URL}/rpc`,
+	url: `${env.NEXT_PUBLIC_SERVER_URL}/rpc`,
 	fetch(url, options) {
 		return fetch(url, {
 			...options,

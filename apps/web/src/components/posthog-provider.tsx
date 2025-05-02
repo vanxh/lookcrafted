@@ -4,9 +4,11 @@ import { usePostHog } from "posthog-js/react";
 import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { Suspense, useEffect } from "react";
 
+import { env } from "@/env";
+
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
-		posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY as string, {
+		posthog.init(env.NEXT_PUBLIC_POSTHOG_KEY as string, {
 			api_host: "/ingest",
 			ui_host: "https://us.posthog.com",
 			person_profiles: "always",
