@@ -11,7 +11,7 @@ import {
 	navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Globe, Menu, Sparkles } from "lucide-react";
+import { Globe, Menu } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -92,7 +92,6 @@ export function LandingPageHeader() {
 					href="/"
 					className="flex items-center gap-2 font-semibold text-lg md:text-base lg:hidden"
 				>
-					<Sparkles className="h-6 w-6 text-orange-500" />
 					<span className="font-bold">LookCrafted</span>
 				</Link>
 
