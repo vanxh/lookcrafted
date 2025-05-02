@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { ShowcaseImage } from "./showcase-image";
+import { ComparisonImage } from "./comparison-image";
 
 const images = [
 	{
@@ -44,7 +44,7 @@ const images = [
 
 const allImages = [...images, ...images];
 
-export function ImageShowcase() {
+export function ImageShowcaseContainer() {
 	const baseAnimationDuration = `${images.length * 4}s`;
 	const mobileAnimationDuration = `${images.length * 1.5}s`;
 	const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -100,7 +100,7 @@ export function ImageShowcase() {
 						animate={{ opacity: 1 }}
 						transition={{ duration: 0.5, delay: index * 0.05 }}
 					>
-						<ShowcaseImage
+						<ComparisonImage
 							beforeSrc={img.before}
 							afterSrc={img.after}
 							alt={img.alt}

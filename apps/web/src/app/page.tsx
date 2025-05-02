@@ -1,6 +1,6 @@
 import { LandingPageHeader } from "@/components/landing/header";
 import { HeroSection } from "@/components/landing/hero-section";
-import { ImageShowcase } from "@/components/landing/image-showcase";
+import { ImageShowcaseContainer } from "@/components/landing/image-showcase-container";
 
 export default function Home() {
 	return (
@@ -9,7 +9,7 @@ export default function Home() {
 
 			<main className="flex-1">
 				<HeroSection />
-				<ImageShowcase />
+				<ImageShowcaseContainer />
 			</main>
 		</div>
 	);

@@ -4,17 +4,17 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useState } from "react";
 
-type ShowcaseImageProps = {
+type ComparisonImageProps = {
 	beforeSrc: string;
 	afterSrc: string;
 	alt: string;
 };
 
-export function ShowcaseImage({
+export function ComparisonImage({
 	beforeSrc,
 	afterSrc,
 	alt,
-}: ShowcaseImageProps) {
+}: ComparisonImageProps) {
 	const [isHovered, setIsHovered] = useState(false);
 
 	const handleMouseEnter = () => {
@@ -50,18 +50,32 @@ export function ShowcaseImage({
 					opacity: isHovered ? 0 : 1,
 				}}
 			/>
-			<Image
-				src={afterSrc}
-				alt={`${alt} (After)`}
-				fill
-				className="object-cover transition-opacity duration-300 ease-in-out"
+			<div
+				className="absolute inset-0 overflow-hidden"
 				style={{
 					clipPath: !isHovered
 						? "inset(0 0 0 calc(var(--reveal-percentage, 0.5) * 100%))"
 						: "inset(0)",
-					opacity: 1,
 				}}
-			/>
+			>
+				<Image
+					src={afterSrc}
+					alt={`${alt} (After)`}
+					fill
+					className="object-cover transition-opacity duration-300 ease-in-out"
+					style={{
+						opacity: 1,
+					}}
+				/>
+				<div
+					className="pointer-events-none absolute right-2 bottom-2 z-10 rounded-full bg-black/60 px-2 py-1 text-white text-xs backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+					style={{
+						opacity: 1,
+					}}
+				>
+					✨ AI Generated
+				</div>
+			</div>
 			<div
 				className="absolute top-0 bottom-0 w-0.5 bg-white transition-opacity duration-300 ease-in-out"
 				style={{
