@@ -124,8 +124,7 @@ export default function TermsPage() {
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">7. Governing Law</h2>
 				<p>
 					These Terms shall be governed by and construed in accordance with the
-					laws of [Your Jurisdiction, e.g., State of California], without regard
-					to its conflict of law principles.
+					laws of India, without regard to its conflict of law principles.
 				</p>
 
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">

@@ -18,10 +18,10 @@ export default function PrivacyPage() {
 					Welcome to LookCrafted ("we," "us," or "our"). We are committed to
 					protecting your privacy. This Privacy Policy explains how we collect,
 					use, disclose, and safeguard your information when you visit our
-					website [Your Website URL, e.g., www.lookcrafted.com] (the "Site") and
-					use our AI headshot generation services (the "Service"). Please read
-					this privacy policy carefully. If you do not agree with the terms of
-					this privacy policy, please do not access the site or use the service.
+					website www.lookcrafted.com (the "Site") and use our AI headshot
+					generation services (the "Service"). Please read this privacy policy
+					carefully. If you do not agree with the terms of this privacy policy,
+					please do not access the site or use the service.
 				</p>
 
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">
@@ -43,13 +43,10 @@ export default function PrivacyPage() {
 				<p>
 					The photographs you upload are necessary for the Service to function.
 					We use these images solely for the purpose of generating your AI
-					headshots. [**Specify how long you retain these images and if they are
-					used for model training - BE VERY CLEAR AND TRANSPARENT HERE.**
-					Example: We temporarily store uploaded images only for the duration
+					headshots. We temporarily store uploaded images only for the duration
 					needed to process your request and generate the headshots. They are
-					deleted [ timeframe, e.g., within 24 hours] after successful
-					generation and are NOT used for training our AI models unless you
-					explicitly consent.]
+					deleted within 7 days after successful generation and are NOT used for
+					training our AI models unless you explicitly consent.
 				</p>
 				<h3 className="mt-6 mb-3 font-medium text-xl">Usage Data</h3>
 				<p>
@@ -102,8 +99,8 @@ export default function PrivacyPage() {
 						<strong>Third-Party Service Providers:</strong> We may share your
 						information with third parties that perform services for us or on
 						our behalf, including payment processing, data analysis, email
-						delivery, hosting services, customer service, and [mention specific
-						AI model providers if applicable and if they process data].
+						delivery, hosting services, customer service, and AI model
+						providers.
 					</li>
 					<li>
 						<strong>Business Transfers:</strong> We may share or transfer your
@@ -129,30 +126,25 @@ export default function PrivacyPage() {
 				<p>
 					Depending on your location, you may have certain rights regarding your
 					personal information, such as the right to access, correct, delete, or
-					restrict the processing of your data. [**This section needs
-					significant customization based on applicable laws like GDPR, CCPA,
-					etc.** You should specify the rights available and how users can
-					exercise them, e.g., by contacting your support email.]
+					restrict the processing of your data.
 				</p>
 
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">6. Data Retention</h2>
 				<p>
 					We will retain your personal information only for as long as is
-					necessary for the purposes set out in this Privacy Policy [and to
-					comply with our legal obligations]. Uploaded images are retained as
-					described in Section 1.
+					necessary for the purposes set out in this Privacy Policy. Uploaded
+					images are retained as described in Section 1. described in Section 1.
 				</p>
 
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">
 					7. Children's Privacy
 				</h2>
 				<p>
-					Our Service is not intended for individuals under the age of [Specify
-					age, e.g., 13 or 16 depending on jurisdiction]. We do not knowingly
-					collect personal information from children. If we become aware that we
-					have collected personal information from a child without verification
-					of parental consent, we take steps to remove that information from our
-					servers.
+					Our Service is not intended for individuals under the age of 13. We do
+					not knowingly collect personal information from children. If we become
+					aware that we have collected personal information from a child without
+					verification of parental consent, we take steps to remove that
+					information from our servers.
 				</p>
 
 				<h2 className="mt-8 mb-4 font-semibold text-2xl">
