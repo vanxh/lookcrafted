@@ -12,15 +12,16 @@
 		"db:studio": "drizzle-kit studio"
 	},
 	"dependencies": {
-		"dotenv": "^16.4.7",
-		"zod": "^3.24.2",
-		"@orpc/server": "^1.1.1",
+		"@better-auth/expo": "^1.2.7",
 		"@orpc/client": "^1.1.1",
-		"hono": "^4.7.6",
-		"drizzle-orm": "^0.38.4",
-		"pg": "^8.14.1",
+		"@orpc/server": "^1.1.1",
+		"@t3-oss/env-core": "^0.13.4",
 		"better-auth": "^1.2.7",
-		"@better-auth/expo": "^1.2.7"
+		"dotenv": "^16.4.7",
+		"drizzle-orm": "^0.38.4",
+		"hono": "^4.7.6",
+		"pg": "^8.14.1",
+		"zod": "^3.24.3"
 	},
 	"devDependencies": {
 		"tsc-alias": "^1.8.11",
