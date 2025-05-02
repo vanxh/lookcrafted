@@ -39,11 +39,11 @@ export function PricingTable() {
 						</li>
 						<li className="flex items-center gap-2">
 							<ShirtIcon className="h-4 w-4 text-primary" />
-							Choice of 1 Attire
+							Choice of 5 Attires
 						</li>
 						<li className="flex items-center gap-2">
 							<ImageIcon className="h-4 w-4 text-primary" />
-							Choice of 1 Background
+							Choice of 5 Backgrounds
 						</li>
 						<li className="flex items-center gap-2">
 							<Maximize2Icon className="h-4 w-4 text-primary" />
@@ -87,11 +87,11 @@ export function PricingTable() {
 						</li>
 						<li className="flex items-center gap-2">
 							<ShirtIcon className="h-4 w-4 text-primary" />
-							Choice of 2 Attires
+							Choice of 10 Attires
 						</li>
 						<li className="flex items-center gap-2">
 							<ImageIcon className="h-4 w-4 text-primary" />
-							Choice of 2 Backgrounds
+							Choice of 10 Backgrounds
 						</li>
 						<li className="flex items-center gap-2">
 							<Maximize2Icon className="h-4 w-4 text-primary" />
