@@ -143,7 +143,7 @@ export default function TermsPage() {
 				</h2>
 				<p>
 					If you have any questions about these Terms, please contact us at
-					[Your Contact Email Address].
+					vanxh@lookcrafted.com.
 				</p>
 			</div>
 		</div>
