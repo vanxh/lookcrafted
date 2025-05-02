@@ -4,7 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"check-types": "tsc --noEmit",
-		"build": "bun build ./api/index.ts --outdir ./dist --target bun --format esm",
+		"build": "tsc && tsc-alias",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./api/index.ts --outfile server",
 		"dev": "bun run --hot api/index.ts",
 		"start": "bun run dist/api/index.js",

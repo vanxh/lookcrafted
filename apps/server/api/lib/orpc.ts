@@ -1,5 +1,5 @@
 import { os, ORPCError } from "@orpc/server";
-import type { Context } from "./context";
+import type { Context } from "./context.js";
 
 export const o = os.$context<Context>();
 
