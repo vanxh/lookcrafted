@@ -1,3 +1,4 @@
+import { LandingPageFooter } from "@/components/landing/footer";
 import { LandingPageHeader } from "@/components/landing/header";
 import { HeroSection } from "@/components/landing/hero-section";
 import { ImageShowcaseContainer } from "@/components/landing/image-showcase-container";
@@ -23,6 +24,8 @@ export default function Home() {
 					<ImageShowcaseContainer />
 				</section>
 			</main>
+
+			<LandingPageFooter />
 		</div>
 	);
 }
