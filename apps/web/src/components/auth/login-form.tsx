@@ -2,6 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { KeyRound, Loader2, Mail } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,7 +16,6 @@ import {
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
 import { authClient } from "@/lib/auth-client";
-import { useSearchParams } from "next/navigation";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
