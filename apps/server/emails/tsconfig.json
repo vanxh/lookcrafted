@@ -1,8 +1,0 @@
-{
-	"extends": "../tsconfig.json",
-	"compilerOptions": {
-		"jsxImportSource": "react"
-	},
-	"include": ["./**/*.tsx"],
-	"exclude": []
-}

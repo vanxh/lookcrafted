@@ -4,16 +4,16 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { emailOTP, magicLink } from "better-auth/plugins";
 
-import { db } from "../db/index.js";
-import * as schema from "../db/schema/auth.js";
-import { env } from "../env.js";
+import { db } from "../db/index";
+import * as schema from "../db/schema/auth";
+import { env } from "../env";
 import {
 	sendMagicLinkEmail,
 	sendOtpVerificationEmail,
 	sendPasswordResetEmail,
 	sendVerificationEmail,
 	sendWelcomeEmail,
-} from "./email.jsx";
+} from "./email";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {

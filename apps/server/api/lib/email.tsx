@@ -6,7 +6,7 @@ import MagicLinkEmail from "../../emails/magic-link";
 import OtpVerificationEmail from "../../emails/otp-verification";
 import PasswordResetEmail from "../../emails/password-reset";
 import WelcomeEmail from "../../emails/welcome-email";
-import { env } from "../env.js";
+import { env } from "../env";
 
 const resend = new Resend(env.RESEND_API_KEY);
 

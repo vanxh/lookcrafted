@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { Loader2 } from "lucide-react";
+import { KeyRound, Loader2, Mail } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -109,12 +109,9 @@ export function LoginForm() {
 				className="w-full"
 				onClick={handleGoogleLogin}
 				disabled={isAnyLoading}
+				isLoading={googleSignInMutation.isPending}
 			>
-				{googleSignInMutation.isPending ? (
-					<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-				) : (
-					<Google className="mr-2 h-4 w-4" />
-				)}
+				<Google className="mr-2 h-4 w-4" />
 				Continue with Google
 			</Button>
 
@@ -149,23 +146,19 @@ export function LoginForm() {
 							variant="secondary"
 							onClick={handleSendOtp}
 							disabled={isAnyLoading || !isValidEmail}
+							isLoading={sendOtpMutation.isPending}
 						>
-							{sendOtpMutation.isPending && (
-								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-							)}
-							{sendOtpMutation.isPending ? "Sending..." : "Send Code"}
+							<KeyRound className="mr-2 h-4 w-4" />
+							Send Code
 						</Button>
 						<Button
 							variant="secondary"
 							onClick={handleSendMagicLink}
 							disabled={isAnyLoading || !isValidEmail}
+							isLoading={sendMagicLinkMutation.isPending}
 						>
-							{sendMagicLinkMutation.isPending && (
-								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-							)}
-							{sendMagicLinkMutation.isPending
-								? "Sending..."
-								: "Send Magic Link"}
+							<Mail className="mr-2 h-4 w-4" />
+							Send Magic Link
 						</Button>
 					</div>
 				</>
@@ -199,11 +192,9 @@ export function LoginForm() {
 						onClick={handleVerifyOtp}
 						className="w-full"
 						disabled={isAnyLoading || otp.length !== 6}
+						isLoading={verifyOtpMutation.isPending}
 					>
-						{verifyOtpMutation.isPending && (
-							<Loader2 className="mr-2 h-4 w-4 animate-spin" />
-						)}
-						{verifyOtpMutation.isPending ? "Verifying..." : "Verify"}
+						Verify
 					</Button>
 				</>
 			)}
