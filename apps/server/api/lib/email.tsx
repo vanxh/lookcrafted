@@ -1,16 +1,17 @@
 import type * as React from "react";
 import { Resend } from "resend";
 
-import EmailVerificationEmail from "../../emails/email-verification.js";
-import MagicLinkEmail from "../../emails/magic-link.js";
-import OtpVerificationEmail from "../../emails/otp-verification.js";
-import PasswordResetEmail from "../../emails/password-reset.js";
-import WelcomeEmail from "../../emails/welcome-email.js";
+import EmailVerificationEmail from "../../emails/email-verification";
+import MagicLinkEmail from "../../emails/magic-link";
+import OtpVerificationEmail from "../../emails/otp-verification";
+import PasswordResetEmail from "../../emails/password-reset";
+import WelcomeEmail from "../../emails/welcome-email";
 import { env } from "../env.js";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
-const fromEmail = env.RESEND_FROM_EMAIL || "Vanxh <lookcrafted@vanxh.dev>";
+const fromEmail =
+	env.RESEND_FROM_EMAIL || "LookCrafted <lookcrafted@vanxh.dev>";
 
 async function sendEmail(
 	to: string,
