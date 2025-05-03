@@ -7,6 +7,13 @@ import { emailOTP, magicLink } from "better-auth/plugins";
 import { db } from "../db/index.js";
 import * as schema from "../db/schema/auth.js";
 import { env } from "../env.js";
+import {
+	sendMagicLinkEmail,
+	sendOtpVerificationEmail,
+	sendPasswordResetEmail,
+	sendVerificationEmail,
+	sendWelcomeEmail,
+} from "./email.jsx";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -18,7 +25,11 @@ export const auth = betterAuth({
 		enabled: true,
 		resetPasswordTokenExpiresIn: 1 * 60 * 60,
 		sendResetPassword: async ({ user, url }) => {
-			// await sendPasswordResetEmail(user.email, url);
+			await sendPasswordResetEmail({
+				to: user.email,
+				name: user.name,
+				resetLink: url,
+			});
 		},
 	},
 	emailVerification: {
@@ -26,7 +37,11 @@ export const auth = betterAuth({
 		autoSignInAfterVerification: true,
 		expiresIn: 1 * 60 * 60,
 		sendVerificationEmail: async ({ user, url }) => {
-			// await sendVerificationEmail(user.email, url);
+			await sendVerificationEmail({
+				to: user.email,
+				name: user.name,
+				verifyLink: url,
+			});
 		},
 	},
 	socialProviders: {
@@ -43,7 +58,10 @@ export const auth = betterAuth({
 		user: {
 			create: {
 				after: async (user) => {
-					// await sendWelcomeEmail(user.email);
+					await sendWelcomeEmail({
+						to: user.email,
+						name: user.name,
+					});
 				},
 			},
 		},
@@ -52,12 +70,20 @@ export const auth = betterAuth({
 		magicLink({
 			expiresIn: 10 * 60,
 			sendMagicLink: async ({ email, url }) => {
-				// await sendMagicLinkEmail(email, url);
+				await sendMagicLinkEmail({
+					to: email,
+					name: email.split("@")[0],
+					magicLink: url,
+				});
 			},
 		}),
 		emailOTP({
 			async sendVerificationOTP({ email, otp }) {
-				// await sendOtpEmail(email, otp);
+				await sendOtpVerificationEmail({
+					to: email,
+					name: email.split("@")[0],
+					otp: otp,
+				});
 			},
 		}),
 		nextCookies(),
