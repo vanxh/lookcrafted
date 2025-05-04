@@ -17,7 +17,7 @@ dist/
 .idea/shelf
 .wrangler
 /.next/
-.vercel
+# .vercel
 import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
  
