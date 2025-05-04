@@ -7,5 +7,10 @@
 		}
 	],
 	"outputDirectory": "",
-	"buildCommand": "tsc && tsc-alias"
+	"buildCommand": "bun build api/index.ts --outdir api --target bun --format esm",
+	"functions": {
+		"api/index.js": {
+			"runtime": "edge"
+		}
+	}
 }

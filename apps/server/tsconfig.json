@@ -3,7 +3,7 @@
 		"target": "ES2017",
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"verbatimModuleSyntax": false,
+		"verbatimModuleSyntax": true,
 		"strict": true,
 		"skipLibCheck": true,
 		"baseUrl": "./",
