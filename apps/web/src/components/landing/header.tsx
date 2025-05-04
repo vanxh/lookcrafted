@@ -101,14 +101,11 @@ export function LandingPageHeader() {
 						<Globe className="mr-2 h-4 w-4" />
 						EN
 					</Button>
-					<Button variant="ghost" asChild className="hidden lg:flex">
-						<Link href="/login">Log in</Link>
-					</Button>
 					<Button
 						className="hidden bg-orange-500 text-white hover:bg-orange-600 lg:flex"
 						asChild
 					>
-						<Link href="/get-started">Create your headshots</Link>
+						<Link href="/app">Create your headshots</Link>
 					</Button>
 					<Button
 						variant="outline"
@@ -141,19 +138,11 @@ export function LandingPageHeader() {
 							</Button>
 						))}
 						<hr className="my-2" />
-						<Button variant="ghost" className="w-full justify-start" asChild>
-							<Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-								Log in
-							</Link>
-						</Button>
 						<Button
 							className="w-full bg-orange-500 text-white hover:bg-orange-600"
 							asChild
 						>
-							<Link
-								href="/get-started"
-								onClick={() => setIsMobileMenuOpen(false)}
-							>
+							<Link href="/app" onClick={() => setIsMobileMenuOpen(false)}>
 								Create your headshots
 							</Link>
 						</Button>

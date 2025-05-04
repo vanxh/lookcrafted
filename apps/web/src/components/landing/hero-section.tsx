@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { CheckCircle2, Download, ScanFace, Wand2 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -86,7 +87,7 @@ export function HeroSection() {
 							size="lg"
 							className="w-full bg-orange-500 transition-transform duration-150 ease-in-out hover:bg-orange-600 hover:brightness-110 min-[400px]:w-auto"
 						>
-							Craft My Headshots Now →
+							<Link href="/app">Craft My Headshots Now →</Link>
 						</Button>
 						<span className="hidden font-medium text-muted-foreground text-sm min-[400px]:block">
 							OR
@@ -96,7 +97,7 @@ export function HeroSection() {
 							size="lg"
 							className="w-full min-[400px]:w-auto"
 						>
-							Headshots for Teams
+							<Link href="/app">Headshots for Teams</Link>
 						</Button>
 					</div>
 

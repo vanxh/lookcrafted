@@ -15,7 +15,6 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
-import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
