@@ -1,11 +1,11 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
+	"outputDirectory": "dist",
+	"buildCommand": "bun build api/index.tsx --outdir dist --target bun",
 	"rewrites": [
 		{
 			"source": "/(.*)",
-			"destination": "/api"
+			"destination": "/index.js"
 		}
-	],
-	"outputDirectory": "dist",
-	"buildCommand": "bun build api --outdir=dist --target=bun"
+	]
 }
