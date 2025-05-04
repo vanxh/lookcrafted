@@ -2,13 +2,15 @@ import { expo } from "@better-auth/expo";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { emailOTP, magicLink } from "better-auth/plugins";
+import { emailOTP, magicLink, organization } from "better-auth/plugins";
 
 import { db } from "../db/index";
 import * as schema from "../db/schema/auth";
 import { env } from "../env";
 import {
 	sendMagicLinkEmail,
+	sendOrganizationCreatedEmail,
+	sendOrganizationInvitationEmail,
 	sendOtpVerificationEmail,
 	sendPasswordResetEmail,
 	sendVerificationEmail,
@@ -65,8 +67,46 @@ export const auth = betterAuth({
 				},
 			},
 		},
+		// session: {
+		//     create: {
+		//         before: async (session) => {
+		//             const organization = await db.query.organizations.findFirst({
+		//                 where: eq(schema.organizations.userId, session.userId),
+		//             });
+		//             return {
+		//                 data: {
+		//                     ...session,
+		//                     activeOrganizationId: organization.id,
+		//                 },
+		//             };
+		//         },
+		//     },
+		// },
 	},
 	plugins: [
+		organization({
+			organizationCreation: {
+				afterCreate: async (organization) => {
+					await sendOrganizationCreatedEmail({
+						to: organization.user.email,
+						name: organization.user.name,
+						organizationName: organization.organization.name,
+						dashboardLink: `${env.BETTER_AUTH_URL}/dashboard`,
+					});
+				},
+			},
+			async sendInvitationEmail(data) {
+				const inviteLink = `${env.BETTER_AUTH_URL}/accept-invitation/${data.id}`;
+				await sendOrganizationInvitationEmail({
+					to: data.email,
+					invitedByUsername: data.inviter.user.name,
+					invitedByEmail: data.inviter.user.email,
+					teamName: data.organization.name,
+					inviteLink,
+					recipientName: data.email.split("@")[0],
+				});
+			},
+		}),
 		magicLink({
 			expiresIn: 10 * 60,
 			sendMagicLink: async ({ email, url }) => {

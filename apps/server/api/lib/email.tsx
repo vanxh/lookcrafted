@@ -3,6 +3,8 @@ import { Resend } from "resend";
 
 import EmailVerificationEmail from "../../emails/email-verification";
 import MagicLinkEmail from "../../emails/magic-link";
+import OrganizationCreatedEmail from "../../emails/organization-created";
+import OrganizationInvitationEmail from "../../emails/organization-invitation";
 import OtpVerificationEmail from "../../emails/otp-verification";
 import PasswordResetEmail from "../../emails/password-reset";
 import WelcomeEmail from "../../emails/welcome-email";
@@ -114,5 +116,55 @@ export async function sendOtpVerificationEmail({
 		to,
 		"Your LookCrafted Verification Code",
 		<OtpVerificationEmail name={name} otp={otp} />,
+	);
+}
+
+export async function sendOrganizationCreatedEmail({
+	to,
+	name,
+	organizationName,
+	dashboardLink,
+}: {
+	to: string;
+	name?: string;
+	organizationName: string;
+	dashboardLink: string;
+}) {
+	return sendEmail(
+		to,
+		"Your organization has been created",
+		<OrganizationCreatedEmail
+			ownerName={name}
+			organizationName={organizationName}
+			dashboardLink={dashboardLink}
+		/>,
+	);
+}
+
+export async function sendOrganizationInvitationEmail({
+	to,
+	invitedByUsername,
+	invitedByEmail,
+	teamName,
+	inviteLink,
+	recipientName,
+}: {
+	to: string;
+	invitedByUsername?: string | null;
+	invitedByEmail: string;
+	teamName: string;
+	inviteLink: string;
+	recipientName?: string | null;
+}) {
+	return sendEmail(
+		to,
+		"You've been invited to join an organization",
+		<OrganizationInvitationEmail
+			invitedByUsername={invitedByUsername}
+			invitedByEmail={invitedByEmail}
+			teamName={teamName}
+			inviteLink={inviteLink}
+			recipientName={recipientName}
+		/>,
 	);
 }
