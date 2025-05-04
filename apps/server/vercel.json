@@ -6,5 +6,6 @@
 			"destination": "/api"
 		}
 	],
-	"outputDirectory": ""
+	"outputDirectory": "dist",
+	"buildCommand": "bun build api --outdir=dist --target=bun"
 }
