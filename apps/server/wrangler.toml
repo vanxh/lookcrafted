@@ -1,4 +1,5 @@
 name = "lookcrafted-api"
 main = "src/index.ts"
+compatibility_date = "2025-05-04"
 minify = true
 workers_dev = true
