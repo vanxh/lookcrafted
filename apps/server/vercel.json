@@ -1,5 +1,11 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
-	"buildCommand": "bun build apps/server/api/index.tsx --outdir .vercel/output/functions/index.func --target bun --format esm",
-	"outputDirectory": ""
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "/api"
+		}
+	],
+	"outputDirectory": "",
+	"buildCommand": "tsc && tsc-alias"
 }

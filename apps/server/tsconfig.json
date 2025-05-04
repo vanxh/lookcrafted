@@ -8,7 +8,7 @@
 		"skipLibCheck": true,
 		"baseUrl": "./",
 		"paths": {
-			"@/*": ["api/*"]
+			"@/*": ["apps/server/api/*"]
 		},
 		"outDir": "./dist",
 		"types": ["bun"],
@@ -18,5 +18,6 @@
 	"tsc-alias": {
 		"resolveFullPaths": true
 	},
-	"include": ["api/**/*.ts", "emails/**/*.tsx"]
+	"include": ["./**/*.ts", "./**/*.tsx"],
+	"exclude": ["node_modules"]
 }

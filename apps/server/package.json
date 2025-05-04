@@ -1,10 +1,9 @@
 {
 	"name": "server",
 	"main": "api/index.ts",
-	"type": "module",
 	"scripts": {
 		"check-types": "tsc --noEmit",
-		"build": "bun build api --outdir=dist --target=bun",
+		"build": "tsc && tsc-alias",
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./api/index.ts --outfile server",
 		"dev": "bun run --hot api/server.ts",
 		"start": "bun run dist/api/index.js",
