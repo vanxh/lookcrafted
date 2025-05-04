@@ -29,7 +29,6 @@ export default function LoginPage() {
 
 			<div>
 				<Logo className="mt-4 ml-4 sm:hidden" />
-
 				<div className="flex min-h-screen w-full flex-col items-start justify-start px-4 pt-6 pb-12 sm:items-center sm:justify-center lg:p-8">
 					<div className="sm:mx-auto sm:w-sm">
 						<Logo className="hidden sm:block" />
