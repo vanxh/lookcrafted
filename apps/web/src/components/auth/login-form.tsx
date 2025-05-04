@@ -2,7 +2,7 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { KeyRound, Loader2, Mail } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -15,13 +15,15 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
+import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function LoginForm() {
+	const router = useRouter();
 	const searchParams = useSearchParams();
-	const callbackURL = searchParams.get("callbackURL") ?? undefined;
+	const callbackURL = searchParams.get("callbackURL") ?? window.location.href;
 
 	const [email, setEmail] = useState("");
 	const [otp, setOtp] = useState("");
@@ -30,7 +32,8 @@ export function LoginForm() {
 	const isValidEmail = emailRegex.test(email);
 
 	const googleSignInMutation = useMutation({
-		mutationFn: () => authClient.signIn.social({ provider: "google" }),
+		mutationFn: () =>
+			authClient.signIn.social({ provider: "google", callbackURL }),
 		onSuccess: () => {
 			toast.success("Google login initiated!");
 		},
@@ -68,6 +71,7 @@ export function LoginForm() {
 		mutationFn: () => authClient.signIn.emailOtp({ email, otp }),
 		onSuccess: () => {
 			toast.success("OTP Verified! Logging in...");
+			router.push(callbackURL);
 		},
 		onError: (error: Error) => {
 			console.error("Verify OTP Error:", error);
