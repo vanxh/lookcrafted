@@ -5,6 +5,7 @@ import Link from "next/link";
 import { LoginBranding } from "@/components/auth/login-branding";
 import { LoginForm } from "@/components/auth/login-form";
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
 
 const Logo = ({
 	className,
@@ -41,7 +42,9 @@ export default function LoginPage() {
 								Log in or create an account to get started.
 							</p>
 						</div>
-						<LoginForm />
+						<Suspense>
+							<LoginForm />
+						</Suspense>
 						<div className="mt-4 text-center text-sm">
 							By continuing, you agree to our{" "}
 							<Link href="/terms" className="underline">
