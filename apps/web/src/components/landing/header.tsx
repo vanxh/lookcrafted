@@ -1,6 +1,7 @@
 "use client";
 
 import { Globe, Menu } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -46,7 +47,13 @@ export function LandingPageHeader() {
 								)}
 								asChild
 							>
-								<Link href="/">
+								<Link href="/" className="flex flex-row items-center gap-1">
+									<Image
+										src="/logo.png"
+										alt="LookCrafted"
+										width={32}
+										height={32}
+									/>
 									<span className="font-bold">LookCrafted</span>
 								</Link>
 							</NavigationMenuLink>
@@ -91,8 +98,9 @@ export function LandingPageHeader() {
 
 				<Link
 					href="/"
-					className="flex items-center gap-2 font-semibold text-lg md:text-base lg:hidden"
+					className="flex items-center gap-1 font-semibold text-lg md:text-base lg:hidden"
 				>
+					<Image src="/logo.png" alt="LookCrafted" width={32} height={32} />
 					<span className="font-bold">LookCrafted</span>
 				</Link>
 
