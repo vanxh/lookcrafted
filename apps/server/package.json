@@ -1,12 +1,12 @@
 {
 	"name": "server",
-	"main": "api/index.ts",
+	"main": "src/index.ts",
 	"scripts": {
 		"check-types": "tsc --noEmit",
 		"build": "tsc && tsc-alias",
-		"compile": "bun build --compile --minify --sourcemap --bytecode ./api/index.ts --outfile server",
-		"dev": "bun run --hot api/server.ts",
-		"start": "bun run dist/api/index.js",
+		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+		"dev": "bun run --hot src/index.ts",
+		"start": "bun run src/index.ts",
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"email:dev": "email dev"

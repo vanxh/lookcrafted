@@ -8,7 +8,7 @@ import { createContext, use } from "react";
 import { toast } from "sonner";
 
 import { env } from "@/env";
-import type { appRouter } from "../../../server/api/routers/index";
+import type { appRouter } from "../../../server/src/routers/index";
 
 type ORPCReactUtils = RouterUtils<RouterClient<typeof appRouter>>;
 

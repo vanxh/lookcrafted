@@ -1,0 +1,33 @@
+name: Deploy Server
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        name: Deploy Server on Cloudflare Workers
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: apps/server
+
+        steps:
+            - name: ⬇️ Checkout repository
+              uses: actions/checkout@v4
+
+            - name: 🧱 Install Bun
+              uses: oven-sh/setup-bun@v1
+
+            - name: 📦 Install dependencies
+              run: bun install
+
+            - name: 🔨 Build Worker with Bun
+              run: bun build api/index.tsx --outdir dist --target bun --format esm
+
+            - name: 🚀 Deploy using Wrangler
+              uses: cloudflare/wrangler-action@v3
+              with:
+                  apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}

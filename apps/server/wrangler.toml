@@ -1,0 +1,3 @@
+name = "lookcrafted-api"
+main = "src/index.ts"
+minify = true

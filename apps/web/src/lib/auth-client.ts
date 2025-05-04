@@ -7,7 +7,7 @@ import {
 import { createAuthClient } from "better-auth/react";
 
 import { env } from "@/env";
-import type { auth } from "../../../server/api/lib/auth";
+import type { auth } from "../../../server/src/lib/auth";
 
 export const authClient = createAuthClient({
 	baseURL: env.NEXT_PUBLIC_SERVER_URL,

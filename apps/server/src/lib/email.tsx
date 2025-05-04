@@ -1,14 +1,14 @@
 import type * as React from "react";
 import { Resend } from "resend";
 
-import EmailVerificationEmail from "../../emails/email-verification.js";
-import MagicLinkEmail from "../../emails/magic-link.js";
-import OrganizationCreatedEmail from "../../emails/organization-created.js";
-import OrganizationInvitationEmail from "../../emails/organization-invitation.js";
-import OtpVerificationEmail from "../../emails/otp-verification.js";
-import PasswordResetEmail from "../../emails/password-reset.js";
-import WelcomeEmail from "../../emails/welcome-email.js";
-import { env } from "../env.js";
+import EmailVerificationEmail from "../emails/email-verification";
+import MagicLinkEmail from "../emails/magic-link";
+import OrganizationCreatedEmail from "../emails/organization-created";
+import OrganizationInvitationEmail from "../emails/organization-invitation";
+import OtpVerificationEmail from "../emails/otp-verification";
+import PasswordResetEmail from "../emails/password-reset";
+import WelcomeEmail from "../emails/welcome-email";
+import { env } from "../env";
 
 const resend = new Resend(env.RESEND_API_KEY);
 
