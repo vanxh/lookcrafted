@@ -1,5 +1,3 @@
-/** @ts-nocheck */
-
 import type * as React from "react";
 import { Resend } from "resend";
 
