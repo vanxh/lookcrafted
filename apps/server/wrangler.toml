@@ -1,3 +1,4 @@
 name = "lookcrafted-api"
 main = "src/index.ts"
 minify = true
+workers_dev = true
