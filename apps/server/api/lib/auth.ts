@@ -15,7 +15,7 @@ import {
 	sendPasswordResetEmail,
 	sendVerificationEmail,
 	sendWelcomeEmail,
-} from "./email";
+} from "./email.js";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
