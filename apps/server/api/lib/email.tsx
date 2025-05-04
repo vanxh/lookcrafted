@@ -23,6 +23,7 @@ async function sendEmail(
 			from: fromEmail,
 			to: to,
 			subject: subject,
+			// @ts-ignore
 			react: reactElement,
 		});
 
