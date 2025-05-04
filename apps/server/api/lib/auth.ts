@@ -4,9 +4,9 @@ import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
 import { emailOTP, magicLink, organization } from "better-auth/plugins";
 
-import { db } from "../db/index";
-import * as schema from "../db/schema/auth";
-import { env } from "../env";
+import { db } from "../db/index.js";
+import * as schema from "../db/schema/auth.js";
+import { env } from "../env.js";
 import {
 	sendMagicLinkEmail,
 	sendOrganizationCreatedEmail,
@@ -15,7 +15,7 @@ import {
 	sendPasswordResetEmail,
 	sendVerificationEmail,
 	sendWelcomeEmail,
-} from "./email";
+} from "./email.jsx";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
