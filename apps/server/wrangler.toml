@@ -4,3 +4,9 @@ compatibility_date = "2025-05-04"
 minify = true
 workers_dev = true
 compatibility_flags = ["nodejs_compat"]
+
+[observability.logs]
+enabled = true
+
+[placement]
+mode = "smart"
