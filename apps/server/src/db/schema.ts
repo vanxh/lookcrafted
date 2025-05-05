@@ -218,6 +218,8 @@ export const headshotRequest = pgTable("headshot_request", {
 	createdAt: timestamp("created_at").notNull(),
 	updatedAt: timestamp("updated_at").notNull(),
 
+	headshotCount: integer("headshot_count").notNull(),
+
 	gender: genderEnum("gender").notNull(),
 	ageGroup: ageGroupEnum("age_group").notNull(),
 	hairColor: hairColorEnum("hair_color").notNull(),
