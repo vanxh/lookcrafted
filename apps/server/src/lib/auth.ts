@@ -5,7 +5,7 @@ import { nextCookies } from "better-auth/next-js";
 import { emailOTP, magicLink, organization } from "better-auth/plugins";
 
 import { db } from "../db/index";
-import * as schema from "../db/schema/auth";
+import * as schema from "../db/schema";
 import { env } from "../env";
 import {
 	sendMagicLinkEmail,
