@@ -13,6 +13,7 @@
 	},
 	"dependencies": {
 		"@better-auth/expo": "^1.2.7",
+		"@lookcrafted/constants": "workspace:*",
 		"@orpc/client": "^1.1.1",
 		"@orpc/server": "^1.1.1",
 		"@react-email/components": "0.0.38",

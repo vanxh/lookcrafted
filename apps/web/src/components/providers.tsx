@@ -1,6 +1,7 @@
 "use client";
 
 import { QueryClientProvider } from "@tanstack/react-query";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { ORPCContext, orpc, queryClient } from "@/utils/orpc";
 import { PostHogProvider } from "./posthog-provider";
@@ -22,7 +23,9 @@ export default function Providers({
 		>
 			<PostHogProvider>
 				<QueryClientProvider client={queryClient}>
-					<ORPCContext.Provider value={orpc}>{children}</ORPCContext.Provider>
+					<ORPCContext.Provider value={orpc}>
+						<NuqsAdapter>{children}</NuqsAdapter>
+					</ORPCContext.Provider>
 				</QueryClientProvider>
 			</PostHogProvider>
 			<Toaster richColors />

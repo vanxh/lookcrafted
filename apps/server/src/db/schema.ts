@@ -8,6 +8,18 @@ import {
 	timestamp,
 } from "drizzle-orm/pg-core";
 
+import {
+	AGE_GROUP_OPTIONS,
+	BODY_TYPE_OPTIONS,
+	type Background,
+	ETHNICITY_OPTIONS,
+	GENDER_OPTIONS,
+	HAIR_COLOR_OPTIONS,
+	HAIR_LENGTH_OPTIONS,
+	HAIR_TEXTURE_OPTIONS,
+	type Outfit,
+} from "@lookcrafted/constants";
+
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
 	name: text("name").notNull(),
@@ -94,113 +106,13 @@ export const invitation = pgTable("invitation", {
 		.references(() => user.id, { onDelete: "cascade" }),
 });
 
-export const GENDER_OPTIONS = ["male", "female", "other"] as const;
-export type Gender = (typeof GENDER_OPTIONS)[number];
 export const genderEnum = pgEnum("gender", GENDER_OPTIONS);
-
-export const AGE_GROUP_OPTIONS = [
-	"18_20",
-	"21_24",
-	"25_29",
-	"30_40",
-	"41_50",
-	"51_65",
-	"65_plus",
-] as const;
-export type AgeGroup = (typeof AGE_GROUP_OPTIONS)[number];
 export const ageGroupEnum = pgEnum("age_group", AGE_GROUP_OPTIONS);
-
-export const HAIR_COLOR_OPTIONS = [
-	"Black",
-	"Brown",
-	"Blonde",
-	"Gray",
-	"Auburn",
-	"Red",
-	"White",
-	"Other",
-	"Bald",
-] as const;
-export type HairColor = (typeof HAIR_COLOR_OPTIONS)[number];
 export const hairColorEnum = pgEnum("hair_color", HAIR_COLOR_OPTIONS);
-
-export const MALE_HAIR_LENGTH_OPTIONS = [
-	"Bald",
-	"Buzz Cut",
-	"Short",
-	"Medium Length",
-	"Long",
-] as const;
-export type MaleHairLength = (typeof MALE_HAIR_LENGTH_OPTIONS)[number];
-
-export const FEMALE_HAIR_LENGTH_OPTIONS = [
-	"Short",
-	"Medium Length",
-	"Long",
-] as const;
-export type FemaleHairLength = (typeof FEMALE_HAIR_LENGTH_OPTIONS)[number];
-
-export const HAIR_LENGTH_OPTIONS = Array.from(
-	new Set([...MALE_HAIR_LENGTH_OPTIONS, ...FEMALE_HAIR_LENGTH_OPTIONS]),
-) as [string, ...string[]];
-export type HairLength = (typeof HAIR_LENGTH_OPTIONS)[number];
-
 export const hairLengthEnum = pgEnum("hair_length", HAIR_LENGTH_OPTIONS);
-
-export const HAIR_TEXTURE_OPTIONS = [
-	"Straight",
-	"Wavy",
-	"Curly",
-	"Coarse",
-] as const;
-export type HairTexture = (typeof HAIR_TEXTURE_OPTIONS)[number];
 export const hairTextureEnum = pgEnum("hair_texture", HAIR_TEXTURE_OPTIONS);
-
-export const ETHNICITY_OPTIONS = [
-	"White",
-	"Black",
-	"Hispanic",
-	"Middle Eastern",
-	"South Asian",
-	"East Asian",
-	"Southeast Asian",
-	"Pacific Islander",
-	"Other",
-] as const;
-export type Ethnicity = (typeof ETHNICITY_OPTIONS)[number];
 export const ethnicityEnum = pgEnum("ethnicity", ETHNICITY_OPTIONS);
-
-export const BODY_TYPE_OPTIONS = [
-	"Slim",
-	"Average",
-	"Athletic",
-	"Medium",
-	"Large",
-	"Extra Large",
-] as const;
-export type BodyType = (typeof BODY_TYPE_OPTIONS)[number];
 export const bodyTypeEnum = pgEnum("body_type", BODY_TYPE_OPTIONS);
-
-export const BACKGROUND_OPTIONS = [
-	"White",
-	"Black",
-	"Gray",
-	"Blue",
-	"Office",
-	"Studio",
-	"Nature",
-	"Street",
-] as const;
-export type Background = (typeof BACKGROUND_OPTIONS)[number];
-
-export const OUTFIT_OPTIONS = [
-	"Formal",
-	"Tech",
-	"Casual",
-	"Business Casual",
-	"Sporty",
-] as const;
-export type Outfit = (typeof OUTFIT_OPTIONS)[number];
 
 export const headshotStatus = pgEnum("headshot_status", [
 	"pending",

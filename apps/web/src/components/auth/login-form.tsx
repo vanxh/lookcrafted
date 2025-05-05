@@ -15,6 +15,7 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
+import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,7 +23,8 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function LoginForm() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
-	const callbackURL = searchParams.get("callbackURL") ?? window.location.href;
+
+	const callbackURL = searchParams.get("callbackURL") ?? "/app";
 
 	const [email, setEmail] = useState("");
 	const [otp, setOtp] = useState("");
@@ -32,7 +34,10 @@ export function LoginForm() {
 
 	const googleSignInMutation = useMutation({
 		mutationFn: () =>
-			authClient.signIn.social({ provider: "google", callbackURL }),
+			authClient.signIn.social({
+				provider: "google",
+				callbackURL: `${window.location.origin}/${callbackURL}`,
+			}),
 		onSuccess: () => {
 			toast.success("Google login initiated!");
 		},

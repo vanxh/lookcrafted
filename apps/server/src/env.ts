@@ -11,6 +11,7 @@ export const env = createEnv({
 		GOOGLE_CLIENT_SECRET: z.string(),
 		RESEND_API_KEY: z.string(),
 		RESEND_FROM_EMAIL: z.string().email().optional(),
+		FRONTEND_URL: z.string().url(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,
