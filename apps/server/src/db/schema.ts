@@ -1,5 +1,6 @@
 import {
 	boolean,
+	integer,
 	jsonb,
 	pgEnum,
 	pgTable,
@@ -230,4 +231,21 @@ export const headshotRequest = pgTable("headshot_request", {
 
 	loraId: text("lora_id"),
 	status: headshotStatus("status").notNull().default("pending"),
+
+	regenerationCount: integer("regeneration_count").notNull().default(0),
+});
+
+export const headshotImage = pgTable("headshot_image", {
+	id: text("id").primaryKey(),
+	headshotRequestId: text("headshot_request_id")
+		.notNull()
+		.references(() => headshotRequest.id, { onDelete: "cascade" }),
+
+	imageUrl: text("image_url").notNull(),
+	prompt: text("prompt"),
+	isFavorite: boolean("is_favorite").default(false),
+
+	regenerationIndex: integer("regeneration_index").notNull().default(0), // 0 is the original image, 1 is the first regeneration, etc.
+
+	createdAt: timestamp("created_at").notNull(),
 });
