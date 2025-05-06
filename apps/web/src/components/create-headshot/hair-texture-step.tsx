@@ -20,10 +20,7 @@ export function HairTextureStep() {
 		step: parseAsInteger.withDefault(1),
 		hairTexture: parseAsString,
 	});
-	const [gender, setGender] = useQueryState(
-		"gender",
-		parseAsString.withDefault("male"),
-	);
+	const [gender] = useQueryState("gender", parseAsString.withDefault("male"));
 
 	const handleValueChange = (value: string) => {
 		setState((prev) => ({
