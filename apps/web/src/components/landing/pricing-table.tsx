@@ -30,23 +30,23 @@ export function PricingTable() {
 					</div>
 					<ul className="mb-6 flex-grow space-y-2 text-muted-foreground text-sm">
 						<li className="flex items-center gap-2">
-							<UserIcon className="h-4 w-4 text-primary" />
+							<UserIcon className="h-4 w-4 text-blue-600" />
 							50 Headshots
 						</li>
 						<li className="flex items-center gap-2">
-							<ClockIcon className="h-4 w-4 text-primary" />
+							<ClockIcon className="h-4 w-4 text-blue-600" />
 							~45 Mins Generation Time
 						</li>
 						<li className="flex items-center gap-2">
-							<ShirtIcon className="h-4 w-4 text-primary" />
+							<ShirtIcon className="h-4 w-4 text-blue-600" />
 							Choice of 5 Attires
 						</li>
 						<li className="flex items-center gap-2">
-							<ImageIcon className="h-4 w-4 text-primary" />
+							<ImageIcon className="h-4 w-4 text-blue-600" />
 							Choice of 5 Backgrounds
 						</li>
 						<li className="flex items-center gap-2">
-							<Maximize2Icon className="h-4 w-4 text-primary" />
+							<Maximize2Icon className="h-4 w-4 text-blue-600" />
 							Standard Resolution
 						</li>
 					</ul>
@@ -56,8 +56,8 @@ export function PricingTable() {
 				</div>
 			</div>
 
-			<div className="relative flex flex-col rounded-lg border-2 border-orange-500 bg-card text-card-foreground shadow-lg">
-				<div className="absolute top-[-14px] right-4 inline-flex items-center rounded-full border border-orange-500 bg-orange-500 px-3 py-0.5 font-semibold text-white text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+			<div className="relative flex flex-col rounded-lg border-2 border-blue-600 bg-card text-card-foreground shadow-lg">
+				<div className="absolute top-[-14px] right-4 inline-flex items-center rounded-full border border-blue-600 bg-blue-600 px-3 py-0.5 font-semibold text-white text-xs transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
 					<Heart className="mr-1 h-3 w-3 fill-current" />
 					Most Popular
 				</div>
@@ -78,27 +78,27 @@ export function PricingTable() {
 					</div>
 					<ul className="mb-6 flex-grow space-y-2 text-muted-foreground text-sm">
 						<li className="flex items-center gap-2">
-							<UserIcon className="h-4 w-4 text-primary" />
+							<UserIcon className="h-4 w-4 text-blue-600" />
 							100 Headshots
 						</li>
 						<li className="flex items-center gap-2">
-							<ClockIcon className="h-4 w-4 text-primary" />
+							<ClockIcon className="h-4 w-4 text-blue-600" />
 							~30 Mins Generation Time
 						</li>
 						<li className="flex items-center gap-2">
-							<ShirtIcon className="h-4 w-4 text-primary" />
+							<ShirtIcon className="h-4 w-4 text-blue-600" />
 							Choice of 10 Attires
 						</li>
 						<li className="flex items-center gap-2">
-							<ImageIcon className="h-4 w-4 text-primary" />
+							<ImageIcon className="h-4 w-4 text-blue-600" />
 							Choice of 10 Backgrounds
 						</li>
 						<li className="flex items-center gap-2">
-							<Maximize2Icon className="h-4 w-4 text-primary" />
+							<Maximize2Icon className="h-4 w-4 text-blue-600" />
 							Standard Resolution
 						</li>
 					</ul>
-					<Button className="mt-auto w-full bg-orange-500 text-white hover:bg-orange-600">
+					<Button className="mt-auto w-full bg-blue-600 text-white hover:bg-blue-700">
 						Get 100 Headshots
 					</Button>
 				</div>
@@ -126,23 +126,23 @@ export function PricingTable() {
 					</div>
 					<ul className="mb-6 flex-grow space-y-2 text-muted-foreground text-sm">
 						<li className="flex items-center gap-2">
-							<UserIcon className="h-4 w-4 text-primary" />
+							<UserIcon className="h-4 w-4 text-blue-600" />
 							200 Headshots
 						</li>
 						<li className="flex items-center gap-2">
-							<ClockIcon className="h-4 w-4 text-primary" />
+							<ClockIcon className="h-4 w-4 text-blue-600" />
 							~15 Mins Generation Time
 						</li>
 						<li className="flex items-center gap-2">
-							<ShirtIcon className="h-4 w-4 text-primary" />
+							<ShirtIcon className="h-4 w-4 text-blue-600" />
 							All Attires Included
 						</li>
 						<li className="flex items-center gap-2">
-							<ImageIcon className="h-4 w-4 text-primary" />
+							<ImageIcon className="h-4 w-4 text-blue-600" />
 							All Backgrounds Included
 						</li>
 						<li className="flex items-center gap-2">
-							<Maximize2Icon className="h-4 w-4 text-primary" />
+							<Maximize2Icon className="h-4 w-4 text-blue-600" />
 							Enhanced Image Resolution
 						</li>
 					</ul>

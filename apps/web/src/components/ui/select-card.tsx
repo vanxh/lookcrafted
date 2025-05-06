@@ -29,7 +29,7 @@ export function SelectCard({
 			className={cn(
 				"relative flex flex-1 cursor-pointer items-center gap-3 rounded-lg border p-4 text-left transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
 				isSelected
-					? "border-orange-500 ring-2 ring-orange-500/50"
+					? "border-blue-600 ring-2 ring-blue-600/50"
 					: "border-border",
 			)}
 		>
@@ -38,7 +38,7 @@ export function SelectCard({
 
 			{isSelected && (
 				<div className="ml-auto flex-shrink-0">
-					<CheckCircle2 className="h-5 w-5 text-orange-500" />
+					<CheckCircle2 className="h-5 w-5 text-blue-600" />
 				</div>
 			)}
 		</button>

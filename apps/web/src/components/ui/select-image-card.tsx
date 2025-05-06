@@ -30,13 +30,13 @@ export function SelectImageCard({
 			className={cn(
 				"relative flex flex-1 cursor-pointer flex-col items-stretch justify-start gap-3 overflow-hidden rounded-lg border p-0 text-center transition-colors hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
 				isSelected
-					? "border-orange-500 ring-2 ring-orange-500/50"
+					? "border-blue-600 ring-2 ring-blue-600/50"
 					: "border-border",
 			)}
 		>
 			{isSelected && (
 				<div className="absolute top-2 right-2 z-10">
-					<CheckCircle2 className="h-6 w-6 text-orange-500" />
+					<CheckCircle2 className="h-6 w-6 text-blue-600" />
 				</div>
 			)}
 

@@ -69,7 +69,7 @@ export function HeroSection() {
 						</div>
 						<h1 className="font-bold text-3xl sm:text-5xl xl:text-6xl/none">
 							Studio-Quality{" "}
-							<span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent">
+							<span className="bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
 								<strong>AI Headshots</strong>
 							</span>
 							<br />
@@ -85,7 +85,7 @@ export function HeroSection() {
 					<div className="flex w-full flex-col items-center gap-2 min-[400px]:flex-row min-[400px]:justify-center">
 						<Button
 							size="lg"
-							className="w-full bg-orange-500 transition-transform duration-150 ease-in-out hover:bg-orange-600 hover:brightness-110 min-[400px]:w-auto"
+							className="w-full bg-blue-600 transition-transform duration-150 ease-in-out hover:bg-blue-700 hover:brightness-110 min-[400px]:w-auto"
 						>
 							<Link href="/app">Craft My Headshots Now →</Link>
 						</Button>
@@ -171,7 +171,7 @@ export function HeroSection() {
 							<ul className="space-y-2 text-muted-foreground">
 								<li className="flex items-start">
 									<CheckCircle2
-										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-green-500"
+										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-blue-500"
 										aria-hidden="true"
 									/>
 									<span>
@@ -180,7 +180,7 @@ export function HeroSection() {
 								</li>
 								<li className="flex items-start">
 									<CheckCircle2
-										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-green-500"
+										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-blue-500"
 										aria-hidden="true"
 									/>
 									<span>
@@ -189,7 +189,7 @@ export function HeroSection() {
 								</li>
 								<li className="flex items-start">
 									<CheckCircle2
-										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-green-500"
+										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-blue-500"
 										aria-hidden="true"
 									/>
 									<span>
@@ -199,7 +199,7 @@ export function HeroSection() {
 								</li>
 								<li className="flex items-start">
 									<CheckCircle2
-										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-green-500"
+										className="mt-1 mr-2 h-4 w-4 flex-shrink-0 text-blue-500"
 										aria-hidden="true"
 									/>
 									<span>
@@ -218,7 +218,7 @@ export function HeroSection() {
 						>
 							<div className="flex flex-col gap-3 divide-y divide-border">
 								<div className="flex items-center gap-4 pt-1 pb-3 first:pt-0 last:pb-0">
-									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-600">
 										<ScanFace className="h-5 w-5" />
 									</div>
 									<div>
@@ -228,7 +228,7 @@ export function HeroSection() {
 									</div>
 								</div>
 								<div className="flex items-center gap-4 pt-3 pb-3 first:pt-0 last:pb-0">
-									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-600">
 										<Wand2 className="h-5 w-5" />
 									</div>
 									<div>
@@ -239,7 +239,7 @@ export function HeroSection() {
 									</div>
 								</div>
 								<div className="flex items-center gap-4 pt-3 pb-1 first:pt-0 last:pb-0">
-									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+									<div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-blue-600/10 text-blue-600">
 										<Download className="h-5 w-5" />
 									</div>
 									<div>

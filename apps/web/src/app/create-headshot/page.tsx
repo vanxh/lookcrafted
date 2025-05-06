@@ -106,12 +106,12 @@ function CreateHeadshotPageComponent() {
 
 			<main className="container mx-auto flex-1">{renderStep()}</main>
 
-			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4">
+			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4 dark:bg-black">
 				<Button
 					onClick={nextStep}
 					disabled={!isStepValid() || state.step === totalSteps}
 					className={cn(
-						"bg-orange-500 text-white hover:bg-orange-600",
+						"bg-blue-600 text-white hover:bg-blue-700",
 						(!isStepValid() || state.step === totalSteps) &&
 							"cursor-not-allowed opacity-50",
 						"px-16",
