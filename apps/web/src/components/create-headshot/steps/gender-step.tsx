@@ -1,7 +1,12 @@
 "use client";
 
 import { Mars, Transgender, Venus } from "lucide-react";
-import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import {
+	parseAsArrayOf,
+	parseAsInteger,
+	parseAsString,
+	useQueryStates,
+} from "nuqs";
 
 import type { Gender as GenderType } from "@lookcrafted/constants";
 
@@ -18,12 +23,28 @@ export function GenderStep() {
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
 		gender: parseAsString,
+		hairColor: parseAsString,
+		hairLength: parseAsString,
+		hairTexture: parseAsString,
+		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
+		outfits: parseAsArrayOf(parseAsString).withDefault([]),
+		ageGroup: parseAsString,
+		bodyType: parseAsString,
+		ethnicity: parseAsString,
 	});
 
 	const handleValueChange = (value: string) => {
 		setState((prev) => ({
 			gender: value as GenderType,
 			step: prev.step + 1,
+			hairColor: null,
+			hairLength: null,
+			hairTexture: null,
+			backgrounds: [],
+			outfits: [],
+			ageGroup: null,
+			bodyType: null,
+			ethnicity: null,
 		}));
 	};
 
