@@ -22,7 +22,6 @@ export function GenderStep() {
 
 	const handleValueChange = (value: string) => {
 		setState((prev) => ({
-			...prev,
 			gender: value as GenderType,
 			step: prev.step + 1,
 		}));

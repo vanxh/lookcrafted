@@ -35,8 +35,9 @@ export const MALE_HAIR_LENGTH_OPTIONS = [
 export type MaleHairLength = (typeof MALE_HAIR_LENGTH_OPTIONS)[number];
 
 export const FEMALE_HAIR_LENGTH_OPTIONS = [
-	"Short",
-	"Medium Length",
+	"Clean Crop",
+	"Bob Cut",
+	"Medium",
 	"Long",
 ] as const;
 export type FemaleHairLength = (typeof FEMALE_HAIR_LENGTH_OPTIONS)[number];
