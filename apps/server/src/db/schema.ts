@@ -171,6 +171,7 @@ export const headshotImage = pgTable("headshot_image", {
 	prompt: text("prompt"),
 	isFavorite: boolean("is_favorite").default(false),
 
+	modelVersion: text("model_version").notNull(),
 	regenerationIndex: integer("regeneration_index").notNull().default(0), // 0 is the original image, 1 is the first regeneration, etc.
 
 	createdAt: timestamp("created_at").notNull(),
