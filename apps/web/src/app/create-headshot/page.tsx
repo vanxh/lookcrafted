@@ -9,6 +9,7 @@ import {
 import { Suspense } from "react";
 
 import { CreateHeadshotHeader } from "@/components/create-headshot/create-headshot-header";
+import { ProgressSidebar } from "@/components/create-headshot/progress-sidebar";
 import { AgeGroupStep } from "@/components/create-headshot/steps/age-group-step";
 import { BackgroundStep } from "@/components/create-headshot/steps/background-step";
 import { BodyTypeStep } from "@/components/create-headshot/steps/body-type-step";
@@ -20,6 +21,18 @@ import { HairTextureStep } from "@/components/create-headshot/steps/hair-texture
 import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+
+const STEP_TITLES = [
+	"Gender",
+	"Age Group",
+	"Hair Color",
+	"Hair Length",
+	"Hair Texture",
+	"Ethnicity",
+	"Body Type",
+	"Backgrounds",
+	"Outfits",
+];
 
 function CreateHeadshotPageComponent() {
 	const [state, setState] = useQueryStates({
@@ -104,8 +117,10 @@ function CreateHeadshotPageComponent() {
 		<div className="flex min-h-screen flex-col">
 			<CreateHeadshotHeader progress={progress} />
 
-			<main className="container mx-auto flex-1">{renderStep()}</main>
-
+			<div className="flex flex-1">
+				<ProgressSidebar currentStep={state.step} stepTitles={STEP_TITLES} />
+				<main className="container mx-auto flex-1">{renderStep()}</main>
+			</div>
 			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4 dark:bg-black">
 				<Button
 					onClick={nextStep}
