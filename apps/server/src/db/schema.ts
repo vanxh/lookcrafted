@@ -115,6 +115,7 @@ export const ethnicityEnum = pgEnum("ethnicity", ETHNICITY_OPTIONS);
 export const bodyTypeEnum = pgEnum("body_type", BODY_TYPE_OPTIONS);
 
 export const headshotStatus = pgEnum("headshot_status", [
+	"unpaid",
 	"pending",
 	"training",
 	"generating",
@@ -147,6 +148,17 @@ export const headshotRequest = pgTable("headshot_request", {
 	status: headshotStatus("status").notNull().default("pending"),
 
 	regenerationCount: integer("regeneration_count").notNull().default(0),
+});
+
+export const headshotRequestImage = pgTable("headshot_request_image", {
+	id: text("id").primaryKey(),
+	headshotRequestId: text("headshot_request_id")
+		.notNull()
+		.references(() => headshotRequest.id, { onDelete: "cascade" }),
+
+	imageUrl: text("image_url").notNull(),
+
+	createdAt: timestamp("created_at").notNull(),
 });
 
 export const headshotImage = pgTable("headshot_image", {
