@@ -8,16 +8,16 @@ import {
 } from "nuqs";
 import { Suspense } from "react";
 
-import { AgeGroupStep } from "@/components/create-headshot/age-group-step";
-import { BackgroundStep } from "@/components/create-headshot/background-step";
-import { BodyTypeStep } from "@/components/create-headshot/body-type-step";
 import { CreateHeadshotHeader } from "@/components/create-headshot/create-headshot-header";
-import { EthnicityStep } from "@/components/create-headshot/ethnicity-step";
-import { GenderStep } from "@/components/create-headshot/gender-step";
-import { HairColorStep } from "@/components/create-headshot/hair-color-step";
-import { HairLengthStep } from "@/components/create-headshot/hair-length-step";
-import { HairTextureStep } from "@/components/create-headshot/hair-texture-step";
-import { OutfitStep } from "@/components/create-headshot/outfit-step";
+import { AgeGroupStep } from "@/components/create-headshot/steps/age-group-step";
+import { BackgroundStep } from "@/components/create-headshot/steps/background-step";
+import { BodyTypeStep } from "@/components/create-headshot/steps/body-type-step";
+import { EthnicityStep } from "@/components/create-headshot/steps/ethnicity-step";
+import { GenderStep } from "@/components/create-headshot/steps/gender-step";
+import { HairColorStep } from "@/components/create-headshot/steps/hair-color-step";
+import { HairLengthStep } from "@/components/create-headshot/steps/hair-length-step";
+import { HairTextureStep } from "@/components/create-headshot/steps/hair-texture-step";
+import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
