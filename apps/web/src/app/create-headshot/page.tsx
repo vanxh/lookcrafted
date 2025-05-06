@@ -48,7 +48,7 @@ function CreateHeadshotPageComponent() {
 		outfits: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 
-	const totalSteps = 9;
+	const totalSteps = STEP_TITLES.length;
 	const progress = (state.step / totalSteps) * 100;
 
 	const nextStep = () => {
