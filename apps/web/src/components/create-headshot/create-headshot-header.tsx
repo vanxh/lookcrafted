@@ -22,7 +22,7 @@ export function CreateHeadshotHeader({ progress }: CreateHeadshotHeaderProps) {
 	};
 
 	return (
-		<header className="flex h-16 items-center justify-between border-b bg-white px-4 md:px-6">
+		<header className="flex h-16 flex-shrink-0 items-center justify-between border-b bg-white px-4 md:px-6">
 			<Link href="/" className="flex flex-row items-center gap-1">
 				<Image src="/logo.png" alt="LookCrafted" width={32} height={32} />
 				<span className="font-bold">LookCrafted</span>

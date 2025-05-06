@@ -14,7 +14,7 @@ import {
 } from "@lookcrafted/constants";
 
 import { SelectImageCard } from "@/components/ui/select-image-card";
-import { StepLayout } from "./step-layout";
+import { StepLayout } from "../step-layout";
 
 export function HairLengthStep() {
 	const [state, setState] = useQueryStates({

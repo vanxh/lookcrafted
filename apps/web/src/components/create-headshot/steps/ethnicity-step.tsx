@@ -8,7 +8,7 @@ import {
 } from "@lookcrafted/constants";
 
 import { SelectCard } from "@/components/ui/select-card";
-import { StepLayout } from "./step-layout";
+import { StepLayout } from "../step-layout";
 
 export function EthnicityStep() {
 	const [state, setState] = useQueryStates({

@@ -8,7 +8,7 @@ import {
 } from "@lookcrafted/constants";
 
 import { SelectCard } from "@/components/ui/select-card";
-import { StepLayout } from "./step-layout";
+import { StepLayout } from "../step-layout";
 
 const hairColorMap: Record<HairColorType, string> = {
 	Black: "bg-black",

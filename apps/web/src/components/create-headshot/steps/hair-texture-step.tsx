@@ -12,8 +12,8 @@ import {
 	type HairTexture as HairTextureType,
 } from "@lookcrafted/constants";
 
-import { SelectImageCard } from "../ui/select-image-card";
-import { StepLayout } from "./step-layout";
+import { SelectImageCard } from "@/components/ui/select-image-card";
+import { StepLayout } from "../step-layout";
 
 export function HairTextureStep() {
 	const [state, setState] = useQueryStates({

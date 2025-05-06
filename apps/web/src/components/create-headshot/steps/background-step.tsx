@@ -13,8 +13,8 @@ import {
 	type Background as BackgroundType,
 } from "@lookcrafted/constants";
 
-import { SelectImageCard } from "../ui/select-image-card";
-import { StepLayout } from "./step-layout";
+import { SelectImageCard } from "@/components/ui/select-image-card";
+import { StepLayout } from "../step-layout";
 
 export function BackgroundStep() {
 	const [state, setState] = useQueryStates({

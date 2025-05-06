@@ -35,7 +35,7 @@ export function LandingPageHeader() {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	return (
-		<header className="sticky top-0 z-[51] border-b bg-background">
+		<header className="sticky top-0 z-[51] border-b bg-white">
 			<div className="flex h-16 items-center justify-between px-4 md:px-6">
 				<NavigationMenu className="hidden lg:flex" viewport={false}>
 					<NavigationMenuList>
@@ -128,7 +128,7 @@ export function LandingPageHeader() {
 			</div>
 
 			{isMobileMenuOpen && (
-				<div className="absolute top-full right-0 left-0 z-50 w-full border-b bg-background p-4 shadow-lg lg:hidden">
+				<div className="absolute top-full right-0 left-0 z-50 w-full border-b bg-white p-4 shadow-lg lg:hidden">
 					<nav className="grid gap-2 font-medium text-base">
 						{navLinks.map((link) => (
 							<Button

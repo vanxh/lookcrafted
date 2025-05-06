@@ -6,7 +6,7 @@ import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
 import type { Gender as GenderType } from "@lookcrafted/constants";
 
 import { SelectCard } from "@/components/ui/select-card";
-import { StepLayout } from "./step-layout";
+import { StepLayout } from "../step-layout";
 
 const GENDER_OPTIONS_WITH_ICONS = [
 	{ value: "male", label: "Man", icon: Mars },
