@@ -1,27 +1,39 @@
 "use client";
 
-import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import {
+	parseAsArrayOf,
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from "nuqs";
 
 import {
 	BACKGROUND_OPTIONS,
 	type Background as BackgroundType,
 } from "@lookcrafted/constants";
 
-import { SelectCard } from "@/components/ui/select-card";
+import { SelectImageCard } from "../ui/select-image-card";
 import { StepLayout } from "./step-layout";
 
 export function BackgroundStep() {
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
-		background: parseAsString,
+		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
 	});
+	const [gender] = useQueryState("gender", parseAsString.withDefault("male"));
 
 	const handleValueChange = (value: string) => {
-		setState((prev) => ({
-			...prev,
-			background: value as BackgroundType,
-			step: prev.step + 1,
-		}));
+		setState((prev) => {
+			const currentBackgrounds = prev.backgrounds || [];
+			const newBackgrounds = currentBackgrounds.includes(value)
+				? currentBackgrounds.filter((bg) => bg !== value)
+				: [...currentBackgrounds, value];
+			return {
+				...prev,
+				backgrounds: newBackgrounds as BackgroundType[],
+			};
+		});
 	};
 
 	return (
@@ -31,16 +43,20 @@ export function BackgroundStep() {
 		>
 			<div
 				role="radiogroup"
-				className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3"
+				className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
 			>
 				{BACKGROUND_OPTIONS.map((value) => {
-					const isSelected = state.background === value;
+					const isSelected = state.backgrounds?.includes(value);
+					const imageUrl = gender
+						? `/background/${gender}/${value}.webp`
+						: undefined;
 
 					return (
-						<SelectCard
+						<SelectImageCard
 							key={value}
 							value={value}
 							label={value}
+							imageUrl={imageUrl}
 							isSelected={isSelected}
 							onClick={() => handleValueChange(value)}
 						/>

@@ -1,6 +1,11 @@
 "use client";
 
-import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import {
+	parseAsArrayOf,
+	parseAsInteger,
+	parseAsString,
+	useQueryStates,
+} from "nuqs";
 import { Suspense } from "react";
 
 import { AgeGroupStep } from "@/components/create-headshot/age-group-step";
@@ -26,8 +31,8 @@ function CreateHeadshotPageComponent() {
 		hairTexture: parseAsString,
 		ethnicity: parseAsString,
 		bodyType: parseAsString,
-		background: parseAsString,
-		outfit: parseAsString,
+		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
+		outfits: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 
 	const totalSteps = 9;
@@ -62,9 +67,9 @@ function CreateHeadshotPageComponent() {
 			case 7:
 				return !!state.bodyType;
 			case 8:
-				return !!state.background;
+				return !!state.backgrounds && !!state.backgrounds.length;
 			case 9:
-				return !!state.outfit;
+				return !!state.outfits && !!state.outfits.length;
 			default:
 				return false;
 		}

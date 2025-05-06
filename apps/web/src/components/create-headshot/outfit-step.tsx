@@ -1,27 +1,39 @@
 "use client";
 
-import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import {
+	parseAsArrayOf,
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from "nuqs";
 
 import {
 	OUTFIT_OPTIONS,
 	type Outfit as OutfitType,
 } from "@lookcrafted/constants";
 
-import { SelectCard } from "@/components/ui/select-card";
+import { SelectImageCard } from "@/components/ui/select-image-card";
 import { StepLayout } from "./step-layout";
 
 export function OutfitStep() {
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
-		outfit: parseAsString,
+		outfits: parseAsArrayOf(parseAsString).withDefault([]),
 	});
+	const [gender] = useQueryState("gender", parseAsString.withDefault("male"));
 
 	const handleValueChange = (value: string) => {
-		setState((prev) => ({
-			...prev,
-			outfit: value as OutfitType,
-			step: prev.step + 1,
-		}));
+		setState((prev) => {
+			const currentOutfits = prev.outfits || [];
+			const newOutfits = currentOutfits.includes(value)
+				? currentOutfits.filter((o) => o !== value)
+				: [...currentOutfits, value];
+			return {
+				...prev,
+				outfits: newOutfits as OutfitType[],
+			};
+		});
 	};
 
 	return (
@@ -31,16 +43,20 @@ export function OutfitStep() {
 		>
 			<div
 				role="radiogroup"
-				className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3"
+				className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5"
 			>
 				{OUTFIT_OPTIONS.map((value) => {
-					const isSelected = state.outfit === value;
+					const isSelected = state.outfits?.includes(value);
+					const imageUrl = gender
+						? `/outfit/${gender}/${value}.webp`
+						: undefined;
 
 					return (
-						<SelectCard
+						<SelectImageCard
 							key={value}
 							value={value}
 							label={value}
+							imageUrl={imageUrl}
 							isSelected={isSelected}
 							onClick={() => handleValueChange(value)}
 						/>

@@ -32,7 +32,7 @@ export function HairColorStep() {
 		setState((prev) => ({
 			...prev,
 			hairColor: value as HairColorType,
-			step: prev.step + 1,
+			step: value === "Bald" ? prev.step + 3 : prev.step + 1,
 		}));
 	};
 

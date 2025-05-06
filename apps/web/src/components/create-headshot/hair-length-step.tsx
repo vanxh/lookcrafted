@@ -27,7 +27,7 @@ export function HairLengthStep() {
 		setState((prev) => ({
 			...prev,
 			hairLength: value as HairLengthType,
-			step: prev.step + 1,
+			step: value === "Bald" ? prev.step + 2 : prev.step + 1,
 		}));
 	};
 
