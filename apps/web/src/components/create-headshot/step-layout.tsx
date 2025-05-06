@@ -20,7 +20,7 @@ export function StepLayout({ title, description, children }: StepLayoutProps) {
 	};
 
 	return (
-		<div className="relative flex flex-col items-center gap-6 p-6 pt-12">
+		<div className="relative flex w-full flex-col items-center gap-6 p-6 pt-12">
 			{step > 1 && (
 				<Button
 					onClick={handleGoBack}

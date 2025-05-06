@@ -73,7 +73,6 @@ export const BODY_TYPE_OPTIONS = [
 	"Athletic",
 	"Medium",
 	"Large",
-	"Extra Large",
 ] as const;
 export type BodyType = (typeof BODY_TYPE_OPTIONS)[number];
 

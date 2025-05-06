@@ -1,13 +1,18 @@
 "use client";
 
-import { parseAsInteger, parseAsString, useQueryStates } from "nuqs";
+import {
+	parseAsInteger,
+	parseAsString,
+	useQueryState,
+	useQueryStates,
+} from "nuqs";
 
 import {
 	HAIR_TEXTURE_OPTIONS,
 	type HairTexture as HairTextureType,
 } from "@lookcrafted/constants";
 
-import { SelectCard } from "@/components/ui/select-card";
+import { SelectImageCard } from "../ui/select-image-card";
 import { StepLayout } from "./step-layout";
 
 export function HairTextureStep() {
@@ -15,6 +20,10 @@ export function HairTextureStep() {
 		step: parseAsInteger.withDefault(1),
 		hairTexture: parseAsString,
 	});
+	const [gender, setGender] = useQueryState(
+		"gender",
+		parseAsString.withDefault("male"),
+	);
 
 	const handleValueChange = (value: string) => {
 		setState((prev) => ({
@@ -29,15 +38,22 @@ export function HairTextureStep() {
 			title="What's your hair texture?"
 			description="Select the texture that best describes your hair."
 		>
-			<div role="radiogroup" className="grid w-full grid-cols-2 gap-4">
+			<div
+				role="radiogroup"
+				className="grid w-full grid-cols-2 gap-4 sm:grid-cols-3 lg:flex lg:flex-row"
+			>
 				{HAIR_TEXTURE_OPTIONS.map((value) => {
 					const isSelected = state.hairTexture === value;
+					const imageUrl = gender
+						? `/hair-texture/${gender}/${value}.webp`
+						: undefined;
 
 					return (
-						<SelectCard
+						<SelectImageCard
 							key={value}
 							value={value}
 							label={value}
+							imageUrl={imageUrl}
 							isSelected={isSelected}
 							onClick={() => handleValueChange(value)}
 						/>

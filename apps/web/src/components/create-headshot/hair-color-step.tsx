@@ -49,20 +49,17 @@ export function HairColorStep() {
 					const isSelected = state.hairColor === value;
 					const swatchClass = hairColorMap[value] || "bg-gray-300";
 
-					const LabelContent = (
-						<div className="flex items-center gap-2">
-							{value !== "Bald" && (
-								<span className={`h-4 w-4 rounded-full ${swatchClass}`} />
-							)}
-							<span>{value}</span>
-						</div>
-					);
+					const Swatch =
+						value !== "Bald" ? (
+							<span className={`h-5 w-5 rounded-full ${swatchClass}`} />
+						) : null;
 
 					return (
 						<SelectCard
 							key={value}
 							value={value}
-							label={LabelContent}
+							icon={Swatch}
+							label={value}
 							isSelected={isSelected}
 							onClick={() => handleValueChange(value)}
 						/>

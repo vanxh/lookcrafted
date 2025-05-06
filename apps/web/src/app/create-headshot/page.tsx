@@ -99,11 +99,7 @@ function CreateHeadshotPageComponent() {
 		<div className="flex min-h-screen flex-col">
 			<CreateHeadshotHeader progress={progress} />
 
-			<main className="flex flex-1 flex-col items-center justify-center p-4">
-				<div className="w-full max-w-2xl rounded-lg bg-white shadow-sm">
-					{renderStep()}
-				</div>
-			</main>
+			<main className="container mx-auto flex-1">{renderStep()}</main>
 
 			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4">
 				<Button

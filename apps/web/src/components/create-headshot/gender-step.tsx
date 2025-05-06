@@ -44,7 +44,7 @@ export function GenderStep() {
 							key={value}
 							value={value}
 							label={label}
-							icon={Icon}
+							icon={<Icon className="h-5 w-5" />}
 							isSelected={isSelected}
 							onClick={() => handleValueChange(value)}
 						/>
