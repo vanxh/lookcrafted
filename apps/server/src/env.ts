@@ -12,6 +12,8 @@ export const env = createEnv({
 		RESEND_API_KEY: z.string(),
 		RESEND_FROM_EMAIL: z.string().email().optional(),
 		FRONTEND_URL: z.string().url(),
+		CLOUDFLARE_ACCOUNT_ID: z.string(),
+		CLOUDFLARE_API_TOKEN: z.string(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,

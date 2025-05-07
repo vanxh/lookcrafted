@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
 			},
 		];
 	},
+	images: {
+		remotePatterns: [
+			{
+				hostname: "imagedelivery.net",
+			},
+		],
+	},
 	skipTrailingSlashRedirect: true,
 };
 

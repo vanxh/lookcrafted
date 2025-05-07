@@ -1,14 +1,12 @@
-import { protectedProcedure, publicProcedure } from "../lib/orpc";
+import { publicProcedure } from "../lib/orpc";
+import { cloudflareRouter } from "./cloudflare";
 
 export const appRouter = {
 	healthCheck: publicProcedure.handler(() => {
 		return "OK";
 	}),
-	privateData: protectedProcedure.handler(({ context }) => {
-		return {
-			message: "This is private",
-			user: context.session?.user,
-		};
-	}),
+
+	cloudflare: cloudflareRouter,
 };
+
 export type AppRouter = typeof appRouter;

@@ -18,6 +18,7 @@ import { GenderStep } from "@/components/create-headshot/steps/gender-step";
 import { HairColorStep } from "@/components/create-headshot/steps/hair-color-step";
 import { HairLengthStep } from "@/components/create-headshot/steps/hair-length-step";
 import { HairTextureStep } from "@/components/create-headshot/steps/hair-texture-step";
+import { ImageUploadStep } from "@/components/create-headshot/steps/image-upload-step";
 import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -32,6 +33,9 @@ const STEP_TITLES = [
 	"Body Type",
 	"Backgrounds",
 	"Outfits",
+	"Upload Image",
+	"Preview",
+	"Payment",
 ];
 
 function CreateHeadshotPageComponent() {
@@ -46,6 +50,7 @@ function CreateHeadshotPageComponent() {
 		bodyType: parseAsString,
 		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
 		outfits: parseAsArrayOf(parseAsString).withDefault([]),
+		uploadedImages: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 
 	const totalSteps = STEP_TITLES.length;
@@ -83,6 +88,12 @@ function CreateHeadshotPageComponent() {
 				return !!state.backgrounds && !!state.backgrounds.length;
 			case 9:
 				return !!state.outfits && !!state.outfits.length;
+			case 10:
+				return (
+					!!state.uploadedImages &&
+					state.uploadedImages.length >= 6 &&
+					state.uploadedImages.length <= 10
+				);
 			default:
 				return false;
 		}
@@ -108,6 +119,8 @@ function CreateHeadshotPageComponent() {
 				return <BackgroundStep />;
 			case 9:
 				return <OutfitStep />;
+			case 10:
+				return <ImageUploadStep />;
 			default:
 				return <div className="p-6">Invalid Step</div>;
 		}

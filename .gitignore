@@ -1,2 +1,4 @@
 node_modules
 .turbo
+.DS_Store
+**/.DS_Store
