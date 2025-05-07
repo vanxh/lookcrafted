@@ -15,21 +15,24 @@ export function ImageUploadInstructions({
 }: ImageUploadInstructionsProps) {
 	return (
 		<div className="text-center">
-			<h2 className="font-semibold text-2xl">Upload Your Images</h2>
-			<p className="text-gray-600 dark:text-gray-400">
-				Please upload {minImages}-{maxImages} clear, front-facing photos.
+			<h2 className="font-semibold text-3xl tracking-tight">
+				Upload Your Images
+			</h2>
+			<p className="mt-1.5 text-base text-muted-foreground">
+				Please upload {minImages}-{maxImages} clear, front-facing photos of
+				yourself.
 			</p>
-			<p className="text-gray-500 text-sm dark:text-gray-300">
+			<p className="mt-1 text-muted-foreground text-sm">
 				{completedImagesCount} / {maxImages} images uploaded successfully.
 				{completedImagesCount > 0 && completedImagesCount < minImages && (
-					<span className="ml-1 text-red-500">
-						Minimum {minImages} images required.
+					<span className="ml-1 font-medium text-destructive">
+						(Minimum {minImages} images required)
 					</span>
 				)}
 			</p>
 			{modelLoadingError && (
-				<p className="mt-2 flex items-center justify-center text-red-500 dark:text-red-400">
-					<AlertCircle className="mr-1 h-4 w-4" /> {modelLoadingError}
+				<p className="mt-2 flex items-center justify-center text-destructive text-sm">
+					<AlertCircle className="mr-1.5 h-4 w-4" /> {modelLoadingError}
 				</p>
 			)}
 		</div>

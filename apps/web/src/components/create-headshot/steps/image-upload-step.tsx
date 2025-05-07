@@ -7,6 +7,7 @@ import { useFaceApiModels } from "@/hooks/use-face-api-models";
 import { useImageUploader } from "@/hooks/use-image-uploader";
 import { GlobalImageAlerts } from "./image-upload-parts/global-image-alerts";
 import { ImageDropzoneUI } from "./image-upload-parts/image-dropzone-ui";
+import { ImageUploadGuidance } from "./image-upload-parts/image-upload-guidance";
 import { ImageUploadInstructions } from "./image-upload-parts/image-upload-instructions";
 import { ProcessingFileGrid } from "./image-upload-parts/processing-file-grid";
 
@@ -92,6 +93,8 @@ export function ImageUploadStep() {
 					onRemoveImage={removeImage}
 				/>
 			</div>
+
+			<ImageUploadGuidance />
 		</div>
 	);
 }
