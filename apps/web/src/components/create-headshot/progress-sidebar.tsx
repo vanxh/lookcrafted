@@ -22,7 +22,7 @@ export function ProgressSidebar({
 				Progress
 			</h2>
 			<nav aria-label="Progress">
-				<ol className="space-y-3">
+				<ol className="space-y-2">
 					{stepTitles.map((title, index) => {
 						const stepNumber = index + 1;
 						const isCompleted = stepNumber < currentStep;
@@ -57,11 +57,6 @@ export function ProgressSidebar({
 										)}
 										{title}
 									</h3>
-									{isCurrent && (
-										<p className="font-medium text-blue-600 text-xs dark:text-blue-400">
-											Current step
-										</p>
-									)}
 								</button>
 							</li>
 						);
