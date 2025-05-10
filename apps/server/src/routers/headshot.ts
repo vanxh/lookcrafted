@@ -6,13 +6,19 @@ import {
 } from "@lookcrafted/constants";
 
 import { headshotRequest } from "../db/schema";
-import { protectedProcedure } from "../lib/orpc";
+import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
 export const headshotRouter = {
 	createHeadshotRequest: protectedProcedure
 		.input(createHeadshotRequestSchema)
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
+
+			await ratelimitWithKey(
+				`headshot:createHeadshotRequest:${session.user.id}`,
+				5,
+				"10 m",
+			);
 
 			const id = crypto.randomUUID();
 
@@ -30,6 +36,12 @@ export const headshotRouter = {
 		.input(editHeadshotRequestSchema)
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
+
+			await ratelimitWithKey(
+				`headshot:editHeadshotRequest:${session.user.id}`,
+				20,
+				"10 m",
+			);
 
 			await db
 				.update(headshotRequest)

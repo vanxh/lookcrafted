@@ -1,7 +1,23 @@
 import { os, ORPCError } from "@orpc/server";
+import type { Duration } from "@upstash/ratelimit";
 
 import { db } from "../db";
 import type { Context } from "./context";
+import { ratelimit } from "./ratelimit";
+
+export const ratelimitWithKey = async (
+	key: string,
+	tokens: number,
+	window: Duration,
+) => {
+	const { success } = await ratelimit(tokens, window).limit(key);
+
+	if (!success) {
+		throw new ORPCError("RATE_LIMIT_EXCEEDED", {
+			message: "You have exceeded the rate limit. Please try again later.",
+		});
+	}
+};
 
 export const o = os.$context<Context>();
 
@@ -18,6 +34,8 @@ const requireAuth = o.middleware(async ({ context, next }) => {
 	if (!context.session?.user) {
 		throw new ORPCError("UNAUTHORIZED");
 	}
+
+	await ratelimitWithKey(`${context.session.user.id}`, 60, "1 m");
 
 	return next({
 		context: {
