@@ -1,3 +1,4 @@
+import { ORPCError } from "@orpc/server";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -6,7 +7,6 @@ import {
 	editHeadshotRequestSchema,
 } from "@lookcrafted/constants";
 
-import { ORPCError } from "@orpc/server";
 import { headshotRequest } from "../db/schema";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
