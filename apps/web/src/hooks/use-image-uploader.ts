@@ -9,6 +9,11 @@ import { orpc } from "@/utils/orpc";
 const MIN_IMAGES_DEFAULT = 6;
 const MAX_IMAGES_DEFAULT = 10;
 
+interface FaceDescriptorEntry {
+	id: string;
+	descriptor: Float32Array;
+}
+
 export interface ProcessingFile {
 	id: string;
 	name: string;
@@ -54,7 +59,7 @@ export function useImageUploader({
 }: UseImageUploaderProps) {
 	const [processingFiles, setProcessingFiles] = useState<ProcessingFile[]>([]);
 	const [processingAlerts, setProcessingAlerts] = useState<string[]>([]);
-	const activeDescriptorsRef = useRef<Float32Array[]>([]);
+	const activeDescriptorsRef = useRef<FaceDescriptorEntry[]>([]);
 
 	const { mutateAsync: getSignedUrl } = useMutation(
 		orpc.cloudflare.getSignedUploadUrl.mutationOptions(),
@@ -106,6 +111,21 @@ export function useImageUploader({
 				if (nextProcessingFilesWorkingCopy.length !== countBeforeFilter) {
 					filesChanged = true;
 				}
+
+				const activeImageIds = new Set(
+					nextProcessingFilesWorkingCopy
+						.filter(
+							(file) =>
+								file.status === "completed" ||
+								file.status === "completed_from_url",
+						)
+						.map((file) => file.imageId)
+						.filter(Boolean),
+				);
+
+				activeDescriptorsRef.current = activeDescriptorsRef.current.filter(
+					(entry) => entry.id && activeImageIds.has(entry.id),
+				);
 			} else if (
 				initialUploadedImageIds &&
 				initialUploadedImageIds.length === 0
@@ -116,6 +136,7 @@ export function useImageUploader({
 				);
 				if (nextProcessingFilesWorkingCopy.length !== countBeforeFilter) {
 					filesChanged = true;
+					activeDescriptorsRef.current = [];
 				}
 			}
 
@@ -151,7 +172,7 @@ export function useImageUploader({
 	const validateImage = useCallback(
 		async (
 			imgEl: HTMLImageElement,
-			currentDescriptors: Float32Array[],
+			currentDescriptors: FaceDescriptorEntry[],
 		): Promise<{
 			error?: string;
 			success?: boolean;
@@ -177,12 +198,12 @@ export function useImageUploader({
 				};
 			}
 
-			for (const prevDesc of currentDescriptors) {
+			for (const prevDescEntry of currentDescriptors) {
 				const distance = faceapi.euclideanDistance(
 					detection.descriptor,
-					prevDesc,
+					prevDescEntry.descriptor,
 				);
-				if (distance < 0.7)
+				if (distance < 0.5)
 					return {
 						error: "Image too similar to another uploaded image.",
 					};
@@ -238,7 +259,10 @@ export function useImageUploader({
 							if (descriptor) {
 								activeDescriptorsRef.current = [
 									...activeDescriptorsRef.current,
-									descriptor,
+									{
+										id: signedUrlResponse.imageId,
+										descriptor: descriptor,
+									},
 								].slice(0, maxImages);
 							}
 							setUploadedImageIds((prev) =>
@@ -403,6 +427,10 @@ export function useImageUploader({
 				}
 				setUploadedImageIds((prev) =>
 					(prev || []).filter((id) => id !== fileToRemove.imageId),
+				);
+
+				activeDescriptorsRef.current = activeDescriptorsRef.current.filter(
+					(entry) => entry.id !== fileToRemove.imageId,
 				);
 			}
 

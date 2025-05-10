@@ -19,7 +19,13 @@ import { StepLayout } from "../step-layout";
 export function OutfitStep() {
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
-		outfits: parseAsArrayOf(parseAsString).withDefault([]),
+		outfits: parseAsArrayOf(parseAsString).withDefault([
+			"Formal",
+			"Tech",
+			"Casual",
+			"Business Casual",
+			"Sporty",
+		]),
 	});
 	const [gender] = useQueryState("gender", parseAsString.withDefault("male"));
 
