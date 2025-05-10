@@ -2,7 +2,7 @@ name = "lookcrafted-api"
 main = "src/index.ts"
 compatibility_date = "2025-05-04"
 minify = true
-workers_dev = true
+workers_dev = false
 compatibility_flags = ["nodejs_compat"]
 
 [observability.logs]
