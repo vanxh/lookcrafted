@@ -47,7 +47,10 @@ app.use("/rpc/*", async (c, next) => {
 });
 
 app.get("/", (c) => {
-	return c.text("OK");
+	return c.json({
+		env: env,
+		cEnv: c.env,
+	});
 });
 
 export default app;
