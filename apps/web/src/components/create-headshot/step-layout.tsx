@@ -5,14 +5,21 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import type * as React from "react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface StepLayoutProps {
 	title: string;
 	description: string;
 	children: React.ReactNode;
+	showStepNumber?: boolean;
 }
 
-export function StepLayout({ title, description, children }: StepLayoutProps) {
+export function StepLayout({
+	title,
+	description,
+	children,
+	showStepNumber = true,
+}: StepLayoutProps) {
 	const [step, setStep] = useQueryState("step", parseAsInteger.withDefault(1));
 
 	const handleGoBack = () => {
@@ -31,11 +38,20 @@ export function StepLayout({ title, description, children }: StepLayoutProps) {
 				</Button>
 			)}
 
-			<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 font-bold text-sm text-white">
-				{step}
-			</div>
+			{showStepNumber && (
+				<div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 font-bold text-sm text-white">
+					{step}
+				</div>
+			)}
 
-			<h1 className="text-center font-bold text-3xl">{title}</h1>
+			<h1
+				className={cn(
+					"text-center font-bold text-3xl",
+					showStepNumber ? "" : "mt-6 lg:mt-0",
+				)}
+			>
+				{title}
+			</h1>
 
 			<p className="text-center text-muted-foreground">{description}</p>
 

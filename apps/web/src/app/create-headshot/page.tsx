@@ -20,6 +20,7 @@ import { HairLengthStep } from "@/components/create-headshot/steps/hair-length-s
 import { HairTextureStep } from "@/components/create-headshot/steps/hair-texture-step";
 import { ImageUploadStep } from "@/components/create-headshot/steps/image-upload-step";
 import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
+import { PreviewStep } from "@/components/create-headshot/steps/preview-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -50,7 +51,7 @@ function CreateHeadshotPageComponent() {
 		bodyType: parseAsString,
 		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
 		outfits: parseAsArrayOf(parseAsString).withDefault([]),
-		uploadedImages: parseAsArrayOf(parseAsString).withDefault([]),
+		uploadedImageIds: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 
 	const totalSteps = STEP_TITLES.length;
@@ -90,10 +91,12 @@ function CreateHeadshotPageComponent() {
 				return !!state.outfits && !!state.outfits.length;
 			case 10:
 				return (
-					!!state.uploadedImages &&
-					state.uploadedImages.length >= 6 &&
-					state.uploadedImages.length <= 10
+					!!state.uploadedImageIds &&
+					state.uploadedImageIds.length >= 6 &&
+					state.uploadedImageIds.length <= 10
 				);
+			case 11:
+				return true;
 			default:
 				return false;
 		}
@@ -121,6 +124,8 @@ function CreateHeadshotPageComponent() {
 				return <OutfitStep />;
 			case 10:
 				return <ImageUploadStep />;
+			case 11:
+				return <PreviewStep />;
 			default:
 				return <div className="p-6">Invalid Step</div>;
 		}
