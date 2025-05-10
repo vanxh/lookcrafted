@@ -19,6 +19,7 @@ import {
 	HAIR_TEXTURE_OPTIONS,
 	type Outfit,
 } from "@lookcrafted/constants";
+import { relations } from "drizzle-orm";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -152,6 +153,14 @@ export const headshotRequest = pgTable("headshot_request", {
 
 	regenerationCount: integer("regeneration_count").notNull().default(0),
 });
+
+export const headshotRequestRelations = relations(
+	headshotRequest,
+	({ many }) => ({
+		uploads: many(headshotRequestImage),
+		images: many(headshotImage),
+	}),
+);
 
 export const headshotRequestImage = pgTable("headshot_request_image", {
 	id: text("id").primaryKey(),
