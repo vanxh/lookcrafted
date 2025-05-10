@@ -22,7 +22,12 @@ export const auth = betterAuth({
 		provider: "pg",
 		schema: schema,
 	}),
-	// trustedOrigins: [...(env.CORS_ORIGIN.split(",") || []), "lookcrafted-app://"],
+	trustedOrigins: [
+		...(env.CORS_ORIGIN.split(",") || []),
+		"https://lookcrafted.com",
+		"https://www.lookcrafted.com",
+		"lookcrafted-app://",
+	],
 	emailAndPassword: {
 		enabled: true,
 		resetPasswordTokenExpiresIn: 1 * 60 * 60,
