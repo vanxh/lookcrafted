@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
 				source: "/ingest/decide",
 				destination: "https://us.i.posthog.com/decide",
 			},
+			{
+				source: "/api/auth/:path*",
+				destination: "https://api.lookcrafted.com/api/auth/:path*",
+			},
 		];
 	},
 	images: {
