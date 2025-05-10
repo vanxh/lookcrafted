@@ -128,8 +128,11 @@ export const headshotRequest = pgTable("headshot_request", {
 	userId: text("user_id")
 		.notNull()
 		.references(() => user.id, { onDelete: "cascade" }),
-	createdAt: timestamp("created_at").notNull(),
-	updatedAt: timestamp("updated_at").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.notNull()
+		.defaultNow()
+		.$onUpdate(() => new Date()),
 
 	headshotCount: integer("headshot_count").notNull(),
 
@@ -145,7 +148,7 @@ export const headshotRequest = pgTable("headshot_request", {
 	outfits: jsonb("outfits").$type<Outfit[]>(),
 
 	loraId: text("lora_id"),
-	status: headshotStatus("status").notNull().default("pending"),
+	status: headshotStatus("status").notNull().default("unpaid"),
 
 	regenerationCount: integer("regeneration_count").notNull().default(0),
 });
@@ -158,7 +161,7 @@ export const headshotRequestImage = pgTable("headshot_request_image", {
 
 	imageUrl: text("image_url").notNull(),
 
-	createdAt: timestamp("created_at").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const headshotImage = pgTable("headshot_image", {
@@ -174,5 +177,9 @@ export const headshotImage = pgTable("headshot_image", {
 	modelVersion: text("model_version").notNull(),
 	regenerationIndex: integer("regeneration_index").notNull().default(0), // 0 is the original image, 1 is the first regeneration, etc.
 
-	createdAt: timestamp("created_at").notNull(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
+	updatedAt: timestamp("updated_at")
+		.notNull()
+		.defaultNow()
+		.$onUpdate(() => new Date()),
 });

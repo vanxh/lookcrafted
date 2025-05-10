@@ -1,6 +1,5 @@
 "use client";
 
-import { env } from "@/env";
 import {
 	Calendar,
 	Layers,
@@ -13,6 +12,9 @@ import {
 import Image from "next/image";
 import { parseAsArrayOf, parseAsString, useQueryStates } from "nuqs";
 
+import { capitalizeFirstLetter, formatAgeGroup } from "@lookcrafted/constants";
+
+import { env } from "@/env";
 import { StepLayout } from "../step-layout";
 
 export function PreviewStep() {
@@ -29,11 +31,6 @@ export function PreviewStep() {
 		uploadedImageIds: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 
-	const formatAgeGroup = (value: string) => {
-		if (value === "65_plus") return "65+";
-		return value.replace("_", "-");
-	};
-
 	const renderUserDetails = () => {
 		return (
 			<div className="space-y-3">
@@ -43,7 +40,7 @@ export function PreviewStep() {
 					<CompactDetailCard
 						icon={UserRound}
 						title="Gender"
-						value={state.gender.charAt(0).toUpperCase() + state.gender.slice(1)}
+						value={capitalizeFirstLetter(state.gender)}
 					/>
 					<CompactDetailCard
 						icon={Calendar}

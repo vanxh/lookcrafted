@@ -1,5 +1,6 @@
 import { publicProcedure } from "../lib/orpc";
 import { cloudflareRouter } from "./cloudflare";
+import { headshotRouter } from "./headshot";
 
 export const appRouter = {
 	healthCheck: publicProcedure.handler(() => {
@@ -7,6 +8,7 @@ export const appRouter = {
 	}),
 
 	cloudflare: cloudflareRouter,
+	headshot: headshotRouter,
 };
 
 export type AppRouter = typeof appRouter;
