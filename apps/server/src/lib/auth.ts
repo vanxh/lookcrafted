@@ -24,6 +24,7 @@ export const auth = betterAuth({
 	}),
 	trustedOrigins: [
 		...(env.CORS_ORIGIN.split(",") || []),
+		"https://api.lookcrafted.com",
 		"https://lookcrafted.com",
 		"https://www.lookcrafted.com",
 		"lookcrafted-app://",
