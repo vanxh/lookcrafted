@@ -9,8 +9,9 @@ export const ratelimitWithKey = async (
 	key: string,
 	tokens: number,
 	window: Duration,
+	prefix = "ratelimit",
 ) => {
-	const { success } = await ratelimit(tokens, window).limit(key);
+	const { success } = await ratelimit(tokens, window, prefix).limit(key);
 
 	if (!success) {
 		throw new ORPCError("RATE_LIMIT_EXCEEDED", {
@@ -35,7 +36,7 @@ const requireAuth = o.middleware(async ({ context, next }) => {
 		throw new ORPCError("UNAUTHORIZED");
 	}
 
-	await ratelimitWithKey(`${context.session.user.id}`, 60, "1 m");
+	await ratelimitWithKey(context.session.user.id, 60, "1 m");
 
 	return next({
 		context: {

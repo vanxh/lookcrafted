@@ -15,9 +15,10 @@ export const headshotRouter = {
 			const { session, db } = context;
 
 			await ratelimitWithKey(
-				`headshot:createHeadshotRequest:${session.user.id}`,
+				session.user.id,
 				5,
 				"10 m",
+				"ratelimit:headshot:createHeadshotRequest",
 			);
 
 			const id = crypto.randomUUID();
@@ -38,9 +39,10 @@ export const headshotRouter = {
 			const { session, db } = context;
 
 			await ratelimitWithKey(
-				`headshot:editHeadshotRequest:${session.user.id}`,
+				session.user.id,
 				20,
 				"10 m",
+				"ratelimit:headshot:editHeadshotRequest",
 			);
 
 			await db

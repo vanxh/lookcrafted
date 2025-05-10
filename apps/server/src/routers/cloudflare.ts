@@ -8,9 +8,10 @@ export const cloudflareRouter = {
 		const { session } = context;
 
 		await ratelimitWithKey(
-			`cloudflare:getSignedUploadUrl:${session.user.id}`,
+			session.user.id,
 			50,
 			"10 m",
+			"ratelimit:cloudflare:getSignedUploadUrl",
 		);
 
 		const { signedUrl, imageId } = await getSignedUrl(session.user.id, {
