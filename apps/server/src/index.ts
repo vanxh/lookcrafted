@@ -9,7 +9,16 @@ import { auth } from "./lib/auth";
 import { createContext } from "./lib/context";
 import { appRouter } from "./routers/index";
 
-const app = new Hono();
+export type AuthType = {
+	Variables: {
+		user: typeof auth.$Infer.Session.user | null;
+		session: typeof auth.$Infer.Session.session | null;
+	};
+};
+
+const app = new Hono<{ Bindings: AuthType }>({
+	strict: false,
+});
 
 app.use(logger());
 app.use(
