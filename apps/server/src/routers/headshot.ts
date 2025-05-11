@@ -1,5 +1,5 @@
 import { ORPCError } from "@orpc/server";
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
 import {
@@ -84,7 +84,7 @@ export const headshotRouter = {
 			}),
 		)
 		.handler(async ({ context, input }) => {
-			const { db } = context;
+			const { db, session } = context;
 
 			const result = await db.query.headshotRequest.findFirst({
 				where: eq(headshotRequest.id, input.id),
@@ -137,7 +137,7 @@ export const headshotRouter = {
 				orderBy: desc(headshotRequest.createdAt),
 			});
 
-			if (!result) {
+			if (!result || result.userId !== session.user.id) {
 				throw new ORPCError("NOT_FOUND", {
 					message: "Headshot request not found",
 				});
@@ -181,6 +181,29 @@ export const headshotRouter = {
 				"10 m",
 				"ratelimit:headshot:editHeadshotRequest",
 			);
+
+			const result = await db.query.headshotRequest.findFirst({
+				where: and(
+					eq(headshotRequest.id, input.id),
+					eq(headshotRequest.userId, session.user.id),
+				),
+				columns: {
+					id: true,
+					status: true,
+				},
+			});
+
+			if (!result) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Headshot request not found",
+				});
+			}
+
+			if (result.status !== "pending") {
+				throw new ORPCError("BAD_REQUEST", {
+					message: "Headshot request is not pending",
+				});
+			}
 
 			await db
 				.update(headshotRequest)
