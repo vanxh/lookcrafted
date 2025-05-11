@@ -22,6 +22,7 @@ export const createHeadshotRequestSchema = z.object({
 	bodyType: z.enum(BODY_TYPE_OPTIONS),
 	backgrounds: z.array(z.enum(BACKGROUND_OPTIONS)),
 	outfits: z.array(z.enum(OUTFIT_OPTIONS)),
+	uploadedImageIds: z.array(z.string()),
 });
 
 export type CreateHeadshotRequestInput = z.infer<

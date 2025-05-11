@@ -13,6 +13,7 @@ export const env = createEnv({
 		RESEND_FROM_EMAIL: z.string().email().optional(),
 		FRONTEND_URL: z.string().url(),
 		CLOUDFLARE_ACCOUNT_ID: z.string(),
+		CLOUDFLARE_ACCOUNT_HASH: z.string(),
 		CLOUDFLARE_API_TOKEN: z.string(),
 		UPSTASH_REDIS_REST_URL: z.string().url(),
 		UPSTASH_REDIS_REST_TOKEN: z.string(),

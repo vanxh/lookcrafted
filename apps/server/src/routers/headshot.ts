@@ -7,7 +7,8 @@ import {
 	editHeadshotRequestSchema,
 } from "@lookcrafted/constants";
 
-import { headshotRequest } from "../db/schema";
+import { headshotRequest, headshotRequestImage } from "../db/schema";
+import { env } from "../env";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
 export const headshotRouter = {
@@ -164,8 +165,24 @@ export const headshotRouter = {
 				id,
 				userId: session.user.id,
 				headshotCount: 0,
-				...input,
+				gender: input.gender,
+				ageGroup: input.ageGroup,
+				hairColor: input.hairColor,
+				hairLength: input.hairLength,
+				hairTexture: input.hairTexture,
+				ethnicity: input.ethnicity,
+				bodyType: input.bodyType,
+				backgrounds: input.backgrounds,
+				outfits: input.outfits,
 			});
+
+			for (const imageId of input.uploadedImageIds) {
+				await db.insert(headshotRequestImage).values({
+					id: crypto.randomUUID(),
+					headshotRequestId: id,
+					imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
+				});
+			}
 
 			return { id };
 		}),
@@ -207,8 +224,33 @@ export const headshotRouter = {
 
 			await db
 				.update(headshotRequest)
-				.set(input)
-				.where(eq(headshotRequest.id, input.id));
+				.set({
+					headshotCount: 0,
+					gender: input.gender,
+					ageGroup: input.ageGroup,
+					hairColor: input.hairColor,
+					hairLength: input.hairLength,
+					hairTexture: input.hairTexture,
+					ethnicity: input.ethnicity,
+					bodyType: input.bodyType,
+					backgrounds: input.backgrounds,
+					outfits: input.outfits,
+				})
+				.where(eq(headshotRequest.id, result.id));
+
+			if (input.uploadedImageIds?.length) {
+				await db
+					.delete(headshotRequestImage)
+					.where(eq(headshotRequestImage.headshotRequestId, result.id));
+
+				for (const imageId of input.uploadedImageIds) {
+					await db.insert(headshotRequestImage).values({
+						id: crypto.randomUUID(),
+						headshotRequestId: result.id,
+						imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
+					});
+				}
+			}
 
 			return { success: true };
 		}),
