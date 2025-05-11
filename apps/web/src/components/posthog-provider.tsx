@@ -1,10 +1,10 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import posthog from "posthog-js";
-import { usePostHog } from "posthog-js/react";
-import { PostHogProvider as PHProvider } from "posthog-js/react";
+import { PostHogProvider as PHProvider, usePostHog } from "posthog-js/react";
 import { Suspense, useEffect } from "react";
 
 import { env } from "@/env";
+import { authClient } from "@/lib/auth-client";
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
@@ -28,6 +28,16 @@ function PostHogPageView() {
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
 	const posthog = usePostHog();
+	const { data: session } = authClient.useSession();
+
+	useEffect(() => {
+		if (session) {
+			posthog.identify(session.user.id, {
+				email: session.user.email,
+				name: session.user.name,
+			});
+		}
+	}, [session, posthog]);
 
 	useEffect(() => {
 		if (pathname && posthog) {
