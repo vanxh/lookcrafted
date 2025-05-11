@@ -1,11 +1,11 @@
 import { BadgeCheckIcon, ShieldCheckIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import { LoginBranding } from "@/components/auth/login-branding";
 import { LoginForm } from "@/components/auth/login-form";
 import { cn } from "@/lib/utils";
-import { Suspense } from "react";
 
 const Logo = ({
 	className,
