@@ -23,6 +23,19 @@ export const auth = betterAuth({
 		schema: schema,
 	}),
 	trustedOrigins: [...(env.CORS_ORIGIN.split(",") || []), "lookcrafted-app://"],
+	advanced: {
+		cookiePrefix: "lookcrafted",
+		crossSubDomainCookies: {
+			enabled: true,
+			domain: ".lookcrafted.com",
+		},
+		defaultCookieAttributes: {
+			secure: true,
+			httpOnly: true,
+			sameSite: "none",
+			partitioned: true,
+		},
+	},
 	emailAndPassword: {
 		enabled: true,
 		resetPasswordTokenExpiresIn: 1 * 60 * 60,
@@ -53,9 +66,6 @@ export const auth = betterAuth({
 		},
 	},
 	session: {},
-	advanced: {
-		cookiePrefix: "lookcrafted",
-	},
 	databaseHooks: {
 		user: {
 			create: {
