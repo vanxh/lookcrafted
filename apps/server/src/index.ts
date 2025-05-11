@@ -28,6 +28,7 @@ app.use(
 		origin: env.CORS_ORIGIN?.split(",") || [],
 		allowMethods: ["GET", "POST", "OPTIONS"],
 		allowHeaders: ["Content-Type", "Authorization"],
+		exposeHeaders: ["Content-Length"],
 		credentials: true,
 	}),
 );
