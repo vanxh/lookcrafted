@@ -22,8 +22,6 @@ const app = new Hono<{ Bindings: AuthType }>({
 
 app.use(logger());
 
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
-
 app.use(
 	"/*",
 	cors({
@@ -33,6 +31,8 @@ app.use(
 		credentials: true,
 	}),
 );
+
+app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
 const handler = new RPCHandler(appRouter);
 app.use("/rpc/*", async (c, next) => {
