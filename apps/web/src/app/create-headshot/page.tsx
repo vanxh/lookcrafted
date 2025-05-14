@@ -1,5 +1,7 @@
 "use client";
 
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import {
 	parseAsArrayOf,
 	parseAsInteger,
@@ -7,6 +9,7 @@ import {
 	useQueryStates,
 } from "nuqs";
 import { Suspense } from "react";
+import { toast } from "sonner";
 
 import { AppHeader } from "@/components/app/header";
 import { ProgressSidebar } from "@/components/create-headshot/progress-sidebar";
@@ -23,6 +26,8 @@ import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
 import { PreviewStep } from "@/components/create-headshot/steps/preview-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { orpc } from "@/utils/orpc";
+import type { CreateHeadshotRequestInput } from "@lookcrafted/constants";
 
 const STEP_TITLES = [
 	"Gender",
@@ -40,6 +45,8 @@ const STEP_TITLES = [
 ];
 
 function CreateHeadshotPageComponent() {
+	const router = useRouter();
+
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
 		gender: parseAsString,
@@ -55,18 +62,66 @@ function CreateHeadshotPageComponent() {
 	});
 
 	const totalSteps = STEP_TITLES.length;
-	const progress = (state.step / totalSteps) * 100;
 
-	const nextStep = () => {
+	const createHeadshotMutation = useMutation(
+		orpc.headshot.create.mutationOptions({
+			onSuccess: (data) => {
+				toast.success("Headshot request created successfully!");
+				router.push(`/create-headshot?id=${data.id}&step=12`);
+			},
+			onError: (error) => {
+				toast.error("Failed to create headshot request. Please try again.");
+			},
+		}),
+	);
+
+	const nextStep = async () => {
 		if (state.step === totalSteps) {
 			console.log("Form Submission Placeholder");
 			return;
 		}
+
 		if (!isStepValid()) return;
+
+		if (state.step === 11) {
+			await createHeadshotRequest();
+			return;
+		}
+
 		setState((prev) => ({
 			...prev,
 			step: Math.min(prev.step + 1, totalSteps),
 		}));
+	};
+
+	const createHeadshotRequest = async () => {
+		if (!isStepValid()) return;
+
+		if (
+			!state.gender ||
+			!state.ageGroup ||
+			!state.hairColor ||
+			!state.hairLength ||
+			!state.hairTexture ||
+			!state.ethnicity ||
+			!state.bodyType
+		) {
+			toast.error("Please complete all required fields before continuing.");
+			return;
+		}
+
+		createHeadshotMutation.mutate({
+			gender: state.gender,
+			ageGroup: state.ageGroup,
+			hairColor: state.hairColor,
+			hairLength: state.hairLength,
+			hairTexture: state.hairTexture,
+			ethnicity: state.ethnicity,
+			bodyType: state.bodyType,
+			backgrounds: state.backgrounds,
+			outfits: state.outfits,
+			uploadedImageIds: state.uploadedImageIds,
+		} as CreateHeadshotRequestInput);
 	};
 
 	const isStepValid = () => {
@@ -126,6 +181,8 @@ function CreateHeadshotPageComponent() {
 				return <ImageUploadStep />;
 			case 11:
 				return <PreviewStep />;
+			case 12:
+				return <div>TODO: Payment Step</div>;
 			default:
 				return <div className="p-6">Invalid Step</div>;
 		}
@@ -136,23 +193,37 @@ function CreateHeadshotPageComponent() {
 			<AppHeader />
 
 			<div className="flex flex-1">
-				<ProgressSidebar currentStep={state.step} stepTitles={STEP_TITLES} />
+				<ProgressSidebar
+					currentStep={state.step}
+					stepTitles={STEP_TITLES}
+					stepChangeEnabled={state.step < 12}
+				/>
 				<main className="container mx-auto flex-1">{renderStep()}</main>
 			</div>
 			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4 dark:bg-black">
 				<Button
 					onClick={nextStep}
-					disabled={!isStepValid() || state.step === totalSteps}
+					disabled={
+						!isStepValid() ||
+						state.step === totalSteps ||
+						createHeadshotMutation.isPending
+					}
 					className={cn(
 						"bg-blue-600 text-white hover:bg-blue-700",
-						(!isStepValid() || state.step === totalSteps) &&
+						(!isStepValid() ||
+							state.step === totalSteps ||
+							createHeadshotMutation.isPending) &&
 							"cursor-not-allowed opacity-50",
 						"px-16",
 						"text-lg",
 					)}
 					size="lg"
 				>
-					{state.step === totalSteps ? "Finish" : "Continue"}
+					{createHeadshotMutation.isPending
+						? "Processing..."
+						: state.step === 11
+							? "Create Headshots"
+							: "Continue"}
 				</Button>
 			</footer>
 		</div>

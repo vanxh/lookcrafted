@@ -6,11 +6,13 @@ import { cn } from "@/lib/utils";
 interface ProgressSidebarProps {
 	currentStep: number;
 	stepTitles: string[];
+	stepChangeEnabled?: boolean;
 }
 
 export function ProgressSidebar({
 	currentStep,
 	stepTitles,
+	stepChangeEnabled = true,
 }: ProgressSidebarProps) {
 	const [, setStep] = useQueryState("step", parseAsInteger.withDefault(1));
 
@@ -32,8 +34,8 @@ export function ProgressSidebar({
 							<li key={title} className="group w-full">
 								<button
 									type="button"
-									onClick={() => setStep(stepNumber)}
-									disabled={stepNumber > currentStep}
+									onClick={() => stepChangeEnabled && setStep(stepNumber)}
+									disabled={stepNumber > currentStep || !stepChangeEnabled}
 									className={cn(
 										"w-full rounded-md p-3 text-left transition-colors duration-150 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500",
 										isCurrent
