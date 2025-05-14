@@ -66,7 +66,7 @@ export default function AppPage() {
 						className="flex items-center gap-2 rounded-md border-gray-300 px-6 py-2.5"
 						asChild
 					>
-						<Link href="/app/teams/create">
+						<Link href="/app/teams">
 							<UserRound className="h-5 w-5" />
 							Set Up Team
 						</Link>
