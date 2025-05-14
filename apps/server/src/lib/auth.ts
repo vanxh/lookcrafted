@@ -27,16 +27,22 @@ export const auth = betterAuth({
 	trustedOrigins: [...(env.CORS_ORIGIN.split(",") || []), "lookcrafted-app://"],
 	advanced: {
 		cookiePrefix: "lookcrafted",
-		crossSubDomainCookies: {
-			enabled: true,
-			domain: ".lookcrafted.com",
-		},
-		defaultCookieAttributes: {
-			secure: true,
-			httpOnly: true,
-			sameSite: "none",
-			partitioned: true,
-		},
+		crossSubDomainCookies:
+			env.NODE_ENV === "production"
+				? {
+						enabled: true,
+						domain: ".lookcrafted.com",
+					}
+				: undefined,
+		defaultCookieAttributes:
+			env.NODE_ENV === "production"
+				? {
+						secure: true,
+						httpOnly: true,
+						sameSite: "none",
+						partitioned: true,
+					}
+				: undefined,
 	},
 	emailAndPassword: {
 		enabled: true,
@@ -147,13 +153,22 @@ export const auth = betterAuth({
 			enableCustomerPortal: true,
 			checkout: {
 				enabled: true,
+				authenticatedUsersOnly: true,
 				products: [
 					{
-						productId: "123-456-789", // ID of Product from Polar Dashboard
-						slug: "pro", // Custom slug for easy reference in Checkout URL, e.g. /checkout/pro
+						productId: env.POLAR_STARTER_PRODUCT_ID,
+						slug: "starter",
+					},
+					{
+						productId: env.POLAR_BASIC_PRODUCT_ID,
+						slug: "basic",
+					},
+					{
+						productId: env.POLAR_PREMIUM_PRODUCT_ID,
+						slug: "premium",
 					},
 				],
-				successUrl: "/success?checkout_id={CHECKOUT_ID}",
+				successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
 			},
 			webhooks: {
 				secret: env.POLAR_WEBHOOK_SECRET,

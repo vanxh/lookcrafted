@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const env = createEnv({
 	server: {
+		NODE_ENV: z.enum(["development", "production"]),
 		DATABASE_URL: z.string().url(),
 		CORS_ORIGIN: z.string(),
 		BETTER_AUTH_SECRET: z.string(),
@@ -20,6 +21,9 @@ export const env = createEnv({
 		POLAR_ACCESS_TOKEN: z.string(),
 		POLAR_SERVER: z.enum(["production", "sandbox"]),
 		POLAR_WEBHOOK_SECRET: z.string(),
+		POLAR_STARTER_PRODUCT_ID: z.string(),
+		POLAR_BASIC_PRODUCT_ID: z.string(),
+		POLAR_PREMIUM_PRODUCT_ID: z.string(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,
