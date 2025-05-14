@@ -1,4 +1,5 @@
 import { expo } from "@better-auth/expo";
+import { polar } from "@polar-sh/better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -16,6 +17,7 @@ import {
 	sendVerificationEmail,
 	sendWelcomeEmail,
 } from "./email";
+import { polarClient } from "./polar";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -139,6 +141,27 @@ export const auth = betterAuth({
 		nextCookies(),
 		// @ts-ignore
 		expo(),
+		polar({
+			client: polarClient,
+			createCustomerOnSignUp: true,
+			enableCustomerPortal: true,
+			checkout: {
+				enabled: true,
+				products: [
+					{
+						productId: "123-456-789", // ID of Product from Polar Dashboard
+						slug: "pro", // Custom slug for easy reference in Checkout URL, e.g. /checkout/pro
+					},
+				],
+				successUrl: "/success?checkout_id={CHECKOUT_ID}",
+			},
+			webhooks: {
+				secret: env.POLAR_WEBHOOK_SECRET,
+				onPayload: async (payload) => {
+					console.log(payload);
+				},
+			},
+		}),
 	],
 	appName: "LookCrafted",
 });
