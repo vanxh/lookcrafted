@@ -8,7 +8,7 @@ import {
 } from "nuqs";
 import { Suspense } from "react";
 
-import { CreateHeadshotHeader } from "@/components/create-headshot/create-headshot-header";
+import { AppHeader } from "@/components/app/header";
 import { ProgressSidebar } from "@/components/create-headshot/progress-sidebar";
 import { AgeGroupStep } from "@/components/create-headshot/steps/age-group-step";
 import { BackgroundStep } from "@/components/create-headshot/steps/background-step";
@@ -133,7 +133,7 @@ function CreateHeadshotPageComponent() {
 
 	return (
 		<div className="flex min-h-screen flex-col">
-			<CreateHeadshotHeader progress={progress} />
+			<AppHeader />
 
 			<div className="flex flex-1">
 				<ProgressSidebar currentStep={state.step} stepTitles={STEP_TITLES} />
