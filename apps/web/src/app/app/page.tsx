@@ -83,39 +83,40 @@ export default function AppPage() {
 			</div>
 
 			{headshots?.length && headshots.length > 0 ? (
-				<div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+				<div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 					{headshots?.map((headshot) => (
 						<Link
 							key={headshot.id}
-							href={`/app/headshots/${headshot.id}`}
-							className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
+							href={
+								headshot.status === "unpaid"
+									? `/create-headshot?id=${headshot.id}&step=12`
+									: `/app/headshots/${headshot.id}`
+							}
+							className="group overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all hover:border-primary/20 hover:shadow-md"
 						>
-							<div className="flex aspect-[3/4] items-center justify-center bg-gray-50 p-4">
-								<div className="text-center">
-									<div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
-										<UserRound className="h-8 w-8 text-gray-500" />
+							<div className="relative p-5 pb-6">
+								<div className="absolute top-4 right-4 flex items-center text-muted-foreground/70 text-xs">
+									<Clock className="mr-1 h-3.5 w-3.5" />
+									<span>
+										{formatDistance(new Date(headshot.createdAt), new Date(), {
+											addSuffix: true,
+										})}
+									</span>
+								</div>
+
+								<div className="flex flex-col items-center">
+									<div className="mt-6 mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-muted/80 ring-2 ring-muted/30 ring-offset-1">
+										<UserRound className="h-9 w-9 text-muted-foreground/80" />
 									</div>
-									<p className="font-medium text-gray-700">
+
+									<h3 className="mb-1.5 font-medium text-foreground text-lg">
 										{capitalizeFirstLetter(headshot.gender)}{" "}
 										{formatAgeGroup(headshot.ageGroup)}
-									</p>
-									<p className="text-gray-500 text-sm">
+									</h3>
+
+									<p className="rounded-full bg-muted/50 px-2 py-0.5 text-muted-foreground text-sm">
 										{capitalizeFirstLetter(headshot.status)}
 									</p>
-								</div>
-							</div>
-							<div className="flex items-center justify-between p-4">
-								<div>
-									<div className="flex items-center text-gray-500 text-sm">
-										<Clock className="mr-1 h-3.5 w-3.5" />
-										<span>
-											{formatDistance(
-												new Date(headshot.createdAt),
-												new Date(),
-												{ addSuffix: true },
-											)}
-										</span>
-									</div>
 								</div>
 							</div>
 						</Link>
