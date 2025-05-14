@@ -1,16 +1,26 @@
 "use client";
 
-import { PlusIcon, UserRound } from "lucide-react";
-import Image from "next/image";
+import { useQuery } from "@tanstack/react-query";
+import { formatDistance } from "date-fns";
+import { Clock, PlusIcon, UserRound } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+
+import { capitalizeFirstLetter, formatAgeGroup } from "@lookcrafted/constants";
 
 import { Button } from "@/components/ui/button";
-import { authClient } from "@/lib/auth-client";
+import { orpc } from "@/utils/orpc";
+import Loading from "./loading";
 
 export default function AppPage() {
-	const { data: session } = authClient.useSession();
-	const [headshots, setHeadshots] = useState<string[]>([]);
+	const { data: headshots, isLoading } = useQuery(
+		orpc.headshot.getAll.queryOptions({
+			input: {},
+		}),
+	);
+
+	if (isLoading) {
+		return <Loading />;
+	}
 
 	return (
 		<>
@@ -72,31 +82,43 @@ export default function AppPage() {
 				</div>
 			</div>
 
-			{headshots.length > 0 ? (
+			{headshots?.length && headshots.length > 0 ? (
 				<div className="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-					{headshots.map((headshot, index) => (
-						<div
-							key={`headshot-${index}-${headshot.split("/").pop()}`}
-							className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
+					{headshots?.map((headshot) => (
+						<Link
+							key={headshot.id}
+							href={`/app/headshots/${headshot.id}`}
+							className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all hover:shadow-md"
 						>
-							<div className="relative aspect-[3/4]">
-								<Image
-									src={headshot}
-									alt="AI Headshot"
-									fill
-									style={{ objectFit: "cover" }}
-									className="rounded-t-lg"
-								/>
+							<div className="flex aspect-[3/4] items-center justify-center bg-gray-50 p-4">
+								<div className="text-center">
+									<div className="mx-auto mb-2 flex h-16 w-16 items-center justify-center rounded-full bg-gray-100">
+										<UserRound className="h-8 w-8 text-gray-500" />
+									</div>
+									<p className="font-medium text-gray-700">
+										{capitalizeFirstLetter(headshot.gender)}{" "}
+										{formatAgeGroup(headshot.ageGroup)}
+									</p>
+									<p className="text-gray-500 text-sm">
+										{capitalizeFirstLetter(headshot.status)}
+									</p>
+								</div>
 							</div>
 							<div className="flex items-center justify-between p-4">
 								<div>
-									<h3 className="font-medium">Portrait {index + 1}</h3>
 									<div className="flex items-center text-gray-500 text-sm">
-										<span>Generated recently</span>
+										<Clock className="mr-1 h-3.5 w-3.5" />
+										<span>
+											{formatDistance(
+												new Date(headshot.createdAt),
+												new Date(),
+												{ addSuffix: true },
+											)}
+										</span>
 									</div>
 								</div>
 							</div>
-						</div>
+						</Link>
 					))}
 				</div>
 			) : null}

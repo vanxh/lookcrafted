@@ -11,12 +11,16 @@ export const ratelimitWithKey = async (
 	window: Duration,
 	prefix = "ratelimit",
 ) => {
-	const { success } = await ratelimit(tokens, window, prefix).limit(key);
+	try {
+		const { success } = await ratelimit(tokens, window, prefix).limit(key);
 
-	if (!success) {
-		throw new ORPCError("RATE_LIMIT_EXCEEDED", {
-			message: "You have exceeded the rate limit. Please try again later.",
-		});
+		if (!success) {
+			throw new ORPCError("RATE_LIMIT_EXCEEDED", {
+				message: "You have exceeded the rate limit. Please try again later.",
+			});
+		}
+	} catch {
+		// DO NOTHING
 	}
 };
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { PlusIcon, UsersIcon } from "lucide-react";
-import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
@@ -13,11 +12,11 @@ export default function TeamsPage() {
 					<h1 className="font-bold text-3xl">Teams</h1>
 					<p className="text-gray-600">Manage your teams and invitations</p>
 				</div>
-				<Button asChild>
-					<Link href="/app/teams/create">
-						<PlusIcon className="mr-2 h-4 w-4" />
-						Create Team
-					</Link>
+				<Button disabled>
+					{/* <Link href="/app/teams/create"> */}
+					<PlusIcon className="mr-2 h-4 w-4" />
+					Create Team
+					{/* </Link> */}
 				</Button>
 			</div>
 
@@ -31,11 +30,11 @@ export default function TeamsPage() {
 						Create a team to collaborate with your colleagues and manage
 						headshots together.
 					</p>
-					<Button className="mt-4" asChild>
-						<Link href="/app/teams/create">
-							<PlusIcon className="mr-2 h-4 w-4" />
-							Create Your First Team
-						</Link>
+					<Button className="mt-4" disabled>
+						{/* <Link href="/app/teams/create"> */}
+						<PlusIcon className="mr-2 h-4 w-4" />
+						Create Your First Team
+						{/* </Link> */}
 					</Button>
 				</div>
 			</div>

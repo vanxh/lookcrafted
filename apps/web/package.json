@@ -30,6 +30,7 @@
 		"better-auth": "^1.2.7",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"date-fns": "^4.1.0",
 		"face-api.js": "^0.22.2",
 		"input-otp": "^1.4.2",
 		"lucide-react": "^0.487.0",
