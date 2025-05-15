@@ -23,6 +23,7 @@ import { HairLengthStep } from "@/components/create-headshot/steps/hair-length-s
 import { HairTextureStep } from "@/components/create-headshot/steps/hair-texture-step";
 import { ImageUploadStep } from "@/components/create-headshot/steps/image-upload-step";
 import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
+import { PaymentStep } from "@/components/create-headshot/steps/payment-step";
 import { PreviewStep } from "@/components/create-headshot/steps/preview-step";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -182,7 +183,7 @@ function CreateHeadshotPageComponent() {
 			case 11:
 				return <PreviewStep />;
 			case 12:
-				return <div>TODO: Payment Step</div>;
+				return <PaymentStep />;
 			default:
 				return <div className="p-6">Invalid Step</div>;
 		}
@@ -200,32 +201,34 @@ function CreateHeadshotPageComponent() {
 				/>
 				<main className="container mx-auto flex-1">{renderStep()}</main>
 			</div>
-			<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4 dark:bg-black">
-				<Button
-					onClick={nextStep}
-					disabled={
-						!isStepValid() ||
-						state.step === totalSteps ||
-						createHeadshotMutation.isPending
-					}
-					className={cn(
-						"bg-blue-600 text-white hover:bg-blue-700",
-						(!isStepValid() ||
+			{state.step !== 12 && (
+				<footer className="sticky bottom-0 mt-auto flex items-center justify-center border-t bg-white p-4 dark:bg-black">
+					<Button
+						onClick={nextStep}
+						disabled={
+							!isStepValid() ||
 							state.step === totalSteps ||
-							createHeadshotMutation.isPending) &&
-							"cursor-not-allowed opacity-50",
-						"px-16",
-						"text-lg",
-					)}
-					size="lg"
-				>
-					{createHeadshotMutation.isPending
-						? "Processing..."
-						: state.step === 11
-							? "Create Headshots"
-							: "Continue"}
-				</Button>
-			</footer>
+							createHeadshotMutation.isPending
+						}
+						className={cn(
+							"bg-blue-600 text-white hover:bg-blue-700",
+							(!isStepValid() ||
+								state.step === totalSteps ||
+								createHeadshotMutation.isPending) &&
+								"cursor-not-allowed opacity-50",
+							"px-16",
+							"text-lg",
+						)}
+						size="lg"
+					>
+						{createHeadshotMutation.isPending
+							? "Processing..."
+							: state.step === 11
+								? "Create Headshots"
+								: "Continue"}
+					</Button>
+				</footer>
+			)}
 		</div>
 	);
 }

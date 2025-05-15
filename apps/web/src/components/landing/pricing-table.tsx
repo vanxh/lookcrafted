@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
 	ClockIcon,
 	Heart,
@@ -8,6 +7,9 @@ import {
 	Sparkles,
 	UserIcon,
 } from "lucide-react";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
 
 export function PricingTable() {
 	return (
@@ -50,8 +52,8 @@ export function PricingTable() {
 							Standard Resolution
 						</li>
 					</ul>
-					<Button variant="outline" className="mt-auto w-full">
-						Get 50 Headshots
+					<Button variant="outline" className="mt-auto w-full" asChild>
+						<Link href="/app">Get 50 Headshots</Link>
 					</Button>
 				</div>
 			</div>
@@ -98,8 +100,11 @@ export function PricingTable() {
 							Standard Resolution
 						</li>
 					</ul>
-					<Button className="mt-auto w-full bg-blue-600 text-white hover:bg-blue-700">
-						Get 100 Headshots
+					<Button
+						className="mt-auto w-full bg-blue-600 text-white hover:bg-blue-700"
+						asChild
+					>
+						<Link href="/app">Get 100 Headshots</Link>
 					</Button>
 				</div>
 			</div>
@@ -146,8 +151,8 @@ export function PricingTable() {
 							Enhanced Image Resolution
 						</li>
 					</ul>
-					<Button variant="outline" className="mt-auto w-full">
-						Get 200 Headshots
+					<Button variant="outline" className="mt-auto w-full" asChild>
+						<Link href="/app">Get 200 Headshots</Link>
 					</Button>
 				</div>
 			</div>

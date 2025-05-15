@@ -19,7 +19,7 @@ export function ProgressSidebar({
 	return (
 		// 4 rem = header height
 		// 76px = header height
-		<aside className="sticky top-16 hidden h-[calc(100vh-4rem-76px)] w-72 overflow-y-auto border-r px-6 py-4 lg:block dark:border-gray-700">
+		<aside className="sticky top-16 hidden h-full min-h-full w-72 overflow-y-auto border-r px-6 py-4 lg:block dark:border-gray-700">
 			<h2 className="mb-4 font-semibold text-gray-900 text-lg dark:text-gray-100">
 				Progress
 			</h2>
