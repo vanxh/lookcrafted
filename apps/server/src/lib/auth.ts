@@ -3,7 +3,12 @@ import { polar } from "@polar-sh/better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
-import { emailOTP, magicLink, organization } from "better-auth/plugins";
+import {
+	emailOTP,
+	magicLink,
+	openAPI,
+	organization,
+} from "better-auth/plugins";
 
 import { db } from "../db/index";
 import * as schema from "../db/schema";
@@ -177,6 +182,7 @@ export const auth = betterAuth({
 				},
 			},
 		}),
+		openAPI({}),
 	],
 	appName: "LookCrafted",
 });
