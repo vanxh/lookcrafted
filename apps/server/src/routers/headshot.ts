@@ -14,7 +14,7 @@ import { polarClient } from "../lib/polar";
 
 export const headshotRouter = {
 	getAll: protectedProcedure
-		.route({ method: "GET", path: "/headshots" })
+		.route({ method: "GET", path: "/headshots", tags: ["headshots"] })
 		.input(
 			z.object({
 				includeUploads: z.boolean().optional().default(false),
@@ -80,7 +80,7 @@ export const headshotRouter = {
 		}),
 
 	getOne: protectedProcedure
-		.route({ method: "GET", path: "/headshots/{id}" })
+		.route({ method: "GET", path: "/headshots/{id}", tags: ["headshots"] })
 		.input(
 			z.object({
 				id: z.string(),
@@ -153,7 +153,7 @@ export const headshotRouter = {
 		}),
 
 	create: protectedProcedure
-		.route({ method: "POST", path: "/headshots/create" })
+		.route({ method: "POST", path: "/headshots/create", tags: ["headshots"] })
 		.input(createHeadshotRequestSchema)
 		.output(z.object({ id: z.string() }))
 		.handler(async ({ context, input }) => {
@@ -195,7 +195,7 @@ export const headshotRouter = {
 		}),
 
 	edit: protectedProcedure
-		.route({ method: "PATCH", path: "/headshots/{id}" })
+		.route({ method: "PATCH", path: "/headshots/{id}", tags: ["headshots"] })
 		.input(editHeadshotRequestSchema)
 		.output(z.object({ success: z.boolean() }))
 		.handler(async ({ context, input }) => {
@@ -268,6 +268,7 @@ export const headshotRouter = {
 		.route({
 			method: "GET",
 			path: "/headshots/{id}/checkout",
+			tags: ["headshots"],
 			successStatus: 307,
 			outputStructure: "detailed",
 		})
