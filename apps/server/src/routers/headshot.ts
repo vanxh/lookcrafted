@@ -10,10 +10,11 @@ import {
 import { headshotRequest, headshotRequestImage } from "../db/schema";
 import { env } from "../env";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
+import { polarClient } from "../lib/polar";
 
 export const headshotRouter = {
 	getAll: protectedProcedure
-		.route({ method: "POST", path: "/headshot/getAll" })
+		.route({ method: "GET", path: "/headshots" })
 		.input(
 			z.object({
 				includeUploads: z.boolean().optional().default(false),
@@ -79,7 +80,7 @@ export const headshotRouter = {
 		}),
 
 	getOne: protectedProcedure
-		.route({ method: "POST", path: "/headshot/getOne" })
+		.route({ method: "GET", path: "/headshots/{id}" })
 		.input(
 			z.object({
 				id: z.string(),
@@ -152,7 +153,7 @@ export const headshotRouter = {
 		}),
 
 	create: protectedProcedure
-		.route({ method: "POST", path: "/headshot/create" })
+		.route({ method: "POST", path: "/headshots/create" })
 		.input(createHeadshotRequestSchema)
 		.output(z.object({ id: z.string() }))
 		.handler(async ({ context, input }) => {
@@ -194,7 +195,7 @@ export const headshotRouter = {
 		}),
 
 	edit: protectedProcedure
-		.route({ method: "POST", path: "/headshot/edit" })
+		.route({ method: "PATCH", path: "/headshots/{id}" })
 		.input(editHeadshotRequestSchema)
 		.output(z.object({ success: z.boolean() }))
 		.handler(async ({ context, input }) => {
@@ -261,5 +262,65 @@ export const headshotRouter = {
 			}
 
 			return { success: true };
+		}),
+
+	checkout: protectedProcedure
+		.route({
+			method: "GET",
+			path: "/headshots/{id}/checkout",
+			successStatus: 307,
+			// outputStructure: "detailed",
+		})
+		.input(
+			z.object({
+				id: z.string(),
+				plan: z.enum(["starter", "basic", "premium"]),
+			}),
+		)
+		.handler(async ({ context, input }) => {
+			const { session, db } = context;
+
+			const result = await db.query.headshotRequest.findFirst({
+				where: and(
+					eq(headshotRequest.id, input.id),
+					eq(headshotRequest.userId, session.user.id),
+				),
+				columns: {
+					id: true,
+				},
+			});
+
+			if (!result) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Headshot request not found",
+				});
+			}
+
+			const product = {
+				starter: env.POLAR_STARTER_PRODUCT_ID,
+				basic: env.POLAR_BASIC_PRODUCT_ID,
+				premium: env.POLAR_PREMIUM_PRODUCT_ID,
+			}[input.plan];
+
+			if (!product) {
+				throw new ORPCError("BAD_REQUEST", {
+					message: "Invalid plan",
+				});
+			}
+
+			const { url } = await polarClient.checkouts.create({
+				products: [product],
+				successUrl: `${env.FRONTEND_URL}/headshot/${result.id}`,
+				customerEmail: session.user.email,
+				customerExternalId: session.user.id,
+				customerName: session.user.name,
+				metadata: {
+					headshotRequestId: result.id,
+					userId: session.user.id,
+					plan: input.plan,
+				},
+			});
+
+			return { headers: { location: url } };
 		}),
 };

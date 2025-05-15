@@ -5,7 +5,7 @@ import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
 export const cloudflareRouter = {
 	getSignedUploadUrl: protectedProcedure
-		.route({ method: "POST", path: "/cloudflare/getSignedUploadUrl" })
+		.route({ method: "POST", path: "/cloudflare/images/upload" })
 		.input(z.undefined())
 		.output(
 			z.object({
@@ -34,7 +34,7 @@ export const cloudflareRouter = {
 		}),
 
 	deleteImage: protectedProcedure
-		.route({ method: "POST", path: "/cloudflare/deleteImage" })
+		.route({ method: "DELETE", path: "/cloudflare/images/{imageId}" })
 		.input(
 			z.object({
 				imageId: z.string(),
