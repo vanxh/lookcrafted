@@ -11,10 +11,12 @@ import Example1Before2 from "@/public/example-1-before-2.webp";
 import Example1Before3 from "@/public/example-1-before-3.webp";
 import Example1Before1 from "@/public/example-1-before.webp";
 import Example1After from "@/public/example-1.webp";
-import Example2Before2 from "@/public/example-2.webp";
-import Example2Before3 from "@/public/example-2.webp";
-import Example2Before1 from "@/public/example-2.webp";
-import Example2After from "@/public/example-2.webp";
+import {
+	default as Example2After,
+	default as Example2Before1,
+	default as Example2Before2,
+	default as Example2Before3,
+} from "@/public/example-2.webp";
 
 export function HeroSection() {
 	return (
@@ -33,6 +35,7 @@ export function HeroSection() {
 								alt="Selfie 1"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
@@ -41,6 +44,7 @@ export function HeroSection() {
 								alt="Selfie 2"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
@@ -49,6 +53,7 @@ export function HeroSection() {
 								alt="Selfie 3"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 					</div>
@@ -58,6 +63,7 @@ export function HeroSection() {
 							alt="Example headshot 1"
 							fill
 							className="object-cover"
+							priority
 						/>
 					</div>
 				</div>
@@ -110,6 +116,7 @@ export function HeroSection() {
 										alt="Selfie 1"
 										fill
 										className="object-cover"
+										priority
 									/>
 								</div>
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
@@ -118,6 +125,7 @@ export function HeroSection() {
 										alt="Selfie 2"
 										fill
 										className="object-cover"
+										priority
 									/>
 								</div>
 							</div>
@@ -128,6 +136,7 @@ export function HeroSection() {
 									alt="Example headshot 1"
 									fill
 									className="object-cover"
+									priority
 								/>
 							</div>
 						</div>
@@ -140,6 +149,7 @@ export function HeroSection() {
 										alt="Selfie 3"
 										fill
 										className="object-cover"
+										priority
 									/>
 								</div>
 								<div className="relative h-16 w-16 overflow-hidden rounded-md bg-muted">
@@ -148,6 +158,7 @@ export function HeroSection() {
 										alt="Selfie 4"
 										fill
 										className="object-cover"
+										priority
 									/>
 								</div>
 							</div>
@@ -158,6 +169,7 @@ export function HeroSection() {
 									alt="Example headshot 2"
 									fill
 									className="object-cover"
+									priority
 								/>
 							</div>
 						</div>
@@ -262,6 +274,7 @@ export function HeroSection() {
 								alt="Selfie 4"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
@@ -270,6 +283,7 @@ export function HeroSection() {
 								alt="Selfie 5"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 						<div className="relative flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-muted">
@@ -278,6 +292,7 @@ export function HeroSection() {
 								alt="Selfie 6"
 								fill
 								className="object-cover"
+								priority
 							/>
 						</div>
 					</div>
@@ -287,6 +302,7 @@ export function HeroSection() {
 							alt="Example headshot 2"
 							fill
 							className="object-cover"
+							priority
 						/>
 					</div>
 				</div>
