@@ -269,7 +269,7 @@ export const headshotRouter = {
 			method: "GET",
 			path: "/headshots/{id}/checkout",
 			successStatus: 307,
-			// outputStructure: "detailed",
+			outputStructure: "detailed",
 		})
 		.input(
 			z.object({
@@ -277,6 +277,7 @@ export const headshotRouter = {
 				plan: z.enum(["starter", "basic", "premium"]),
 			}),
 		)
+		.output(z.object({ headers: z.record(z.string(), z.string()) }))
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
 
