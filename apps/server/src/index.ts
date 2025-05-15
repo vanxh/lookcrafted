@@ -58,6 +58,20 @@ const openapiHandler = new OpenAPIHandler(appRouter, {
 			specPath: "/docs/openapi.json",
 			schemaConverters: [new ZodToJsonSchemaConverter()],
 			specGenerateOptions: {
+				externalDocs: {
+					url: "https://api.lookcrafted.com/api/auth/reference",
+					description: "Authentication API",
+				},
+				servers: [
+					{
+						url: "https://api.lookcrafted.com",
+						description: "Production",
+					},
+					{
+						url: "http://localhost:3000",
+						description: "Development",
+					},
+				],
 				info: {
 					title: "LookCrafted API",
 					version: "0.1.0",
