@@ -13,12 +13,14 @@ import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
 export const headshotRouter = {
 	getAll: protectedProcedure
+		.route({ method: "POST", path: "/headshot/getAll" })
 		.input(
 			z.object({
 				includeUploads: z.boolean().optional().default(false),
 				includeImages: z.boolean().optional().default(false),
 			}),
 		)
+		// TODO: Add output schema
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
 
@@ -77,6 +79,7 @@ export const headshotRouter = {
 		}),
 
 	getOne: protectedProcedure
+		.route({ method: "POST", path: "/headshot/getOne" })
 		.input(
 			z.object({
 				id: z.string(),
@@ -84,6 +87,7 @@ export const headshotRouter = {
 				includeImages: z.boolean().optional().default(false),
 			}),
 		)
+		// TODO: Add output schema
 		.handler(async ({ context, input }) => {
 			const { db, session } = context;
 
@@ -148,7 +152,9 @@ export const headshotRouter = {
 		}),
 
 	create: protectedProcedure
+		.route({ method: "POST", path: "/headshot/create" })
 		.input(createHeadshotRequestSchema)
+		.output(z.object({ id: z.string() }))
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
 
@@ -188,7 +194,9 @@ export const headshotRouter = {
 		}),
 
 	edit: protectedProcedure
+		.route({ method: "POST", path: "/headshot/edit" })
 		.input(editHeadshotRequestSchema)
+		.output(z.object({ success: z.boolean() }))
 		.handler(async ({ context, input }) => {
 			const { session, db } = context;
 

@@ -1,4 +1,7 @@
+import { OpenAPIHandler } from "@orpc/openapi/fetch";
+import { OpenAPIReferencePlugin } from "@orpc/openapi/plugins";
 import { RPCHandler } from "@orpc/server/fetch";
+import { ZodSmartCoercionPlugin, ZodToJsonSchemaConverter } from "@orpc/zod";
 import "dotenv/config";
 import { Hono } from "hono";
 import { cors } from "hono/cors";
@@ -35,11 +38,40 @@ app.use(
 
 app.on(["POST", "GET"], "/api/auth/*", (c) => auth.handler(c.req.raw));
 
-const handler = new RPCHandler(appRouter);
+const rpcHandler = new RPCHandler(appRouter);
 app.use("/rpc/*", async (c, next) => {
 	const context = await createContext({ context: c });
-	const { matched, response } = await handler.handle(c.req.raw, {
+	const { matched, response } = await rpcHandler.handle(c.req.raw, {
 		prefix: "/rpc",
+		context: context,
+	});
+	if (matched) {
+		return c.newResponse(response.body, response);
+	}
+	await next();
+});
+
+const openapiHandler = new OpenAPIHandler(appRouter, {
+	plugins: [
+		new OpenAPIReferencePlugin({
+			docsPath: "/docs",
+			specPath: "/docs/openapi.json",
+			schemaConverters: [new ZodToJsonSchemaConverter()],
+			specGenerateOptions: {
+				info: {
+					title: "LookCrafted API",
+					version: "0.1.0",
+				},
+			},
+		}),
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		new ZodSmartCoercionPlugin() as any,
+	],
+});
+app.get("/v1/*", async (c, next) => {
+	const context = await createContext({ context: c });
+	const { matched, response } = await openapiHandler.handle(c.req.raw, {
+		prefix: "/v1",
 		context: context,
 	});
 	if (matched) {
