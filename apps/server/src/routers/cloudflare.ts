@@ -6,7 +6,7 @@ import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 export const cloudflareRouter = {
 	getSignedUploadUrl: protectedProcedure
 		.route({ method: "POST", path: "/cloudflare/images/upload" })
-		.input(z.undefined())
+		.input(z.object({}).optional())
 		.output(
 			z.object({
 				signedUrl: z.string(),
