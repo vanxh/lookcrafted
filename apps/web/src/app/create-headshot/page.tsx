@@ -85,7 +85,8 @@ function CreateHeadshotPageComponent() {
 		if (!isStepValid()) return;
 
 		if (state.step === 11) {
-			await createHeadshotRequest();
+			const data = await createHeadshotRequest();
+			router.push(`/create-headshot?id=${data?.id}&step=12`);
 			return;
 		}
 
@@ -111,7 +112,7 @@ function CreateHeadshotPageComponent() {
 			return;
 		}
 
-		createHeadshotMutation.mutate({
+		return createHeadshotMutation.mutateAsync({
 			gender: state.gender,
 			ageGroup: state.ageGroup,
 			hairColor: state.hairColor,
