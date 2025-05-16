@@ -114,12 +114,12 @@ export const auth = betterAuth({
 						to: organization.user.email,
 						name: organization.user.name,
 						organizationName: organization.organization.name,
-						dashboardLink: `${env.BETTER_AUTH_URL}/dashboard`,
+						dashboardLink: `${env.FRONTEND_URL}/dashboard`,
 					});
 				},
 			},
 			async sendInvitationEmail(data) {
-				const inviteLink = `${env.BETTER_AUTH_URL}/accept-invitation/${data.id}`;
+				const inviteLink = `${env.FRONTEND_URL}/accept-invitation/${data.id}`;
 				await sendOrganizationInvitationEmail({
 					to: data.email,
 					invitedByUsername: data.inviter.user.name,
