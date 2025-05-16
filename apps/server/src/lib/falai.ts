@@ -14,10 +14,12 @@ fal.config({
 
 const FAL_TRAINING_MODEL_ID = "fal-ai/flux-lora-portrait-trainer";
 
-async function fetchImageData(url: string): Promise<{
+const fetchImageData = async (
+	url: string,
+): Promise<{
 	name: string;
 	data: Buffer;
-}> {
+}> => {
 	const response = await fetch(url);
 
 	if (!response.ok) {
@@ -36,12 +38,12 @@ async function fetchImageData(url: string): Promise<{
 	const filename = `${imageId}_${Date.now()}${ext}`;
 	const imageBuffer = Buffer.from(await response.arrayBuffer());
 	return { name: filename, data: imageBuffer };
-}
+};
 
-async function createZipBuffer(
+const createZipBuffer = async (
 	files: { name: string; data: Buffer }[],
 	folderNameInsideZip = "",
-): Promise<Buffer> {
+): Promise<Buffer> => {
 	return new Promise((resolve, reject) => {
 		const archive = archiver("zip", { zlib: { level: 9 } });
 		const passthrough = new PassThrough();
@@ -59,9 +61,9 @@ async function createZipBuffer(
 		}
 		archive.finalize();
 	});
-}
+};
 
-export const uploadImagesToFalStorage = async (
+const uploadImagesToFalStorage = async (
 	imageUrls: string[],
 	folderNameInsideZip = "images",
 ): Promise<string> => {
