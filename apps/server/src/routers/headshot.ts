@@ -225,7 +225,7 @@ export const headshotRouter = {
 				});
 			}
 
-			if (result.status !== "pending") {
+			if (!["pending", "unpaid"].includes(result.status)) {
 				throw new ORPCError("BAD_REQUEST", {
 					message: "Headshot request is not pending",
 				});
