@@ -130,6 +130,8 @@ export const submitPortraitTraining = async (headshotRequestId: string) => {
 			.set({
 				status: "training",
 				trainingRequestId: request_id,
+				trainingModelId: FAL_TRAINING_MODEL_ID,
+				trainingStartedAt: new Date(),
 			})
 			.where(eq(headshotRequest.id, headshotRequestId));
 	} catch (error) {
