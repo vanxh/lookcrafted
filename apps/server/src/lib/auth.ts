@@ -1,5 +1,5 @@
 import { expo } from "@better-auth/expo";
-import { polar } from "@polar-sh/better-auth";
+import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -155,32 +155,33 @@ export const auth = betterAuth({
 		polar({
 			client: polarClient,
 			createCustomerOnSignUp: true,
-			enableCustomerPortal: true,
-			checkout: {
-				enabled: true,
-				authenticatedUsersOnly: true,
-				products: [
-					{
-						productId: env.POLAR_STARTER_PRODUCT_ID,
-						slug: "starter",
+			use: [
+				checkout({
+					authenticatedUsersOnly: true,
+					products: [
+						{
+							productId: env.POLAR_STARTER_PRODUCT_ID,
+							slug: "starter",
+						},
+						{
+							productId: env.POLAR_BASIC_PRODUCT_ID,
+							slug: "basic",
+						},
+						{
+							productId: env.POLAR_PREMIUM_PRODUCT_ID,
+							slug: "premium",
+						},
+					],
+					successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
+				}),
+				portal(),
+				webhooks({
+					secret: env.POLAR_WEBHOOK_SECRET,
+					onPayload: async (payload) => {
+						console.log(payload);
 					},
-					{
-						productId: env.POLAR_BASIC_PRODUCT_ID,
-						slug: "basic",
-					},
-					{
-						productId: env.POLAR_PREMIUM_PRODUCT_ID,
-						slug: "premium",
-					},
-				],
-				successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
-			},
-			webhooks: {
-				secret: env.POLAR_WEBHOOK_SECRET,
-				onPayload: async (payload) => {
-					console.log(payload);
-				},
-			},
+				}),
+			],
 		}),
 		openAPI({}),
 	],

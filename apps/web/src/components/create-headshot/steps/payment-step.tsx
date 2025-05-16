@@ -10,19 +10,33 @@ import {
 import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
+import { authClient } from "@/lib/auth-client";
 
 export function PaymentStep() {
 	const searchParams = useSearchParams();
 	const headshotId = searchParams.get("id");
 
-	const handleCheckout = (plan: string) => {
+	const { data: session } = authClient.useSession();
+
+	const handleCheckout = async (plan: string) => {
+		if (!session) {
+			console.error("User not authenticated");
+			return;
+		}
+
 		if (!headshotId) {
 			console.error("Headshot ID not found in URL parameters");
 			return;
 		}
 
-		const checkoutUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/v1/headshots/${headshotId}/checkout?plan=${plan}`;
-		window.location.href = checkoutUrl;
+		await authClient.checkout({
+			slug: plan,
+			metadata: {
+				headshotRequestId: headshotId,
+				userId: session.user.id,
+				plan,
+			},
+		});
 	};
 
 	return (

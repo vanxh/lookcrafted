@@ -13,6 +13,7 @@
 		"@orpc/client": "^1.2.0",
 		"@orpc/react-query": "^1.2.0",
 		"@orpc/server": "^1.2.0",
+		"@polar-sh/better-auth": "^1.0.0",
 		"@radix-ui/react-accordion": "^1.2.8",
 		"@radix-ui/react-avatar": "^1.1.9",
 		"@radix-ui/react-checkbox": "^1.1.5",

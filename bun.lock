@@ -63,8 +63,8 @@
         "@orpc/openapi": "^1.2.0",
         "@orpc/server": "^1.2.0",
         "@orpc/zod": "^1.2.0",
-        "@polar-sh/better-auth": "^0.1.2",
-        "@polar-sh/sdk": "^0.32.13",
+        "@polar-sh/better-auth": "^1.0.0",
+        "@polar-sh/sdk": "^0.32.15",
         "@react-email/components": "0.0.38",
         "@t3-oss/env-core": "^0.13.4",
         "@upstash/ratelimit": "^2.0.5",
@@ -99,6 +99,7 @@
         "@orpc/client": "^1.2.0",
         "@orpc/react-query": "^1.2.0",
         "@orpc/server": "^1.2.0",
+        "@polar-sh/better-auth": "^1.0.0",
         "@radix-ui/react-accordion": "^1.2.8",
         "@radix-ui/react-avatar": "^1.1.9",
         "@radix-ui/react-checkbox": "^1.1.5",
@@ -646,9 +647,9 @@
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, "sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg=="],
 
-    "@polar-sh/better-auth": ["@polar-sh/better-auth@0.1.2", "", { "dependencies": { "zod": "^3.24.2" }, "peerDependencies": { "@polar-sh/sdk": "^0.32.13", "better-auth": "^1.2.0" } }, "sha512-vGutiT/TpctSe3zCJ7HXy+rk4FmgCTGqJcKmSRGmlrQK4KN21cAPrW1HIANIE+ADYuJt5CQZ934mDIcKiY+I0w=="],
+    "@polar-sh/better-auth": ["@polar-sh/better-auth@1.0.0", "", { "dependencies": { "zod": "^3.24.2" }, "peerDependencies": { "@polar-sh/sdk": "^0.32.15", "better-auth": "^1.2.7" } }, "sha512-fvMTBcV9WXVJjdCkBF1gYeqDnILbKzy+LZ4ZFyMZ/pQVXS7RvwhV4xtWjmSbXI7Ffw3LLRm2mYv1fUwaW6GpYA=="],
 
-    "@polar-sh/sdk": ["@polar-sh/sdk@0.32.13", "", { "dependencies": { "standardwebhooks": "^1.0.0" }, "peerDependencies": { "@modelcontextprotocol/sdk": ">=1.5.0 <1.10.0", "zod": ">= 3" }, "optionalPeers": ["@modelcontextprotocol/sdk"], "bin": { "mcp": "bin/mcp-server.js" } }, "sha512-xBjcKRPWV2v5lX0DDIcF6pjItinBooPbUd0SynpmV7SNe0ibFgcNwyr85J68eG2QBU/U6SaHLxp09QgoA/gnEw=="],
+    "@polar-sh/sdk": ["@polar-sh/sdk@0.32.15", "", { "dependencies": { "standardwebhooks": "^1.0.0" }, "peerDependencies": { "@modelcontextprotocol/sdk": ">=1.5.0 <1.10.0", "zod": ">= 3" }, "optionalPeers": ["@modelcontextprotocol/sdk"], "bin": { "mcp": "bin/mcp-server.js" } }, "sha512-LUpV5z8+8QYiZ8kSYYhq8mtdr97l0NVHQhw8y4b+2ajW8halYQ761lLJ1bRMgmemWyHqpKuBnnfIqgCKv10jwg=="],
 
     "@radix-ui/number": ["@radix-ui/number@1.1.1", "", {}, "sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g=="],
 
