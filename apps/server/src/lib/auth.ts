@@ -177,7 +177,8 @@ export const auth = betterAuth({
 				portal(),
 				webhooks({
 					secret: env.POLAR_WEBHOOK_SECRET,
-					onPayload: async (payload) => {
+					onOrderPaid: async (payload) => {
+						// TODO: Handle order paid
 						console.log(payload);
 					},
 				}),
