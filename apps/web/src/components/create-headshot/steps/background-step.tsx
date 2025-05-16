@@ -19,12 +19,7 @@ import { StepLayout } from "../step-layout";
 export function BackgroundStep() {
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
-		backgrounds: parseAsArrayOf(parseAsString).withDefault([
-			"White",
-			"Gray",
-			"Office",
-			"Nature",
-		]),
+		backgrounds: parseAsArrayOf(parseAsString).withDefault([]),
 	});
 	const [gender] = useQueryState("gender", parseAsString.withDefault("male"));
 
