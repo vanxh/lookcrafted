@@ -149,8 +149,8 @@ function CreateHeadshotPageComponent() {
 			case 10:
 				return (
 					!!state.uploadedImageIds &&
-					state.uploadedImageIds.length >= 6 &&
-					state.uploadedImageIds.length <= 10
+					state.uploadedImageIds.length >= 10 &&
+					state.uploadedImageIds.length <= 15
 				);
 			case 11:
 				return true;
