@@ -177,8 +177,11 @@ export const headshotRequest = pgTable(
 
 		headshotCount: integer("headshot_count").notNull(),
 
-		trainingRequestId: text("training_request_id"),
 		trainingSteps: integer("training_steps").notNull().default(1000),
+		trainingModelId: text("training_model_id"),
+		trainingRequestId: text("training_request_id"),
+		trainingStartedAt: timestamp("training_started_at"),
+		trainingCompletedAt: timestamp("training_completed_at"),
 
 		gender: genderEnum("gender").notNull(),
 		ageGroup: ageGroupEnum("age_group").notNull(),
