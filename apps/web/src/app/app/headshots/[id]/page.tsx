@@ -257,7 +257,12 @@ export default function HeadshotDetailPage() {
 
 				{isCompleted && (
 					<div className="flex flex-wrap gap-2">
-						<Button size="sm" variant="outline" className="w-full sm:w-auto">
+						<Button
+							size="sm"
+							variant="outline"
+							className="w-full sm:w-auto"
+							disabled
+						>
 							<Share2 className="mr-2 h-4 w-4" />
 							Share
 						</Button>
