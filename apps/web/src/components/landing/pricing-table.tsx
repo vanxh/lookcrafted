@@ -37,7 +37,7 @@ export function PricingTable() {
 						</li>
 						<li className="flex items-center gap-2">
 							<ClockIcon className="h-4 w-4 text-blue-600" />
-							~45 Mins Generation Time
+							~15 Mins Generation Time
 						</li>
 						<li className="flex items-center gap-2">
 							<ShirtIcon className="h-4 w-4 text-blue-600" />
@@ -85,7 +85,7 @@ export function PricingTable() {
 						</li>
 						<li className="flex items-center gap-2">
 							<ClockIcon className="h-4 w-4 text-blue-600" />
-							~30 Mins Generation Time
+							~15 Mins Generation Time
 						</li>
 						<li className="flex items-center gap-2">
 							<ShirtIcon className="h-4 w-4 text-blue-600" />
