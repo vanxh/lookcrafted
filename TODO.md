@@ -10,12 +10,13 @@ This file serves as a centralized place to track planned features, improvements,
 
 Major features or significant improvements that are scheduled or being actively worked on.
 
--   [ ] **[Priority: High]** Create and test a trigger to generate headshots.
-    -   *Details:* Create a trigger to generate headshots for users.
-
 -   [ ] **[Priority: High]** Write handler for payment completed webhook.
     -   *Details:* Write a handler for the payment completed webhook.
     -   *Affected Areas:* apps/server/src/lib/auth.ts
+
+-   [ ] **[Priority: Low]** Share headshot gallery link.
+    -   *Details:* Add a share button to the headshot gallery page.
+    -   *Affected Areas:* apps/web/src/app/app/headshots/[id]/page.tsx
 
 ---
 
@@ -64,3 +65,4 @@ Brainstorming area for potential future work that hasn't been prioritized yet.
 Tasks that have been finished. You can move items here temporarily before potentially removing them to keep the main sections clean. Include a completion date for reference.
 
 -   [x] Create and test a trigger to delete unpaid headshots. (Completed On: 2025-05-17)
+-   [x] Create and test a trigger to generate headshots. (Completed On: 2025-05-17)
