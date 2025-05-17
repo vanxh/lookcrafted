@@ -2,6 +2,7 @@ import type * as React from "react";
 import { Resend } from "resend";
 
 import EmailVerificationEmail from "../emails/email-verification";
+import HeadshotCompletedEmail from "../emails/headshot-completed";
 import MagicLinkEmail from "../emails/magic-link";
 import OrganizationCreatedEmail from "../emails/organization-created";
 import OrganizationInvitationEmail from "../emails/organization-invitation";
@@ -165,6 +166,34 @@ export async function sendOrganizationInvitationEmail({
 			teamName={teamName}
 			inviteLink={inviteLink}
 			recipientName={recipientName}
+		/>,
+	);
+}
+
+export async function sendHeadshotCompletedEmail({
+	to,
+	name,
+	gender,
+	ageGroup,
+	headshots,
+	headshotGalleryLink,
+}: {
+	to: string;
+	name?: string;
+	gender?: string;
+	ageGroup?: string;
+	headshots?: number;
+	headshotGalleryLink: string;
+}) {
+	return sendEmail(
+		to,
+		"Your AI headshots are ready!",
+		<HeadshotCompletedEmail
+			name={name}
+			gender={gender}
+			ageGroup={ageGroup}
+			headshots={headshots}
+			headshotGalleryLink={headshotGalleryLink}
 		/>,
 	);
 }

@@ -157,6 +157,7 @@ export const headshotStatus = pgEnum("headshot_status", [
 	"unpaid",
 	"pending",
 	"training",
+	"training-completed",
 	"generating",
 	"completed",
 	"failed",
@@ -177,6 +178,13 @@ export const headshotRequest = pgTable(
 
 		headshotCount: integer("headshot_count").notNull(),
 
+		trainingSteps: integer("training_steps").notNull().default(1000),
+		trainingModelId: text("training_model_id"),
+		trainingRequestId: text("training_request_id"),
+		trainingStartedAt: timestamp("training_started_at"),
+		trainingCompletedAt: timestamp("training_completed_at"),
+		triggerPhrase: text("trigger_phrase"),
+
 		gender: genderEnum("gender").notNull(),
 		ageGroup: ageGroupEnum("age_group").notNull(),
 		hairColor: hairColorEnum("hair_color").notNull(),
@@ -190,6 +198,8 @@ export const headshotRequest = pgTable(
 
 		loraId: text("lora_id"),
 		status: headshotStatus("status").notNull().default("unpaid"),
+
+		completedAt: timestamp("completed_at"),
 
 		regenerationCount: integer("regeneration_count").notNull().default(0),
 	},
@@ -223,6 +233,16 @@ export const headshotRequestImage = pgTable(
 	],
 );
 
+export const headshotRequestImageRelations = relations(
+	headshotRequestImage,
+	({ one }) => ({
+		headshotRequest: one(headshotRequest, {
+			fields: [headshotRequestImage.headshotRequestId],
+			references: [headshotRequest.id],
+		}),
+	}),
+);
+
 export const headshotImage = pgTable(
 	"headshot_image",
 	{
@@ -250,3 +270,10 @@ export const headshotImage = pgTable(
 		),
 	],
 );
+
+export const headshotImageRelations = relations(headshotImage, ({ one }) => ({
+	headshotRequest: one(headshotRequest, {
+		fields: [headshotImage.headshotRequestId],
+		references: [headshotRequest.id],
+	}),
+}));

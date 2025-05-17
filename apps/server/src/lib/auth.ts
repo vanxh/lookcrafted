@@ -1,5 +1,6 @@
 import { expo } from "@better-auth/expo";
-import { polar } from "@polar-sh/better-auth";
+import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
+import { tasks } from "@trigger.dev/sdk/v3";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -13,6 +14,7 @@ import {
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { env } from "../env";
+import type { onboarding } from "../trigger/onboarding";
 import {
 	sendMagicLinkEmail,
 	sendOrganizationCreatedEmail,
@@ -20,7 +22,6 @@ import {
 	sendOtpVerificationEmail,
 	sendPasswordResetEmail,
 	sendVerificationEmail,
-	sendWelcomeEmail,
 } from "./email";
 import { polarClient } from "./polar";
 
@@ -83,9 +84,8 @@ export const auth = betterAuth({
 		user: {
 			create: {
 				after: async (user) => {
-					await sendWelcomeEmail({
-						to: user.email,
-						name: user.name,
+					await tasks.trigger<typeof onboarding>("onboarding", {
+						userId: user.id,
 					});
 				},
 			},
@@ -114,12 +114,12 @@ export const auth = betterAuth({
 						to: organization.user.email,
 						name: organization.user.name,
 						organizationName: organization.organization.name,
-						dashboardLink: `${env.BETTER_AUTH_URL}/dashboard`,
+						dashboardLink: `${env.FRONTEND_URL}/dashboard`,
 					});
 				},
 			},
 			async sendInvitationEmail(data) {
-				const inviteLink = `${env.BETTER_AUTH_URL}/accept-invitation/${data.id}`;
+				const inviteLink = `${env.FRONTEND_URL}/accept-invitation/${data.id}`;
 				await sendOrganizationInvitationEmail({
 					to: data.email,
 					invitedByUsername: data.inviter.user.name,
@@ -155,32 +155,34 @@ export const auth = betterAuth({
 		polar({
 			client: polarClient,
 			createCustomerOnSignUp: true,
-			enableCustomerPortal: true,
-			checkout: {
-				enabled: true,
-				authenticatedUsersOnly: true,
-				products: [
-					{
-						productId: env.POLAR_STARTER_PRODUCT_ID,
-						slug: "starter",
+			use: [
+				checkout({
+					authenticatedUsersOnly: true,
+					products: [
+						{
+							productId: env.POLAR_STARTER_PRODUCT_ID,
+							slug: "starter",
+						},
+						{
+							productId: env.POLAR_BASIC_PRODUCT_ID,
+							slug: "basic",
+						},
+						{
+							productId: env.POLAR_PREMIUM_PRODUCT_ID,
+							slug: "premium",
+						},
+					],
+					successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
+				}),
+				portal(),
+				webhooks({
+					secret: env.POLAR_WEBHOOK_SECRET,
+					onOrderPaid: async (payload) => {
+						// TODO: Handle order paid
+						console.log(payload);
 					},
-					{
-						productId: env.POLAR_BASIC_PRODUCT_ID,
-						slug: "basic",
-					},
-					{
-						productId: env.POLAR_PREMIUM_PRODUCT_ID,
-						slug: "premium",
-					},
-				],
-				successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
-			},
-			webhooks: {
-				secret: env.POLAR_WEBHOOK_SECRET,
-				onPayload: async (payload) => {
-					console.log(payload);
-				},
-			},
+				}),
+			],
 		}),
 		openAPI({}),
 	],

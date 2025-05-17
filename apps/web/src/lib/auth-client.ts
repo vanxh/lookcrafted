@@ -1,3 +1,4 @@
+import { polarClient } from "@polar-sh/better-auth";
 import {
 	emailOTPClient,
 	inferAdditionalFields,
@@ -16,5 +17,6 @@ export const authClient = createAuthClient({
 		emailOTPClient(),
 		inferAdditionalFields<typeof auth>(),
 		organizationClient(),
+		polarClient(),
 	],
 });

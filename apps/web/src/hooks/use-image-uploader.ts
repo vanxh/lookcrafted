@@ -6,8 +6,8 @@ import type { FileRejection } from "react-dropzone";
 import { env } from "@/env";
 import { orpc } from "@/utils/orpc";
 
-const MIN_IMAGES_DEFAULT = 6;
-const MAX_IMAGES_DEFAULT = 10;
+const MIN_IMAGES_DEFAULT = 10;
+const MAX_IMAGES_DEFAULT = 15;
 
 interface FaceDescriptorEntry {
 	id: string;
@@ -203,7 +203,7 @@ export function useImageUploader({
 					detection.descriptor,
 					prevDescEntry.descriptor,
 				);
-				if (distance < 0.5)
+				if (distance < 0.15)
 					return {
 						error: "Image too similar to another uploaded image.",
 					};

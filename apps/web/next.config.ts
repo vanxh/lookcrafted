@@ -25,6 +25,9 @@ const nextConfig: NextConfig = {
 		],
 	},
 	skipTrailingSlashRedirect: true,
+	experimental: {
+		nodeMiddleware: true,
+	},
 };
 
 export default nextConfig;
