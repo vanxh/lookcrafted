@@ -10,6 +10,7 @@ import { db } from "../db";
 import { headshotImage, headshotRequest } from "../db/schema";
 import { env } from "../env";
 import { uploadImage } from "../lib/cloudflare";
+import { sendHeadshotCompletedEmail } from "../lib/email";
 
 fal.config({
 	credentials: env.FALAI_API_KEY,
@@ -384,121 +385,171 @@ export const generateHeadshotVariations = schemaTask({
 	},
 	maxDuration: 1 * 60 * 60,
 	run: async (payload) => {
-		const request = await db.query.headshotRequest.findFirst({
-			where: (headshotRequest, { eq }) =>
-				eq(headshotRequest.id, payload.headshotRequestId),
-		});
+		try {
+			const request = await db.query.headshotRequest.findFirst({
+				where: (headshotRequest, { eq }) =>
+					eq(headshotRequest.id, payload.headshotRequestId),
+			});
 
-		if (!request) {
-			console.error(
-				`Headshot request not found for headshot request ${payload.headshotRequestId}`,
-			);
-			throw new Error("Headshot request not found");
-		}
+			if (!request) {
+				console.error(
+					`Headshot request not found for headshot request ${payload.headshotRequestId}`,
+				);
+				throw new Error("Headshot request not found");
+			}
 
-		if (request.status !== "training-completed") {
-			console.error(
-				`Headshot request is not training-completed for headshot request ${payload.headshotRequestId}`,
-			);
-			throw new Error("Headshot request is not training-completed");
-		}
+			if (request.status !== "training-completed") {
+				console.error(
+					`Headshot request is not training-completed for headshot request ${payload.headshotRequestId}`,
+				);
+				throw new Error("Headshot request is not training-completed");
+			}
 
-		const loraId = request.loraId;
-		if (!loraId) {
-			console.error(
-				`Lora ID not found for headshot request ${payload.headshotRequestId}`,
-			);
-			throw new Error("Lora ID not found");
-		}
+			const loraId = request.loraId;
+			if (!loraId) {
+				console.error(
+					`Lora ID not found for headshot request ${payload.headshotRequestId}`,
+				);
+				throw new Error("Lora ID not found");
+			}
 
-		if (request.headshotCount === 0) {
+			if (request.headshotCount === 0) {
+				console.log(
+					`Headshot count is 0 for headshot request ${payload.headshotRequestId}`,
+				);
+				return;
+			}
+
+			await db
+				.update(headshotRequest)
+				.set({
+					status: "generating",
+				})
+				.where(eq(headshotRequest.id, payload.headshotRequestId));
+
 			console.log(
-				`Headshot count is 0 for headshot request ${payload.headshotRequestId}`,
+				`Generating prompts for headshot request ${payload.headshotRequestId}`,
 			);
-			return;
-		}
+			const prompts = await generatePrompts(request);
+			console.log(
+				`${prompts.length} prompts generated for headshot request ${payload.headshotRequestId}`,
+			);
 
-		await db
-			.update(headshotRequest)
-			.set({
-				status: "generating",
-			})
-			.where(eq(headshotRequest.id, payload.headshotRequestId));
+			const chunks = prompts.reduce(
+				(acc, prompt, index) => {
+					const chunkIndex = Math.floor(index / 10);
+					if (!acc[chunkIndex]) {
+						acc[chunkIndex] = [];
+					}
+					acc[chunkIndex].push(prompt);
+					return acc;
+				},
+				[] as {
+					prompt: string;
+					metadata?: Record<string, string | number>;
+				}[][],
+			);
 
-		console.log(
-			`Generating prompts for headshot request ${payload.headshotRequestId}`,
-		);
-		const prompts = await generatePrompts(request);
-		console.log(
-			`${prompts.length} prompts generated for headshot request ${payload.headshotRequestId}`,
-		);
+			await Promise.all(
+				chunks.map(async (chunk) => {
+					for (const prompt of chunk) {
+						console.log(
+							`Generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+						);
+						const falImage = await fal.subscribe(FAL_LORA_MODEL_ID, {
+							input: {
+								prompt: prompt.prompt,
+								image_size: "portrait_4_3",
+								loras: [
+									{
+										path: loraId,
+									},
+								],
+								output_format: "png",
+								seed: Math.floor(Math.random() * 1000000),
+							},
+						});
 
-		const chunks = prompts.reduce(
-			(acc, prompt, index) => {
-				const chunkIndex = Math.floor(index / 10);
-				if (!acc[chunkIndex]) {
-					acc[chunkIndex] = [];
-				}
-				acc[chunkIndex].push(prompt);
-				return acc;
-			},
-			[] as { prompt: string; metadata?: Record<string, string | number> }[][],
-		);
+						const image = await fetch(falImage.data.images[0].url);
+						const imageBuffer = Buffer.from(await image.arrayBuffer());
+						const imageId = await uploadImage(imageBuffer, {
+							...prompt.metadata,
+							headshotRequestId: payload.headshotRequestId,
+							userId: request.userId,
+						});
 
-		await Promise.all(
-			chunks.map(async (chunk) => {
-				for (const prompt of chunk) {
-					console.log(
-						`Generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
-					);
-					const falImage = await fal.subscribe(FAL_LORA_MODEL_ID, {
-						input: {
+						const headshotImageId = crypto.randomUUID();
+						await db.insert(headshotImage).values({
+							id: headshotImageId,
+							headshotRequestId: payload.headshotRequestId,
+
+							imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
 							prompt: prompt.prompt,
-							image_size: "portrait_4_3",
-							loras: [
-								{
-									path: loraId,
-								},
-							],
-							output_format: "png",
-							seed: Math.floor(Math.random() * 1000000),
-						},
+
+							modelVersion: FAL_LORA_MODEL_ID,
+						});
+
+						console.log(
+							`Image uploaded for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+						);
+					}
+				}),
+			);
+
+			await db
+				.update(headshotRequest)
+				.set({
+					status: "completed",
+					completedAt: new Date(),
+				})
+				.where(eq(headshotRequest.id, payload.headshotRequestId));
+
+			try {
+				console.log(
+					`Sending headshot completion email to user ${request.userId} for headshot request ${payload.headshotRequestId}`,
+				);
+				const user = await db.query.user.findFirst({
+					where: (user, { eq }) => eq(user.id, request.userId),
+					columns: {
+						email: true,
+						name: true,
+					},
+				});
+
+				if (user?.email) {
+					const headshotImages = await db.query.headshotImage.findMany({
+						where: (headshotImage, { eq }) =>
+							eq(headshotImage.headshotRequestId, payload.headshotRequestId),
 					});
 
-					const image = await fetch(falImage.data.images[0].url);
-					const imageBuffer = Buffer.from(await image.arrayBuffer());
-					const imageId = await uploadImage(imageBuffer, {
-						...prompt.metadata,
-						headshotRequestId: payload.headshotRequestId,
-						userId: request.userId,
+					await sendHeadshotCompletedEmail({
+						to: user.email,
+						name: user.name || undefined,
+						gender: request.gender,
+						ageGroup: request.ageGroup,
+						headshots: headshotImages.length,
+						headshotGalleryLink: `${env.FRONTEND_URL}/app/headshots/${payload.headshotRequestId}`,
 					});
 
-					const headshotImageId = crypto.randomUUID();
-					await db.insert(headshotImage).values({
-						id: headshotImageId,
-						headshotRequestId: payload.headshotRequestId,
-
-						imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
-						prompt: prompt.prompt,
-
-						modelVersion: FAL_LORA_MODEL_ID,
-					});
-
-					console.log(
-						`Image uploaded for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
-					);
+					console.log(`Headshot completion email sent to ${user.email}`);
 				}
-			}),
-		);
+			} catch (emailError) {
+				console.error("Error sending headshot completion email:", emailError);
+			}
+		} catch (error) {
+			console.error(
+				`Error generating headshot variations for headshot request ${payload.headshotRequestId}`,
+				error,
+			);
 
-		await db
-			.update(headshotRequest)
-			.set({
-				status: "completed",
-				completedAt: new Date(),
-			})
-			.where(eq(headshotRequest.id, payload.headshotRequestId));
+			await db
+				.update(headshotRequest)
+				.set({
+					status: "failed",
+				})
+				.where(eq(headshotRequest.id, payload.headshotRequestId));
 
-		// TODO: Send email to user
+			throw error;
+		}
 	},
 });
