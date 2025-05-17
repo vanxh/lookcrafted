@@ -28,6 +28,10 @@
 		"email:dev": {
 			"cache": false,
 			"persistent": true
+		},
+		"deploy:trigger-prod": {
+			"cache": false,
+			"persistent": true
 		}
 	}
 }
