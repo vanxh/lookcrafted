@@ -7,8 +7,9 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import { db } from "../db";
-import { headshotRequest } from "../db/schema";
+import { headshotImage, headshotRequest } from "../db/schema";
 import { env } from "../env";
+import { uploadImage } from "../lib/cloudflare";
 
 fal.config({
 	credentials: env.FALAI_API_KEY,
@@ -417,13 +418,86 @@ export const generateHeadshotVariations = schemaTask({
 			return;
 		}
 
+		await db
+			.update(headshotRequest)
+			.set({
+				status: "generating",
+			})
+			.where(eq(headshotRequest.id, payload.headshotRequestId));
+
 		console.log(
 			`Generating prompts for headshot request ${payload.headshotRequestId}`,
 		);
 		const prompts = await generatePrompts(request);
 		console.log(
 			`${prompts.length} prompts generated for headshot request ${payload.headshotRequestId}`,
-			prompts,
 		);
+
+		const chunks = prompts.reduce(
+			(acc, prompt, index) => {
+				const chunkIndex = Math.floor(index / 10);
+				if (!acc[chunkIndex]) {
+					acc[chunkIndex] = [];
+				}
+				acc[chunkIndex].push(prompt);
+				return acc;
+			},
+			[] as { prompt: string; metadata?: Record<string, string | number> }[][],
+		);
+
+		await Promise.all(
+			chunks.map(async (chunk) => {
+				for (const prompt of chunk) {
+					console.log(
+						`Generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+					);
+					const falImage = await fal.subscribe(FAL_LORA_MODEL_ID, {
+						input: {
+							prompt: prompt.prompt,
+							image_size: "portrait_4_3",
+							loras: [
+								{
+									path: loraId,
+								},
+							],
+							output_format: "png",
+						},
+					});
+
+					const image = await fetch(falImage.data.images[0].url);
+					const imageBuffer = Buffer.from(await image.arrayBuffer());
+					const imageId = await uploadImage(imageBuffer, {
+						...prompt.metadata,
+						headshotRequestId: payload.headshotRequestId,
+						userId: request.userId,
+					});
+
+					const headshotImageId = crypto.randomUUID();
+					await db.insert(headshotImage).values({
+						id: headshotImageId,
+						headshotRequestId: payload.headshotRequestId,
+
+						imageUrl: imageId,
+						prompt: prompt.prompt,
+
+						modelVersion: FAL_LORA_MODEL_ID,
+					});
+
+					console.log(
+						`Image uploaded for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+					);
+				}
+			}),
+		);
+
+		await db
+			.update(headshotRequest)
+			.set({
+				status: "completed",
+				completedAt: new Date(),
+			})
+			.where(eq(headshotRequest.id, payload.headshotRequestId));
+
+		// TODO: Send email to user
 	},
 });

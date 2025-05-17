@@ -199,6 +199,8 @@ export const headshotRequest = pgTable(
 		loraId: text("lora_id"),
 		status: headshotStatus("status").notNull().default("unpaid"),
 
+		completedAt: timestamp("completed_at"),
+
 		regenerationCount: integer("regeneration_count").notNull().default(0),
 	},
 	(table) => [index("headshot_user_id_index").on(table.userId)],

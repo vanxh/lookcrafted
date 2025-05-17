@@ -58,3 +58,38 @@ export const deleteImage = async (imageId: string) => {
 
 	return data;
 };
+
+export const uploadImage = async (
+	image: Buffer,
+	metadata?: Record<string, unknown>,
+) => {
+	const url = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
+
+	const formData = new FormData();
+	const blob = new Blob([image], { type: "image/png" });
+	formData.append("file", blob);
+	if (metadata) {
+		formData.append("metadata", JSON.stringify(metadata));
+	}
+
+	// Use native fetch to avoid form-data issues
+	const res = await fetch(url, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${env.CLOUDFLARE_API_TOKEN}`,
+		},
+		body: formData,
+	});
+
+	if (!res.ok) {
+		throw new Error("Unable to upload image");
+	}
+
+	const data = (await res.json()) as {
+		result: {
+			id: string;
+		};
+	};
+
+	return data.result.id;
+};
