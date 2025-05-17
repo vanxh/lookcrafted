@@ -12,7 +12,8 @@
 		"dev:web": "turbo -F web dev",
 		"dev:server": "turbo -F server dev",
 		"db:push": "turbo -F server db:push",
-		"db:studio": "turbo -F server db:studio"
+		"db:studio": "turbo -F server db:studio",
+		"deploy:trigger-prod": "turbo -F server deploy:trigger-prod"
 	},
 	"dependencies": {},
 	"devDependencies": {
