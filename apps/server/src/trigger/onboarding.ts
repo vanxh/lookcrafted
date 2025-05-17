@@ -1,4 +1,4 @@
-import { logger, schemaTask } from "@trigger.dev/sdk/v3";
+import { schemaTask } from "@trigger.dev/sdk/v3";
 import { z } from "zod";
 
 import { db } from "../db";
@@ -21,16 +21,22 @@ export const onboarding = schemaTask({
 		});
 
 		if (!user) {
-			logger.error("User not found", { userId: payload.userId });
+			console.error("User not found", { userId: payload.userId });
 			throw new Error("User not found");
 		}
+
+		console.log(`Starting onboarding for ${user.id}`, {
+			userId: user.id,
+			email: user.email,
+			name: user.name,
+		});
 
 		await sendWelcomeEmail({
 			to: user.email,
 			name: user.name,
 		});
 
-		logger.info("Welcome email sent", { userId: user.id });
+		console.log("Welcome email sent", { userId: user.id });
 
 		// TODO
 	},
