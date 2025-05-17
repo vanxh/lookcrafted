@@ -42,10 +42,6 @@ export default function HeadshotDetailLoading() {
 
 			<div className="my-6 h-px w-full bg-gray-200" />
 
-			<div className="mb-6">
-				<Skeleton className="h-10 w-60" />
-			</div>
-
 			<div className="grid grid-cols-2 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
 				{GALLERY_SKELETON_ITEMS.map((item) => (
 					<Card key={item.id} className="overflow-hidden p-0">

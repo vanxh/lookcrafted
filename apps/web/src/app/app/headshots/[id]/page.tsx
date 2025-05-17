@@ -2,7 +2,14 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { formatDistance } from "date-fns";
-import { ArrowLeft, Download, Heart, RefreshCw, Share2 } from "lucide-react";
+import {
+	ArrowLeft,
+	Download,
+	Heart,
+	Loader2,
+	RefreshCw,
+	Share2,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -252,7 +259,7 @@ export default function HeadshotDetailPage() {
 					</CardHeader>
 					<CardContent className="flex justify-center py-6">
 						<div className="flex flex-col items-center">
-							<div className="h-12 w-12 animate-spin rounded-full border-gray-900 border-b-2" />
+							<Loader2 className="h-12 w-12 animate-spin text-muted-foreground" />
 							<p className="mt-4 text-gray-500 text-sm">
 								Please check back soon
 							</p>
