@@ -14,7 +14,8 @@ fal.config({
 	credentials: env.FALAI_API_KEY,
 });
 
-const FAL_TRAINING_MODEL_ID = "fal-ai/flux-lora-portrait-trainer";
+// const FAL_TRAINING_MODEL_ID = "fal-ai/flux-lora-portrait-trainer";
+const FAL_TRAINING_MODEL_ID = "fal-ai/turbo-flux-trainer";
 const FAL_LORA_MODEL_ID = "fal-ai/flux-lora";
 const FAL_LORA_TRIGGER_PHRASE = "ohwx";
 
@@ -103,6 +104,7 @@ export const generateHeadshot = schemaTask({
 	retry: {
 		maxAttempts: 0,
 	},
+	maxDuration: 2 * 60 * 60,
 	run: async (payload) => {
 		const trainingResult = await processHeadshotTraining.triggerAndWait({
 			headshotRequestId: payload.headshotRequestId,
@@ -116,23 +118,18 @@ export const generateHeadshot = schemaTask({
 			throw new Error("Error processing headshot training");
 		}
 
-		// const result = await fal.subscribe("fal-ai/flux-lora", {
-		// 	input: {
-		// 		loras: [
-		// 			{
-		// 				path: result.data.diffusers_lora_file.url,
-		// 			},
-		// 		],
-		// 		prompt: "A headshot of a person",
-		// 	},
-		// 	webhookUrl: `${env.FALAI_WEBHOOK_URL}`,
-		// });
+		const generateHeadshotVariationsResult =
+			await generateHeadshotVariations.triggerAndWait({
+				headshotRequestId: payload.headshotRequestId,
+			});
 
-		console.log(
-			"Training completed for headshot request",
-			trainingResult.output,
-		);
-		// TODO
+		if (!generateHeadshotVariationsResult.ok) {
+			console.error(
+				`Error generating headshot variations for headshot request ${payload.headshotRequestId}`,
+				generateHeadshotVariationsResult,
+			);
+			throw new Error("Error generating headshot variations");
+		}
 	},
 });
 
@@ -144,8 +141,7 @@ export const processHeadshotTraining = schemaTask({
 	retry: {
 		maxAttempts: 0,
 	},
-	// 2 hours
-	maxDuration: 2 * 60 * 60,
+	maxDuration: 1 * 60 * 60,
 	run: async (payload) => {
 		console.log(
 			`Processing headshot training for headshot request ${payload.headshotRequestId}`,
@@ -216,6 +212,9 @@ export const processHeadshotTraining = schemaTask({
 			});
 			console.log(`Training completed for headshot request ${request.id}`);
 
+			console.log(
+				`Updating headshot request ${request.id} to training-completed`,
+			);
 			await db
 				.update(headshotRequest)
 				.set({
@@ -224,6 +223,9 @@ export const processHeadshotTraining = schemaTask({
 					status: "training-completed",
 				})
 				.where(eq(headshotRequest.id, payload.headshotRequestId));
+			console.log(
+				`Updated headshot request ${request.id} to training-completed`,
+			);
 
 			return result;
 		} catch (error) {
@@ -379,6 +381,7 @@ export const generateHeadshotVariations = schemaTask({
 	retry: {
 		maxAttempts: 0,
 	},
+	maxDuration: 1 * 60 * 60,
 	run: async (payload) => {
 		const request = await db.query.headshotRequest.findFirst({
 			where: (headshotRequest, { eq }) =>
@@ -405,6 +408,13 @@ export const generateHeadshotVariations = schemaTask({
 				`Lora ID not found for headshot request ${payload.headshotRequestId}`,
 			);
 			throw new Error("Lora ID not found");
+		}
+
+		if (request.headshotCount === 0) {
+			console.log(
+				`Headshot count is 0 for headshot request ${payload.headshotRequestId}`,
+			);
+			return;
 		}
 
 		console.log(
