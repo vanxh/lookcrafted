@@ -199,7 +199,6 @@ export const processHeadshotTraining = schemaTask({
 					images_data_url: imagesDataUrl,
 					trigger_phrase: FAL_LORA_TRIGGER_PHRASE,
 				},
-				webhookUrl: `${env.FALAI_WEBHOOK_URL}`,
 				onEnqueue: async (requestId) => {
 					console.log(
 						`Updating headshot request ${request.id} training request id to ${requestId}`,
