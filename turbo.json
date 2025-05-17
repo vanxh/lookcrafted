@@ -32,6 +32,10 @@
 		"deploy:trigger-prod": {
 			"cache": false,
 			"persistent": true
+		},
+		"trigger:dev": {
+			"cache": false,
+			"persistent": true
 		}
 	}
 }
