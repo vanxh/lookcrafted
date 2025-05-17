@@ -107,17 +107,17 @@ export const generateHeadshot = schemaTask({
 	},
 	maxDuration: 2 * 60 * 60,
 	run: async (payload) => {
-		const trainingResult = await processHeadshotTraining.triggerAndWait({
-			headshotRequestId: payload.headshotRequestId,
-		});
+		// const trainingResult = await processHeadshotTraining.triggerAndWait({
+		// 	headshotRequestId: payload.headshotRequestId,
+		// });
 
-		if (!trainingResult.ok) {
-			console.error(
-				`Error processing headshot training for headshot request ${payload.headshotRequestId}`,
-				trainingResult,
-			);
-			throw new Error("Error processing headshot training");
-		}
+		// if (!trainingResult.ok) {
+		// 	console.error(
+		// 		`Error processing headshot training for headshot request ${payload.headshotRequestId}`,
+		// 		trainingResult,
+		// 	);
+		// 	throw new Error("Error processing headshot training");
+		// }
 
 		const generateHeadshotVariationsResult =
 			await generateHeadshotVariations.triggerAndWait({
@@ -477,7 +477,7 @@ export const generateHeadshotVariations = schemaTask({
 						id: headshotImageId,
 						headshotRequestId: payload.headshotRequestId,
 
-						imageUrl: imageId,
+						imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
 						prompt: prompt.prompt,
 
 						modelVersion: FAL_LORA_MODEL_ID,
