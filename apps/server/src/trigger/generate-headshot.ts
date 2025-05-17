@@ -100,7 +100,7 @@ export const generateHeadshot = schemaTask({
 	schema: z.object({
 		headshotRequestId: z.string(),
 	}),
-	run: async (payload, { ctx }) => {
+	run: async (payload) => {
 		const trainingResult = await processHeadshotTraining.triggerAndWait({
 			headshotRequestId: payload.headshotRequestId,
 		});
