@@ -221,6 +221,7 @@ export const processHeadshotTraining = schemaTask({
 				.set({
 					loraId: result.data.diffusers_lora_file.url,
 					trainingCompletedAt: new Date(),
+					status: "training-completed",
 				})
 				.where(eq(headshotRequest.id, payload.headshotRequestId));
 
@@ -406,6 +407,13 @@ export const generateHeadshotVariations = schemaTask({
 			throw new Error("Lora ID not found");
 		}
 
+		console.log(
+			`Generating prompts for headshot request ${payload.headshotRequestId}`,
+		);
 		const prompts = await generatePrompts(request);
+		console.log(
+			`${prompts.length} prompts generated for headshot request ${payload.headshotRequestId}`,
+			prompts,
+		);
 	},
 });
