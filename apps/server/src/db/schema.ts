@@ -229,6 +229,16 @@ export const headshotRequestImage = pgTable(
 	],
 );
 
+export const headshotRequestImageRelations = relations(
+	headshotRequestImage,
+	({ one }) => ({
+		headshotRequest: one(headshotRequest, {
+			fields: [headshotRequestImage.headshotRequestId],
+			references: [headshotRequest.id],
+		}),
+	}),
+);
+
 export const headshotImage = pgTable(
 	"headshot_image",
 	{
@@ -256,3 +266,10 @@ export const headshotImage = pgTable(
 		),
 	],
 );
+
+export const headshotImageRelations = relations(headshotImage, ({ one }) => ({
+	headshotRequest: one(headshotRequest, {
+		fields: [headshotImage.headshotRequestId],
+		references: [headshotRequest.id],
+	}),
+}));

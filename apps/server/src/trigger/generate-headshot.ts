@@ -100,6 +100,9 @@ export const generateHeadshot = schemaTask({
 	schema: z.object({
 		headshotRequestId: z.string(),
 	}),
+	retry: {
+		maxAttempts: 0,
+	},
 	run: async (payload) => {
 		const trainingResult = await processHeadshotTraining.triggerAndWait({
 			headshotRequestId: payload.headshotRequestId,
@@ -138,6 +141,11 @@ export const processHeadshotTraining = schemaTask({
 	schema: z.object({
 		headshotRequestId: z.string(),
 	}),
+	retry: {
+		maxAttempts: 0,
+	},
+	// 2 hours
+	maxDuration: 2 * 60 * 60,
 	run: async (payload) => {
 		console.log(
 			`Processing headshot training for headshot request ${payload.headshotRequestId}`,
@@ -188,7 +196,8 @@ export const processHeadshotTraining = schemaTask({
 			);
 			const result = await fal.subscribe(FAL_TRAINING_MODEL_ID, {
 				input: {
-					steps: request.trainingSteps,
+					// steps: request.trainingSteps,
+					steps: 1500,
 					images_data_url: imagesDataUrl,
 					trigger_phrase: FAL_LORA_TRIGGER_PHRASE,
 				},
@@ -227,6 +236,8 @@ export const processHeadshotTraining = schemaTask({
 				})
 				.where(eq(headshotRequest.id, payload.headshotRequestId))
 				.catch(() => {});
+
+			throw error;
 		}
 	},
 });
