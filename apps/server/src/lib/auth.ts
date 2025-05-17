@@ -1,5 +1,6 @@
 import { expo } from "@better-auth/expo";
 import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
+import { tasks } from "@trigger.dev/sdk/v3";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -13,6 +14,7 @@ import {
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { env } from "../env";
+import type { onboarding } from "../trigger/onboarding";
 import {
 	sendMagicLinkEmail,
 	sendOrganizationCreatedEmail,
@@ -20,7 +22,6 @@ import {
 	sendOtpVerificationEmail,
 	sendPasswordResetEmail,
 	sendVerificationEmail,
-	sendWelcomeEmail,
 } from "./email";
 import { polarClient } from "./polar";
 
@@ -83,9 +84,8 @@ export const auth = betterAuth({
 		user: {
 			create: {
 				after: async (user) => {
-					await sendWelcomeEmail({
-						to: user.email,
-						name: user.name,
+					await tasks.trigger<typeof onboarding>("onboarding", {
+						userId: user.id,
 					});
 				},
 			},
