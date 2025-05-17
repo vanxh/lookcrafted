@@ -1,4 +1,4 @@
-import { logger, schedules } from "@trigger.dev/sdk/v3";
+import { schedules } from "@trigger.dev/sdk/v3";
 import { inArray } from "drizzle-orm";
 
 import { db } from "../db";
@@ -20,7 +20,7 @@ export const deleteUnpaidHeadshots = schedules.task({
 				),
 		});
 
-		logger.log(
+		console.log(
 			`Deleting ${headshots.length} unpaid headshots older than 7 days`,
 		);
 
@@ -33,7 +33,7 @@ export const deleteUnpaidHeadshots = schedules.task({
 		);
 		const end = performance.now();
 
-		logger.log(
+		console.log(
 			`Successfully deleted ${headshots.length} unpaid headshots in ${
 				end - start
 			}ms`,
