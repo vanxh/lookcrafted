@@ -157,6 +157,7 @@ export const headshotStatus = pgEnum("headshot_status", [
 	"unpaid",
 	"pending",
 	"training",
+	"training-completed",
 	"generating",
 	"completed",
 	"failed",
@@ -182,6 +183,7 @@ export const headshotRequest = pgTable(
 		trainingRequestId: text("training_request_id"),
 		trainingStartedAt: timestamp("training_started_at"),
 		trainingCompletedAt: timestamp("training_completed_at"),
+		triggerPhrase: text("trigger_phrase"),
 
 		gender: genderEnum("gender").notNull(),
 		ageGroup: ageGroupEnum("age_group").notNull(),

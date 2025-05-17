@@ -188,6 +188,7 @@ export const processHeadshotTraining = schemaTask({
 					// trainingRequestId: request_id,
 					trainingModelId: FAL_TRAINING_MODEL_ID,
 					trainingStartedAt: new Date(),
+					triggerPhrase: FAL_LORA_TRIGGER_PHRASE,
 				})
 				.where(eq(headshotRequest.id, payload.headshotRequestId));
 
@@ -196,8 +197,7 @@ export const processHeadshotTraining = schemaTask({
 			);
 			const result = await fal.subscribe(FAL_TRAINING_MODEL_ID, {
 				input: {
-					// steps: request.trainingSteps,
-					steps: 1500,
+					steps: request.trainingSteps,
 					images_data_url: imagesDataUrl,
 					trigger_phrase: FAL_LORA_TRIGGER_PHRASE,
 				},
@@ -240,5 +240,172 @@ export const processHeadshotTraining = schemaTask({
 
 			throw error;
 		}
+	},
+});
+
+const generatePrompts = async (
+	request: typeof headshotRequest.$inferSelect,
+) => {
+	const {
+		triggerPhrase,
+		gender,
+		ageGroup,
+		hairColor,
+		hairLength,
+		hairTexture,
+		ethnicity,
+		bodyType,
+		backgrounds,
+		outfits,
+		headshotCount,
+	} = request;
+
+	const generatedPrompts: {
+		prompt: string;
+		metadata?: Record<string, string | number>;
+	}[] = [];
+	const totalImagesToGenerate = headshotCount;
+
+	const styleTerms = [
+		"studio lighting, realistic photography, high detail, sharp focus, photorealistic, 8k, professional look, clean skin, good composition",
+		"professional lighting, crisp details, natural skin tone, clean background, balanced composition",
+		"corporate portrait, modern photography, clear focus, flattering light",
+		"high-quality professional photo, sharp image, smooth skin, professional pose",
+	];
+
+	const expressionAngleTerms = [
+		"looking at camera, neutral expression",
+		"looking at camera, slight smile",
+		"looking at camera, confident smile",
+		"looking slightly away, neutral expression",
+		"looking slightly away, slight smile",
+		"3/4 view, looking at camera, neutral expression",
+		"shoulder up shot",
+		"chest up shot",
+		"head and shoulders portrait",
+		"close up portrait",
+	];
+
+	const userDescription = `${ethnicity} ${gender}, ${ageGroup} years old, with ${hairColor.toLowerCase()} ${hairLength.toLowerCase()} ${hairTexture.toLowerCase()} hair, ${bodyType.toLowerCase()} build`;
+
+	const totalCombinations = (backgrounds || []).length * (outfits || []).length;
+	const imagesPerCombination =
+		totalCombinations > 0
+			? Math.max(1, Math.floor(totalImagesToGenerate / totalCombinations))
+			: totalImagesToGenerate;
+
+	let promptCount = 0;
+
+	const effectiveBackgrounds = backgrounds || [];
+	const effectiveOutfits = outfits || [];
+
+	for (const bg of effectiveBackgrounds) {
+		for (const outfit of effectiveOutfits) {
+			for (let i = 0; i < imagesPerCombination; i++) {
+				if (promptCount >= totalImagesToGenerate) break;
+
+				const currentStyleTerms = styleTerms[promptCount % styleTerms.length];
+				const currentExpressionAngle =
+					expressionAngleTerms[promptCount % expressionAngleTerms.length];
+
+				let positivePrompt = `professional corporate headshot, studio portrait, ${currentStyleTerms}`;
+
+				positivePrompt += `, ${triggerPhrase}`;
+
+				positivePrompt += `, a ${userDescription}`;
+
+				positivePrompt += `, ${currentExpressionAngle}`;
+
+				positivePrompt += `, wearing a clean ${outfit} outfit`;
+				positivePrompt += `, with a clean ${bg} background`;
+
+				generatedPrompts.push({
+					prompt: positivePrompt.trim(),
+					metadata: {
+						background: bg,
+						outfit: outfit,
+						variationIndex: i,
+						combination: `${bg}-${outfit}`,
+					},
+				});
+
+				promptCount++;
+			}
+			if (promptCount >= totalImagesToGenerate) break;
+		}
+		if (promptCount >= totalImagesToGenerate) break;
+	}
+
+	while (promptCount < totalImagesToGenerate) {
+		for (const bg of effectiveBackgrounds) {
+			for (const outfit of effectiveOutfits) {
+				if (promptCount >= totalImagesToGenerate) break;
+
+				const currentStyleTerms = styleTerms[promptCount % styleTerms.length];
+				const currentExpressionAngle =
+					expressionAngleTerms[promptCount % expressionAngleTerms.length];
+
+				let positivePrompt = `professional corporate headshot, studio portrait, ${currentStyleTerms}`;
+				positivePrompt += `, ${triggerPhrase}`;
+				positivePrompt += `, a ${userDescription}`;
+				positivePrompt += `, ${currentExpressionAngle}`;
+				positivePrompt += `, wearing a clean ${outfit} outfit`;
+				positivePrompt += `, with a clean ${bg} background`;
+
+				generatedPrompts.push({
+					prompt: positivePrompt.trim(),
+					metadata: {
+						background: bg,
+						outfit: outfit,
+						variationIndex: promptCount,
+						combination: `${bg}-${outfit}`,
+					},
+				});
+				promptCount++;
+			}
+			if (promptCount >= totalImagesToGenerate) break;
+		}
+	}
+
+	return generatedPrompts.slice(0, totalImagesToGenerate);
+};
+
+export const generateHeadshotVariations = schemaTask({
+	id: "generate-headshot-variations",
+	schema: z.object({
+		headshotRequestId: z.string(),
+	}),
+	retry: {
+		maxAttempts: 0,
+	},
+	run: async (payload) => {
+		const request = await db.query.headshotRequest.findFirst({
+			where: (headshotRequest, { eq }) =>
+				eq(headshotRequest.id, payload.headshotRequestId),
+		});
+
+		if (!request) {
+			console.error(
+				`Headshot request not found for headshot request ${payload.headshotRequestId}`,
+			);
+			throw new Error("Headshot request not found");
+		}
+
+		if (request.status !== "training-completed") {
+			console.error(
+				`Headshot request is not training-completed for headshot request ${payload.headshotRequestId}`,
+			);
+			throw new Error("Headshot request is not training-completed");
+		}
+
+		const loraId = request.loraId;
+		if (!loraId) {
+			console.error(
+				`Lora ID not found for headshot request ${payload.headshotRequestId}`,
+			);
+			throw new Error("Lora ID not found");
+		}
+
+		const prompts = await generatePrompts(request);
 	},
 });
