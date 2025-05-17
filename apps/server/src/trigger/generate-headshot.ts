@@ -461,6 +461,7 @@ export const generateHeadshotVariations = schemaTask({
 								},
 							],
 							output_format: "png",
+							seed: Math.floor(Math.random() * 1000000),
 						},
 					});
 
