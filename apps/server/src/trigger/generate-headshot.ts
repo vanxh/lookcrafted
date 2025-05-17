@@ -220,6 +220,7 @@ export const processHeadshotTraining = schemaTask({
 				.update(headshotRequest)
 				.set({
 					loraId: result.data.diffusers_lora_file.url,
+					trainingCompletedAt: new Date(),
 				})
 				.where(eq(headshotRequest.id, payload.headshotRequestId));
 
