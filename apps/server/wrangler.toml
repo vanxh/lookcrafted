@@ -12,6 +12,7 @@ enabled = true
 mode = "smart"
 
 [vars]
+NODE_ENV = "production"
 CORS_ORIGIN = "https://lookcrafted.com,https://www.lookcrafted.com"
 BETTER_AUTH_URL = "https://api.lookcrafted.com"
 FRONTEND_URL = "https://lookcrafted.com"
