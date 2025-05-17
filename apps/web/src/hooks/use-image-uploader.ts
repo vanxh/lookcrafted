@@ -203,7 +203,7 @@ export function useImageUploader({
 					detection.descriptor,
 					prevDescEntry.descriptor,
 				);
-				if (distance < 0.5)
+				if (distance < 0.15)
 					return {
 						error: "Image too similar to another uploaded image.",
 					};
