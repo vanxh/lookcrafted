@@ -2,7 +2,7 @@ import { logger, schedules } from "@trigger.dev/sdk/v3";
 import { inArray } from "drizzle-orm";
 
 import { db } from "../db";
-import { headshotRequest, headshotRequestImage } from "../db/schema";
+import { headshotRequest } from "../db/schema";
 
 export const deleteUnpaidHeadshots = schedules.task({
 	id: "delete-unpaid-headshots",
@@ -18,13 +18,6 @@ export const deleteUnpaidHeadshots = schedules.task({
 						new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
 					),
 				),
-			with: {
-				uploads: {
-					columns: {
-						id: true,
-					},
-				},
-			},
 		});
 
 		logger.log(
@@ -32,21 +25,12 @@ export const deleteUnpaidHeadshots = schedules.task({
 		);
 
 		const start = performance.now();
-		await db.transaction(async (tx) => {
-			await tx.delete(headshotRequestImage).where(
-				inArray(
-					headshotRequestImage.headshotRequestId,
-					headshots.flatMap((h) => h.uploads.map((u) => u.id)),
-				),
-			);
-
-			await tx.delete(headshotRequest).where(
-				inArray(
-					headshotRequest.id,
-					headshots.map((h) => h.id),
-				),
-			);
-		});
+		await db.delete(headshotRequest).where(
+			inArray(
+				headshotRequest.id,
+				headshots.map((h) => h.id),
+			),
+		);
 		const end = performance.now();
 
 		logger.log(

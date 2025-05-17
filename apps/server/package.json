@@ -10,7 +10,8 @@
 		"db:push": "drizzle-kit push",
 		"db:studio": "drizzle-kit studio",
 		"email:dev": "email dev",
-		"deploy:trigger-prod": "bunx trigger.dev@3.3.17 deploy"
+		"deploy:trigger-prod": "bunx trigger.dev@3.3.17 deploy",
+		"trigger:dev": "bunx trigger.dev@3.3.17 dev"
 	},
 	"dependencies": {
 		"@better-auth/expo": "^1.2.7",
