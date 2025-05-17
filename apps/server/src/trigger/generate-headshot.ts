@@ -125,6 +125,10 @@ export const generateHeadshot = schemaTask({
 		// 	webhookUrl: `${env.FALAI_WEBHOOK_URL}`,
 		// });
 
+		console.log(
+			"Training completed for headshot request",
+			trainingResult.output,
+		);
 		// TODO
 	},
 });
