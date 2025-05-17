@@ -7,7 +7,11 @@ import {
 	editHeadshotRequestSchema,
 } from "@lookcrafted/constants";
 
-import { headshotRequest, headshotRequestImage } from "../db/schema";
+import {
+	headshotImage,
+	headshotRequest,
+	headshotRequestImage,
+} from "../db/schema";
 import { env } from "../env";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 import { polarClient } from "../lib/polar";
@@ -325,5 +329,51 @@ export const headshotRouter = {
 			});
 
 			return { headers: { location: url } };
+		}),
+
+	favoriteImage: protectedProcedure
+		.route({
+			method: "POST",
+			path: "/headshots/images/{imageId}/favorite",
+			tags: ["headshots"],
+		})
+		.input(
+			z.object({
+				imageId: z.string(),
+				isFavorite: z.boolean(),
+			}),
+		)
+		.output(z.object({ success: z.boolean() }))
+		.handler(async ({ context, input }) => {
+			const { session, db } = context;
+
+			const result = await db.query.headshotImage.findFirst({
+				where: eq(headshotImage.id, input.imageId),
+				columns: {
+					id: true,
+				},
+				with: {
+					headshotRequest: {
+						columns: {
+							userId: true,
+						},
+					},
+				},
+			});
+
+			if (!result || result.headshotRequest.userId !== session.user.id) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Image not found",
+				});
+			}
+
+			await db
+				.update(headshotImage)
+				.set({
+					isFavorite: input.isFavorite,
+				})
+				.where(eq(headshotImage.id, result.id));
+
+			return { success: true };
 		}),
 };
