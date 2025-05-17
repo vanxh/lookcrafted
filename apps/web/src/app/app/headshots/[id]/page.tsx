@@ -158,6 +158,62 @@ export default function HeadshotDetailPage() {
 		}
 	};
 
+	const getStatusDescription = () => {
+		switch (headshot.status) {
+			case "unpaid":
+				return "Your headshots are waiting for payment. Complete the payment to start the generation process.";
+			case "pending":
+				return "Your headshots are in queue and will begin processing soon. This typically takes 5-10 minutes to start.";
+			case "training":
+				return "AI is learning from your reference photos. This training process typically takes 10-20 minutes.";
+			case "training-completed":
+				return "Training has been completed. Your headshots will begin generating shortly.";
+			case "generating":
+				return "Your professional headshots are now being generated. This final step typically takes 5-10 minutes.";
+			case "failed":
+				return "There was an issue generating your headshots. Our team has been notified and will look into this.";
+			default:
+				return `Your headshots are currently being ${headshot.status.replace(/-/g, " ")}. This process typically takes 15-30 minutes.`;
+		}
+	};
+
+	const getStatusTitle = () => {
+		switch (headshot.status) {
+			case "unpaid":
+				return "Payment Required";
+			case "failed":
+				return "Generation Failed";
+			default:
+				return "Headshot Generation in Progress";
+		}
+	};
+
+	const renderStatusActions = () => {
+		switch (headshot.status) {
+			case "unpaid":
+				return (
+					<Button variant="default" className="mr-2" asChild>
+						<Link href={`/create-headshot?id=${id}&step=12`}>
+							Complete Payment
+						</Link>
+					</Button>
+				);
+			case "failed":
+				return (
+					<Button variant="outline" className="mr-2" asChild>
+						<Link href="/contact">Contact Support</Link>
+					</Button>
+				);
+			default:
+				return (
+					<Button variant="outline" className="mr-2">
+						<RefreshCw className="mr-2 h-4 w-4" />
+						Refresh Status
+					</Button>
+				);
+		}
+	};
+
 	return (
 		<>
 			<div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
@@ -292,12 +348,8 @@ export default function HeadshotDetailPage() {
 			) : (
 				<Card className="border-dashed">
 					<CardHeader>
-						<CardTitle>Headshot Generation in Progress</CardTitle>
-						<CardDescription>
-							Your headshots are currently being{" "}
-							{headshot.status.replace(/-/g, " ")}. This process typically takes
-							15-30 minutes.
-						</CardDescription>
+						<CardTitle>{getStatusTitle()}</CardTitle>
+						<CardDescription>{getStatusDescription()}</CardDescription>
 					</CardHeader>
 					<CardContent className="flex justify-center py-6">
 						<div className="flex flex-col items-center">
@@ -308,10 +360,7 @@ export default function HeadshotDetailPage() {
 						</div>
 					</CardContent>
 					<CardFooter className="flex justify-center pb-6">
-						<Button variant="outline" className="mr-2">
-							<RefreshCw className="mr-2 h-4 w-4" />
-							Refresh Status
-						</Button>
+						{renderStatusActions()}
 						<Button variant="outline" asChild>
 							<Link href="/app">Back to Gallery</Link>
 						</Button>
