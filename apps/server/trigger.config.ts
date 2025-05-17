@@ -16,4 +16,12 @@ export default defineConfig({
 		},
 	},
 	dirs: ["./src/trigger"],
+	build: {
+		external: [
+			"react",
+			"react-dom",
+			"@react-email/render",
+			"@react-email/components",
+		],
+	},
 });

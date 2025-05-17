@@ -12,7 +12,7 @@ export const deleteUnpaidHeadshots = schedules.task({
 		const headshots = await db.query.headshotRequest.findMany({
 			where: (headshotRequest, { eq, and, lt }) =>
 				and(
-					eq(headshotRequest.status, "pending"),
+					eq(headshotRequest.status, "unpaid"),
 					lt(
 						headshotRequest.createdAt,
 						new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
