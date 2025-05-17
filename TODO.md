@@ -1,6 +1,6 @@
 # Project TODO List
 
-Last Updated: 2025-05-17
+Last Updated: 2025-05-18
 
 This file serves as a centralized place to track planned features, improvements, bug fixes, and other changes for the project. Use the checkboxes `[ ]` to mark tasks as incomplete and `[x]` to mark them as complete.
 
@@ -9,10 +9,6 @@ This file serves as a centralized place to track planned features, improvements,
 ## 🚀 Planned Features & Enhancements
 
 Major features or significant improvements that are scheduled or being actively worked on.
-
--   [ ] **[Priority: High]** Write handler for payment completed webhook.
-    -   *Details:* Write a handler for the payment completed webhook.
-    -   *Affected Areas:* apps/server/src/lib/auth.ts
 
 -   [ ] **[Priority: Low]** Share headshot gallery link.
     -   *Details:* Add a share button to the headshot gallery page.
@@ -66,3 +62,4 @@ Tasks that have been finished. You can move items here temporarily before potent
 
 -   [x] Create and test a trigger to delete unpaid headshots. (Completed On: 2025-05-17)
 -   [x] Create and test a trigger to generate headshots. (Completed On: 2025-05-17)
+-   [x] Write handler for payment completed webhook. (Completed On: 2025-05-18)
