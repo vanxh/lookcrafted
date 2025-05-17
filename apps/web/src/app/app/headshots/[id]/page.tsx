@@ -308,8 +308,7 @@ export default function HeadshotDetailPage() {
 										<div className="absolute bottom-3 left-3 flex space-x-2">
 											<Button
 												variant="secondary"
-												size="sm"
-												className="bg-white/90 shadow-sm hover:bg-white"
+												size="icon"
 												onClick={() =>
 													downloadImage(
 														image.imageUrl,
@@ -317,8 +316,7 @@ export default function HeadshotDetailPage() {
 													)
 												}
 											>
-												<Download className="mr-2 h-4 w-4" />
-												Download
+												<Download className="size-4" />
 											</Button>
 										</div>
 										<div className="absolute top-3 right-3 flex space-x-2">

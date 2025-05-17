@@ -108,17 +108,17 @@ export const generateHeadshot = schemaTask({
 	},
 	maxDuration: 2 * 60 * 60,
 	run: async (payload) => {
-		// const trainingResult = await processHeadshotTraining.triggerAndWait({
-		// 	headshotRequestId: payload.headshotRequestId,
-		// });
+		const trainingResult = await processHeadshotTraining.triggerAndWait({
+			headshotRequestId: payload.headshotRequestId,
+		});
 
-		// if (!trainingResult.ok) {
-		// 	console.error(
-		// 		`Error processing headshot training for headshot request ${payload.headshotRequestId}`,
-		// 		trainingResult,
-		// 	);
-		// 	throw new Error("Error processing headshot training");
-		// }
+		if (!trainingResult.ok) {
+			console.error(
+				`Error processing headshot training for headshot request ${payload.headshotRequestId}`,
+				trainingResult,
+			);
+			throw new Error("Error processing headshot training");
+		}
 
 		const generateHeadshotVariationsResult =
 			await generateHeadshotVariations.triggerAndWait({
