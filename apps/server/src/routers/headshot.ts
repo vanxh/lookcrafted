@@ -100,6 +100,7 @@ export const headshotRouter = {
 
 					createdAt: true,
 					updatedAt: true,
+					completedAt: true,
 
 					headshotCount: true,
 
