@@ -12,8 +12,9 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
-import { useState } from "react";
+import { parseAsStringEnum, useQueryState } from "nuqs";
+import { usePostHog } from "posthog-js/react";
+import { use } from "react";
 
 import { capitalizeFirstLetter, formatAgeGroup } from "@lookcrafted/constants";
 
@@ -31,11 +32,19 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { orpc } from "@/utils/orpc";
 import Loading from "./loading";
 
-export default function HeadshotDetailPage() {
-	const params = useParams();
-	const id = params.id as string;
-	const [activeTab, setActiveTab] = useState("all");
+export default function HeadshotDetailPage({
+	params,
+}: {
+	params: Promise<{ id: string }>;
+}) {
+	const { id } = use(params);
 
+	const [activeTab, setActiveTab] = useQueryState(
+		"tab",
+		parseAsStringEnum(["all", "favorites"]).withDefault("all"),
+	);
+
+	const posthog = usePostHog();
 	const queryClient = useQueryClient();
 
 	const { data: headshot, isLoading } = useQuery(
@@ -112,6 +121,12 @@ export default function HeadshotDetailPage() {
 
 	const downloadImage = async (imageUrl: string, filename: string) => {
 		try {
+			posthog.capture("download_image", {
+				headshotId: headshot.id,
+				imageId: imageUrl,
+				filename,
+			});
+
 			const response = await fetch(imageUrl);
 			const blob = await response.blob();
 			const url = window.URL.createObjectURL(blob);
@@ -129,6 +144,10 @@ export default function HeadshotDetailPage() {
 
 	const downloadAllImages = async () => {
 		try {
+			posthog.capture("download_all_images", {
+				headshotId: headshot.id,
+			});
+
 			const JSZip = (await import("jszip")).default;
 			const zip = new JSZip();
 
@@ -287,7 +306,9 @@ export default function HeadshotDetailPage() {
 						defaultValue="all"
 						className="mb-6"
 						value={activeTab}
-						onValueChange={setActiveTab}
+						onValueChange={(value) =>
+							setActiveTab(value as "all" | "favorites")
+						}
 					>
 						<TabsList>
 							<TabsTrigger value="all">
