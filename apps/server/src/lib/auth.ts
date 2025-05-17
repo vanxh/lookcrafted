@@ -10,10 +10,12 @@ import {
 	openAPI,
 	organization,
 } from "better-auth/plugins";
+import { eq } from "drizzle-orm";
 
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { env } from "../env";
+import type { generateHeadshot } from "../trigger/generate-headshot";
 import type { onboarding } from "../trigger/onboarding";
 import {
 	sendMagicLinkEmail,
@@ -178,8 +180,66 @@ export const auth = betterAuth({
 				webhooks({
 					secret: env.POLAR_WEBHOOK_SECRET,
 					onOrderPaid: async (payload) => {
-						// TODO: Handle order paid
-						console.log(payload);
+						const externalId = payload.data.customer.externalId;
+						if (!externalId) {
+							throw new Error("Customer external ID is required");
+						}
+
+						const user = await db.query.user.findFirst({
+							where: (user, { eq }) => eq(user.id, externalId),
+						});
+
+						if (!user) {
+							throw new Error("User not found");
+						}
+
+						const plan = {
+							[env.POLAR_STARTER_PRODUCT_ID]: {
+								slug: "starter",
+								headshots: 50,
+							},
+							[env.POLAR_BASIC_PRODUCT_ID]: {
+								slug: "basic",
+								headshots: 100,
+							},
+							[env.POLAR_PREMIUM_PRODUCT_ID]: {
+								slug: "premium",
+								headshots: 200,
+								upscale: true,
+							},
+						}[payload.data.productId ?? payload.data.product.id];
+
+						if (!plan) {
+							throw new Error("Plan not found");
+						}
+
+						const headshotId = payload.data.metadata
+							?.headshotRequestId as string;
+
+						if (!headshotId) {
+							throw new Error("Headshot ID is required");
+						}
+
+						const headshot = await db.query.headshotRequest.findFirst({
+							where: (headshotRequest, { eq }) =>
+								eq(headshotRequest.id, headshotId),
+						});
+
+						if (!headshot) {
+							throw new Error("Headshot not found");
+						}
+
+						await db
+							.update(schema.headshotRequest)
+							.set({
+								headshotCount: plan.headshots,
+								status: "pending",
+							})
+							.where(eq(schema.headshotRequest.id, headshotId));
+
+						await tasks.trigger<typeof generateHeadshot>("generate-headshot", {
+							headshotRequestId: headshotId,
+						});
 					},
 				}),
 			],

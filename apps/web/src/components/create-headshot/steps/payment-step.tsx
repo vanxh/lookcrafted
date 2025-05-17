@@ -8,6 +8,7 @@ import {
 	UserIcon,
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
@@ -15,6 +16,8 @@ import { authClient } from "@/lib/auth-client";
 export function PaymentStep() {
 	const searchParams = useSearchParams();
 	const headshotId = searchParams.get("id");
+
+	const posthog = usePostHog();
 
 	const { data: session } = authClient.useSession();
 
@@ -28,6 +31,12 @@ export function PaymentStep() {
 			console.error("Headshot ID not found in URL parameters");
 			return;
 		}
+
+		posthog.capture("checkout_started", {
+			headshotId,
+			plan,
+			userId: session.user.id,
+		});
 
 		await authClient.checkout({
 			slug: plan,
