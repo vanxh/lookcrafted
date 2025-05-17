@@ -61,16 +61,6 @@ export default function HeadshotCompletedEmail({
 							View My Headshots →
 						</Button>
 
-						<div style={previewImagesContainer}>
-							<Text style={previewText}>
-								Here's a preview of what we created:
-							</Text>
-							{/* Preview images would be dynamically inserted here in a production setting */}
-							<div style={imagePlaceholder}>
-								<Text style={imagePlaceholderText}>Preview Image</Text>
-							</div>
-						</div>
-
 						<Text style={note}>
 							Remember, you can favorite your best shots to easily find them
 							later, regenerate additional variations, or create entirely new
