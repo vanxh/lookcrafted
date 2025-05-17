@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { formatDistance } from "date-fns";
 import {
 	ArrowLeft,
@@ -36,6 +36,8 @@ export default function HeadshotDetailPage() {
 	const id = params.id as string;
 	const [activeTab, setActiveTab] = useState("all");
 
+	const queryClient = useQueryClient();
+
 	const { data: headshot, isLoading } = useQuery(
 		orpc.headshot.getOne.queryOptions({
 			input: {
@@ -45,6 +47,43 @@ export default function HeadshotDetailPage() {
 			},
 		}),
 	);
+
+	const toggleFavoriteMutation = useMutation(
+		orpc.headshot.favoriteImage.mutationOptions({
+			onMutate: async ({ imageId, isFavorite }) => {
+				await queryClient.setQueryData(
+					orpc.headshot.getOne.queryOptions({
+						input: {
+							id,
+							includeUploads: true,
+							includeImages: true,
+						},
+					}).queryKey,
+					(old: typeof headshot) => {
+						return {
+							...old,
+							images: old?.images.map((image) => {
+								if (image.id === imageId) {
+									return {
+										...image,
+										isFavorite,
+									};
+								}
+								return image;
+							}),
+						};
+					},
+				);
+			},
+		}),
+	);
+
+	const toggleFavorite = (imageId: string, currentFavoriteStatus: boolean) => {
+		toggleFavoriteMutation.mutate({
+			imageId,
+			isFavorite: !currentFavoriteStatus,
+		});
+	};
 
 	if (isLoading) {
 		return <Loading />;
@@ -231,6 +270,9 @@ export default function HeadshotDetailPage() {
 												size="icon"
 												variant="secondary"
 												className="h-8 w-8 rounded-full bg-white/90 shadow-sm hover:bg-white"
+												onClick={() =>
+													toggleFavorite(image.id, !!image.isFavorite)
+												}
 											>
 												<Heart
 													className={`h-4 w-4 ${
