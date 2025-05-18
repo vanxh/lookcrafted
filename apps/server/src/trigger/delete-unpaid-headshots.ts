@@ -1,5 +1,5 @@
 import { schedules } from "@trigger.dev/sdk/v3";
-import { inArray } from "drizzle-orm";
+import { inArray, ne } from "drizzle-orm";
 
 import { db } from "../db";
 import { headshotRequest } from "../db/schema";
@@ -17,6 +17,7 @@ export const deleteUnpaidHeadshots = schedules.task({
 						headshotRequest.createdAt,
 						new Date(Date.now() - 1000 * 60 * 60 * 24 * 7),
 					),
+					ne(headshotRequest.doNotDelete, true),
 				),
 		});
 
