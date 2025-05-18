@@ -11,7 +11,6 @@ export default function Home() {
 		<div className="flex w-full flex-col overflow-x-hidden">
 			<LandingPageHeader />
 
-			{/* pb-10 md:pb-14 */}
 			<main className="flex-1">
 				<HeroSection />
 
