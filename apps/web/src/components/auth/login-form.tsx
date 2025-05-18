@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { KeyRound, Loader2, Mail } from "lucide-react";
+import { KeyRound, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -15,7 +15,6 @@ import {
 	InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { Label } from "@/components/ui/label";
-import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -61,7 +60,11 @@ export function LoginForm() {
 	});
 
 	const sendMagicLinkMutation = useMutation({
-		mutationFn: () => authClient.signIn.magicLink({ email, callbackURL }),
+		mutationFn: () =>
+			authClient.signIn.magicLink({
+				email,
+				callbackURL: `${window.location.origin}/${callbackURL}`,
+			}),
 		onSuccess: () => {
 			toast.success(`Magic link sent to ${email}!`);
 		},
