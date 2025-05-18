@@ -19,6 +19,12 @@ jobs:
       - name: 📦 Install dependencies
         run: bun install
 
+      - name: 🤫 Log Trigger Access Token (masked)
+        env:
+          DEBUG_TRIGGER_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+        run: |
+          echo "TRIGGER_ACCESS_TOKEN value is: $DEBUG_TRIGGER_TOKEN"
+
       - name: 🚀 Deploy Trigger.dev
         env:
           TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
