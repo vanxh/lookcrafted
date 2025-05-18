@@ -9,6 +9,8 @@ import Example1Before from "@/public/example-1-before.webp";
 import Example1After from "@/public/example-1.webp";
 import Example2Before from "@/public/example-2-before.webp";
 import Example2After from "@/public/example-2.webp";
+import Example3Before from "@/public/example-3-before.webp";
+import Example3After from "@/public/example-3.webp";
 
 const images = [
 	{
@@ -22,23 +24,23 @@ const images = [
 		alt: "Example 2",
 	},
 	{
-		before: Example1Before,
-		after: Example1After,
+		before: Example3Before,
+		after: Example3After,
 		alt: "Example 3",
 	},
 	{
-		before: Example2Before,
-		after: Example2After,
+		before: Example1Before,
+		after: Example1After,
 		alt: "Example 4",
 	},
 	{
-		before: Example1Before,
-		after: Example1After,
+		before: Example2Before,
+		after: Example2After,
 		alt: "Example 5",
 	},
 	{
-		before: Example2Before,
-		after: Example2After,
+		before: Example3Before,
+		after: Example3After,
 		alt: "Example 6",
 	},
 	{
