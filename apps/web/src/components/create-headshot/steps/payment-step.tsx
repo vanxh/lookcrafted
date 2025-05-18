@@ -38,12 +38,20 @@ export function PaymentStep() {
 			userId: session.user.id,
 		});
 
+		// @ts-expect-error
+		window.Affonso.signup(session.user.email);
+
+		// @ts-expect-error
+		const referralId = window.affonso_referral;
+
 		await authClient.checkout({
 			slug: plan,
 			metadata: {
 				headshotRequestId: headshotId,
 				userId: session.user.id,
 				plan,
+
+				affonso_referral: referralId,
 			},
 		});
 	};
