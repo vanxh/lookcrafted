@@ -1,3 +1,4 @@
+import { CallToActionSection } from "@/components/landing/cta-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { LandingPageFooter } from "@/components/landing/footer";
 import { LandingPageHeader } from "@/components/landing/header";
@@ -10,7 +11,8 @@ export default function Home() {
 		<div className="flex w-full flex-col overflow-x-hidden">
 			<LandingPageHeader />
 
-			<main className="flex-1 pb-10 md:pb-14">
+			{/* pb-10 md:pb-14 */}
+			<main className="flex-1">
 				<HeroSection />
 
 				<section id="showcase" className="pt-10 md:pt-14">
@@ -41,6 +43,8 @@ export default function Home() {
 				</section>
 
 				<FaqSection />
+
+				<CallToActionSection />
 			</main>
 
 			<LandingPageFooter />
