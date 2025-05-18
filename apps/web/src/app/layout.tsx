@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
+import Script from "next/script";
 
 import "../index.css";
 
@@ -64,6 +65,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" suppressHydrationWarning className="scroll-smooth">
+			<head>
+				<Script
+					src="https://affonso.io/js/pixel.min.js"
+					strategy="afterInteractive"
+					data-affonso="cmatr3oma002kd1gkkaed493g"
+					data-cookie_duration="30"
+				/>
+			</head>
 			<body
 				className={`${instrumentSans.variable} font-instrument-sans antialiased`}
 			>
