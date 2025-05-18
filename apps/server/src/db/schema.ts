@@ -199,6 +199,8 @@ export const headshotRequest = pgTable(
 		loraId: text("lora_id"),
 		status: headshotStatus("status").notNull().default("unpaid"),
 
+		doNotDelete: boolean("do_not_delete").notNull().default(false),
+
 		completedAt: timestamp("completed_at"),
 
 		regenerationCount: integer("regeneration_count").notNull().default(0),
