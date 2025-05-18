@@ -1,6 +1,7 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
+	"globalPassThroughEnv": ["TRIGGER_ACCESS_TOKEN"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
