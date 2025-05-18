@@ -196,14 +196,17 @@ export const auth = betterAuth({
 						const plan = {
 							[env.POLAR_STARTER_PRODUCT_ID]: {
 								slug: "starter",
+								trainingSteps: 1000,
 								headshots: 50,
 							},
 							[env.POLAR_BASIC_PRODUCT_ID]: {
+								trainingSteps: 1500,
 								slug: "basic",
 								headshots: 100,
 							},
 							[env.POLAR_PREMIUM_PRODUCT_ID]: {
 								slug: "premium",
+								trainingSteps: 2000,
 								headshots: 200,
 								upscale: true,
 							},

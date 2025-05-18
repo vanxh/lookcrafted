@@ -12,11 +12,11 @@ import Example1Before3 from "@/public/example-1-before-3.webp";
 import Example1Before1 from "@/public/example-1-before.webp";
 import Example1After from "@/public/example-1.webp";
 import {
-	default as Example2After,
-	default as Example2Before1,
 	default as Example2Before2,
 	default as Example2Before3,
-} from "@/public/example-2.webp";
+} from "@/public/example-2-before-2.webp";
+import Example2Before1 from "@/public/example-2-before.webp";
+import Example2After from "@/public/example-2.webp";
 
 export function HeroSection() {
 	return (
