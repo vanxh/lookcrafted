@@ -25,6 +25,7 @@ export const env = createEnv({
 		POLAR_BASIC_PRODUCT_ID: z.string(),
 		POLAR_PREMIUM_PRODUCT_ID: z.string(),
 		FALAI_API_KEY: z.string(),
+		TRIGGER_SECRET_KEY: z.string(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,
