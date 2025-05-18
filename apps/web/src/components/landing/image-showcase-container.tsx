@@ -7,8 +7,8 @@ import { ComparisonImage } from "./comparison-image";
 
 import Example1Before from "@/public/example-1-before.webp";
 import Example1After from "@/public/example-1.webp";
-import Example2After from "@/public/example-2-after.webp";
 import Example2Before from "@/public/example-2-before.webp";
+import Example2After from "@/public/example-2.webp";
 
 const images = [
 	{
