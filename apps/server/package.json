@@ -31,6 +31,7 @@
 		"@upstash/ratelimit": "^2.0.5",
 		"archiver": "^7.0.1",
 		"better-auth": "^1.2.7",
+		"creem": "^0.3.37",
 		"dotenv": "^16.4.7",
 		"drizzle-orm": "^0.43.1",
 		"hono": "^4.7.6",

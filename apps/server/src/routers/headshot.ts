@@ -13,8 +13,8 @@ import {
 	headshotRequestImage,
 } from "../db/schema";
 import { env } from "../env";
+import { createCreemCheckout } from "../lib/creem";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
-import { polarClient } from "../lib/polar";
 
 export const headshotRouter = {
 	getAll: protectedProcedure
@@ -281,6 +281,7 @@ export const headshotRouter = {
 			z.object({
 				id: z.string(),
 				plan: z.enum(["starter", "basic", "premium"]),
+				referral: z.string().optional(),
 			}),
 		)
 		.output(z.object({ headers: z.record(z.string(), z.string()) }))
@@ -303,32 +304,21 @@ export const headshotRouter = {
 				});
 			}
 
-			const product = {
-				starter: env.POLAR_STARTER_PRODUCT_ID,
-				basic: env.POLAR_BASIC_PRODUCT_ID,
-				premium: env.POLAR_PREMIUM_PRODUCT_ID,
-			}[input.plan];
+			const checkout = await createCreemCheckout({
+				plan: input.plan,
+				headshotRequestId: result.id,
+				email: session.user.email,
+				userId: session.user.id,
+				referral: input.referral,
+			});
 
-			if (!product) {
-				throw new ORPCError("BAD_REQUEST", {
-					message: "Invalid plan",
+			if (!checkout.checkoutUrl) {
+				throw new ORPCError("INTERNAL_SERVER_ERROR", {
+					message: "Failed to create checkout",
 				});
 			}
 
-			const { url } = await polarClient.checkouts.create({
-				products: [product],
-				successUrl: `${env.FRONTEND_URL}/headshot/${result.id}`,
-				customerEmail: session.user.email,
-				customerExternalId: session.user.id,
-				customerName: session.user.name,
-				metadata: {
-					headshotRequestId: result.id,
-					userId: session.user.id,
-					plan: input.plan,
-				},
-			});
-
-			return { headers: { location: url } };
+			return { headers: { location: checkout.checkoutUrl } };
 		}),
 
 	favoriteImage: protectedProcedure

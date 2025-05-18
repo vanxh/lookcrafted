@@ -7,13 +7,15 @@ import {
 	Sparkles,
 	UserIcon,
 } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
 
 import { Button } from "@/components/ui/button";
+import { env } from "@/env";
 import { authClient } from "@/lib/auth-client";
 
 export function PaymentStep() {
+	const router = useRouter();
 	const searchParams = useSearchParams();
 	const headshotId = searchParams.get("id");
 
@@ -44,16 +46,19 @@ export function PaymentStep() {
 		// @ts-expect-error
 		const referralId = window.affonso_referral;
 
-		await authClient.checkout({
-			slug: plan,
-			metadata: {
-				headshotRequestId: headshotId,
-				userId: session.user.id,
-				plan,
+		// await authClient.checkout({
+		// 	slug: plan,
+		// 	metadata: {
+		// 		headshotRequestId: headshotId,
+		// 		userId: session.user.id,
+		// 		plan,
 
-				affonso_referral: referralId,
-			},
-		});
+		// 		affonso_referral: referralId,
+		// 	},
+		// });
+
+		const checkoutUrl = `${env.NEXT_PUBLIC_SERVER_URL}/v1/headshots/${headshotId}/checkout?plan=${plan}&referral=${referralId}`;
+		void router.push(checkoutUrl);
 	};
 
 	return (
