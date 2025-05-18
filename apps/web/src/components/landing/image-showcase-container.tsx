@@ -7,8 +7,10 @@ import { ComparisonImage } from "./comparison-image";
 
 import Example1Before from "@/public/example-1-before.webp";
 import Example1After from "@/public/example-1.webp";
-import Example2Before from "@/public/example-2.webp";
-import Example2After from "@/public/example-2.webp";
+import {
+	default as Example2After,
+	default as Example2Before,
+} from "@/public/example-2.webp";
 
 const images = [
 	{
@@ -88,7 +90,7 @@ export function ImageShowcaseContainer() {
 	}, []);
 
 	return (
-		<div className="w-full max-w-full overflow-hidden pb-12">
+		<div className="w-full max-w-full overflow-hidden">
 			<div
 				ref={scrollContainerRef}
 				className="group scroll-container flex gap-4 pointer-fine:hover:[animation-play-state:paused]"

@@ -3,6 +3,7 @@ import { FaqSection } from "@/components/landing/faq-section";
 import { LandingPageFooter } from "@/components/landing/footer";
 import { LandingPageHeader } from "@/components/landing/header";
 import { HeroSection } from "@/components/landing/hero-section";
+import { HowItWorksSection } from "@/components/landing/how-it-works-section";
 import { ImageShowcaseContainer } from "@/components/landing/image-showcase-container";
 import { PricingTable } from "@/components/landing/pricing-table";
 
@@ -27,7 +28,9 @@ export default function Home() {
 					<ImageShowcaseContainer />
 				</section>
 
-				<section id="pricing" className="pt-10 md:pt-14">
+				<HowItWorksSection />
+
+				<section id="pricing" className="mt-16 lg:mt-24">
 					<div className="container mx-auto px-4 md:px-6">
 						<div className="mx-auto mb-12 max-w-3xl text-center">
 							<h2 className="font-bold text-3xl tracking-tighter sm:text-4xl md:text-5xl">
