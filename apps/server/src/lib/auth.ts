@@ -178,26 +178,48 @@ export const auth = betterAuth({
 				portal(),
 				webhooks({
 					secret: env.POLAR_WEBHOOK_SECRET,
-					onOrderPaid: async (payload) => {
-						const userId = (payload.data.customer.externalId ??
-							payload.data.metadata?.userId) as string;
-						const plan = {
-							[env.POLAR_STARTER_PRODUCT_ID]: "starter",
-							[env.POLAR_BASIC_PRODUCT_ID]: "basic",
-							[env.POLAR_PREMIUM_PRODUCT_ID]: "premium",
-						}[payload.data.productId ?? payload.data.product.id] as
-							| "starter"
-							| "basic"
-							| "premium";
-						const headshotRequestId = payload.data.metadata
-							?.headshotRequestId as string;
+					onPayload: async (payload) => {
+						if (payload.type === "order.paid") {
+							const userId = (payload.data.customer.externalId ??
+								payload.data.metadata?.userId) as string;
+							const plan = {
+								[env.POLAR_STARTER_PRODUCT_ID]: "starter",
+								[env.POLAR_BASIC_PRODUCT_ID]: "basic",
+								[env.POLAR_PREMIUM_PRODUCT_ID]: "premium",
+							}[payload.data.productId ?? payload.data.product.id] as
+								| "starter"
+								| "basic"
+								| "premium";
+							const headshotRequestId = payload.data.metadata
+								?.headshotRequestId as string;
 
-						await tasks.trigger<typeof headshotPaid>("headshot-paid", {
-							headshotRequestId,
-							plan,
-							userId,
-						});
+							await tasks.trigger<typeof headshotPaid>("headshot-paid", {
+								headshotRequestId,
+								plan,
+								userId,
+							});
+						}
 					},
+					// onOrderPaid: async (payload) => {
+					// 	const userId = (payload.data.customer.externalId ??
+					// 		payload.data.metadata?.userId) as string;
+					// 	const plan = {
+					// 		[env.POLAR_STARTER_PRODUCT_ID]: "starter",
+					// 		[env.POLAR_BASIC_PRODUCT_ID]: "basic",
+					// 		[env.POLAR_PREMIUM_PRODUCT_ID]: "premium",
+					// 	}[payload.data.productId ?? payload.data.product.id] as
+					// 		| "starter"
+					// 		| "basic"
+					// 		| "premium";
+					// 	const headshotRequestId = payload.data.metadata
+					// 		?.headshotRequestId as string;
+
+					// 	await tasks.trigger<typeof headshotPaid>("headshot-paid", {
+					// 		headshotRequestId,
+					// 		plan,
+					// 		userId,
+					// 	});
+					// },
 				}),
 			],
 		}),
