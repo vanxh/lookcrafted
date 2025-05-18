@@ -44,10 +44,12 @@ export const deleteUnpaidHeadshots = schedules.task({
 
 		for (const headshot of headshots) {
 			if (headshot.uploads.length > 0) {
-				const imageId = headshot.uploads[0].imageUrl.split("/")[4];
-				await deleteImage(imageId).catch((e) => {
-					console.error(`Error deleting image ${imageId}: ${e}`);
-				});
+				for (const upload of headshot.uploads) {
+					const imageId = upload.imageUrl.split("/")[4];
+					await deleteImage(imageId).catch((e) => {
+						console.error(`Error deleting image ${imageId}: ${e}`);
+					});
+				}
 			}
 		}
 
