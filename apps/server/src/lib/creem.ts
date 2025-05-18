@@ -3,12 +3,7 @@ import { Creem } from "creem";
 
 import { env } from "../env";
 
-const creem = new Creem({
-	serverURL:
-		process.env.NODE_ENV === "production"
-			? "https://api.creem.com"
-			: "https://test-api.creem.io",
-});
+const creem = new Creem({});
 
 export const createCreemCheckout = async ({
 	plan,
