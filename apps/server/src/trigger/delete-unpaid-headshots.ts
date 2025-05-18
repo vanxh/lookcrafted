@@ -3,6 +3,7 @@ import { inArray, ne } from "drizzle-orm";
 
 import { db } from "../db";
 import { headshotRequest } from "../db/schema";
+import { deleteImage } from "../lib/cloudflare";
 
 export const deleteUnpaidHeadshots = schedules.task({
 	id: "delete-unpaid-headshots",
@@ -19,6 +20,13 @@ export const deleteUnpaidHeadshots = schedules.task({
 					),
 					ne(headshotRequest.doNotDelete, true),
 				),
+			with: {
+				uploads: {
+					columns: {
+						imageUrl: true,
+					},
+				},
+			},
 		});
 
 		console.log(
@@ -26,12 +34,23 @@ export const deleteUnpaidHeadshots = schedules.task({
 		);
 
 		const start = performance.now();
+
 		await db.delete(headshotRequest).where(
 			inArray(
 				headshotRequest.id,
 				headshots.map((h) => h.id),
 			),
 		);
+
+		for (const headshot of headshots) {
+			if (headshot.uploads.length > 0) {
+				const imageId = headshot.uploads[0].imageUrl.split("/")[4];
+				await deleteImage(imageId).catch((e) => {
+					console.error(`Error deleting image ${imageId}: ${e}`);
+				});
+			}
+		}
+
 		const end = performance.now();
 
 		console.log(
