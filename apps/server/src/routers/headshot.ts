@@ -286,39 +286,46 @@ export const headshotRouter = {
 		)
 		.output(z.object({ headers: z.record(z.string(), z.string()) }))
 		.handler(async ({ context, input }) => {
-			const { session, db } = context;
+			try {
+				const { session, db } = context;
 
-			const result = await db.query.headshotRequest.findFirst({
-				where: and(
-					eq(headshotRequest.id, input.id),
-					eq(headshotRequest.userId, session.user.id),
-				),
-				columns: {
-					id: true,
-				},
-			});
-
-			if (!result) {
-				throw new ORPCError("NOT_FOUND", {
-					message: "Headshot request not found",
+				const result = await db.query.headshotRequest.findFirst({
+					where: and(
+						eq(headshotRequest.id, input.id),
+						eq(headshotRequest.userId, session.user.id),
+					),
+					columns: {
+						id: true,
+					},
 				});
-			}
 
-			const checkout = await createCreemCheckout({
-				plan: input.plan,
-				headshotRequestId: result.id,
-				email: session.user.email,
-				userId: session.user.id,
-				referral: input.referral,
-			});
+				if (!result) {
+					throw new ORPCError("NOT_FOUND", {
+						message: "Headshot request not found",
+					});
+				}
 
-			if (!checkout.checkoutUrl) {
+				const checkout = await createCreemCheckout({
+					plan: input.plan,
+					headshotRequestId: result.id,
+					email: session.user.email,
+					userId: session.user.id,
+					referral: input.referral,
+				});
+
+				if (!checkout.checkoutUrl) {
+					throw new ORPCError("INTERNAL_SERVER_ERROR", {
+						message: "Failed to create checkout",
+					});
+				}
+
+				return { headers: { location: checkout.checkoutUrl } };
+			} catch (error) {
 				throw new ORPCError("INTERNAL_SERVER_ERROR", {
 					message: "Failed to create checkout",
+					data: error,
 				});
 			}
-
-			return { headers: { location: checkout.checkoutUrl } };
 		}),
 
 	favoriteImage: protectedProcedure
