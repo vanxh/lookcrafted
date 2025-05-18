@@ -52,7 +52,7 @@ export function LandingPageFooter() {
 					</p>
 					{getStatusIndicator()}
 				</div>
-				<nav className="flex gap-4 sm:gap-6">
+				<nav className="flex flex-wrap justify-center gap-4 sm:gap-6">
 					<Link
 						href="/terms"
 						className="text-muted-foreground text-sm transition-colors hover:text-foreground"
@@ -66,6 +66,15 @@ export function LandingPageFooter() {
 						prefetch={false}
 					>
 						Privacy Policy
+					</Link>
+					<Link
+						href="https://lookcrafted.affonso.io"
+						className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+						target="_blank"
+						rel="noopener noreferrer"
+						prefetch={false}
+					>
+						Affiliate Program
 					</Link>
 				</nav>
 			</div>
