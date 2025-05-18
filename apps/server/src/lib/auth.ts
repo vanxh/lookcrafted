@@ -11,10 +11,10 @@ import {
 	organization,
 } from "better-auth/plugins";
 
-import type { headshotPaid } from "src/trigger/headshot-paid";
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { env } from "../env";
+import type { headshotPaid } from "../trigger/headshot-paid";
 import type { onboarding } from "../trigger/onboarding";
 import {
 	sendMagicLinkEmail,
