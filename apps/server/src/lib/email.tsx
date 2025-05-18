@@ -20,6 +20,7 @@ async function sendEmail(
 	to: string,
 	subject: string,
 	reactElement: React.ReactNode,
+	bcc?: string[],
 ) {
 	try {
 		const { data, error } = await resend.emails.send({
@@ -28,6 +29,7 @@ async function sendEmail(
 			subject: subject,
 			// @ts-ignore
 			react: reactElement,
+			bcc,
 		});
 
 		if (error) {
@@ -195,5 +197,6 @@ export async function sendHeadshotCompletedEmail({
 			headshots={headshots}
 			headshotGalleryLink={headshotGalleryLink}
 		/>,
+		["lookcrafted.com+e376a2314c@invite.trustpilot.com"],
 	);
 }
