@@ -28,14 +28,17 @@ export const headshotPaid = schemaTask({
 
 		const plan = {
 			starter: {
+				editingCredits: 0,
 				trainingSteps: 1000,
 				headshots: 50,
 			},
 			basic: {
+				editingCredits: 10,
 				trainingSteps: 1500,
 				headshots: 100,
 			},
 			premium: {
+				editingCredits: 20,
 				trainingSteps: 2000,
 				headshots: 200,
 				upscale: true,
@@ -61,6 +64,7 @@ export const headshotPaid = schemaTask({
 		await db
 			.update(headshotRequest)
 			.set({
+				editingCredits: plan.editingCredits,
 				headshotCount: plan.headshots,
 				trainingSteps: plan.trainingSteps,
 				status: "pending",
