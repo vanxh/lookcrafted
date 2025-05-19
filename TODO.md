@@ -20,7 +20,7 @@ Major features or significant improvements that are scheduled or being actively 
 
 Known issues that need to be addressed.
 
--   [ ] **[Priority: High]** Image resolution gets fucked up in process of dowloading from fal and uploading to cloudflare.
+-   [x] **[Priority: High]** Image resolution gets fucked up in process of dowloading from fal and uploading to cloudflare.
     -   *Details:* The image resolution gets fucked up in the process of downloading from fal and uploading to cloudflare.
     -   *Affected Areas:* apps/server/src/trigger/upscale-headshot.ts, apps/server/src/lib/cloudflare.ts, apps/server/src/trigger/generate-headshot.ts
 
