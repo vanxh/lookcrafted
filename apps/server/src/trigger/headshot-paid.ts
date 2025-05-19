@@ -64,6 +64,7 @@ export const headshotPaid = schemaTask({
 				headshotCount: plan.headshots,
 				trainingSteps: plan.trainingSteps,
 				status: "pending",
+				upscaleImages: plan.upscale,
 			})
 			.where(eq(headshotRequest.id, request.id));
 

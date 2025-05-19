@@ -20,6 +20,7 @@ fal.config({
 const FAL_TRAINING_MODEL_ID = "fal-ai/turbo-flux-trainer";
 const FAL_LORA_MODEL_ID = "fal-ai/flux-lora";
 const FAL_LORA_TRIGGER_PHRASE = "ohwx";
+const FAL_UPSCALE_MODEL_ID = "fal-ai/recraft/upscale/crisp";
 
 const fetchImageData = async (
 	url: string,
@@ -452,45 +453,89 @@ export const generateHeadshotVariations = schemaTask({
 			await Promise.all(
 				chunks.map(async (chunk) => {
 					for (const prompt of chunk) {
-						console.log(
-							`Generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
-						);
-						const falImage = await fal.subscribe(FAL_LORA_MODEL_ID, {
-							input: {
+						try {
+							console.log(
+								`Generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+							);
+							const falImage = await fal.subscribe(FAL_LORA_MODEL_ID, {
+								input: {
+									prompt: prompt.prompt,
+									image_size: "portrait_4_3",
+									loras: [
+										{
+											path: loraId,
+										},
+									],
+									output_format: "png",
+									seed: Math.floor(Math.random() * 1000000),
+								},
+							});
+
+							const image = await fetch(falImage.data.images[0].url);
+							const imageBuffer = Buffer.from(await image.arrayBuffer());
+							const imageId = await uploadImage(imageBuffer, {
+								...prompt.metadata,
+								headshotRequestId: payload.headshotRequestId,
+								userId: request.userId,
+							});
+
+							let upscaledImageId: string | null = null;
+							if (request.upscaleImages) {
+								try {
+									const upscaledFalImage = await fal.subscribe(
+										FAL_UPSCALE_MODEL_ID,
+										{
+											input: {
+												image_url: image,
+											},
+										},
+									);
+
+									const upscaledImage = await fetch(
+										upscaledFalImage.data.images[0].url,
+									);
+									const upscaledImageBuffer = Buffer.from(
+										await upscaledImage.arrayBuffer(),
+									);
+									upscaledImageId = await uploadImage(upscaledImageBuffer, {
+										...prompt.metadata,
+										headshotRequestId: payload.headshotRequestId,
+										userId: request.userId,
+										upscaled: true,
+									});
+								} catch (error) {
+									console.error(
+										`Error upscaling image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+										error,
+									);
+								}
+							}
+
+							const headshotImageId = crypto.randomUUID();
+							await db.insert(headshotImage).values({
+								id: headshotImageId,
+								headshotRequestId: payload.headshotRequestId,
+
+								imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
+								...(upscaledImageId
+									? {
+											upscaledImageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${upscaledImageId}/public`,
+										}
+									: {}),
 								prompt: prompt.prompt,
-								image_size: "portrait_4_3",
-								loras: [
-									{
-										path: loraId,
-									},
-								],
-								output_format: "png",
-								seed: Math.floor(Math.random() * 1000000),
-							},
-						});
 
-						const image = await fetch(falImage.data.images[0].url);
-						const imageBuffer = Buffer.from(await image.arrayBuffer());
-						const imageId = await uploadImage(imageBuffer, {
-							...prompt.metadata,
-							headshotRequestId: payload.headshotRequestId,
-							userId: request.userId,
-						});
+								modelVersion: FAL_LORA_MODEL_ID,
+							});
 
-						const headshotImageId = crypto.randomUUID();
-						await db.insert(headshotImage).values({
-							id: headshotImageId,
-							headshotRequestId: payload.headshotRequestId,
-
-							imageUrl: `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`,
-							prompt: prompt.prompt,
-
-							modelVersion: FAL_LORA_MODEL_ID,
-						});
-
-						console.log(
-							`Image uploaded for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
-						);
+							console.log(
+								`Image uploaded for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+							);
+						} catch (error) {
+							console.error(
+								`Error generating image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,
+								error,
+							);
+						}
 					}
 				}),
 			);
