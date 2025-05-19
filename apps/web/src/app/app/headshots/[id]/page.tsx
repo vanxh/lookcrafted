@@ -176,7 +176,7 @@ export default function HeadshotDetailPage({
 				filename,
 			});
 
-			const response = await fetch(imageUrl);
+			const response = await fetch(imageUrl.replace("public", "blob"));
 			const blob = await response.blob();
 			const url = window.URL.createObjectURL(blob);
 			const a = document.createElement("a");
@@ -202,13 +202,15 @@ export default function HeadshotDetailPage({
 
 			const fetchPromises = headshotImages.map(async (image, index) => {
 				try {
+					const imageUrlToFetch = image.upscaledImageUrl ?? image.imageUrl;
 					const response = await fetch(
-						image.upscaledImageUrl ?? image.imageUrl,
+						imageUrlToFetch.replace("public", "blob"),
 					);
 					const blob = await response.blob();
-					zip.file(`headshot_${index + 1}.jpg`, blob);
+					const filename = `headshot_${index + 1}${image.upscaledImageUrl ? "_upscaled" : ""}.jpg`;
+					zip.file(filename, blob);
 				} catch (error) {
-					console.error(`Error adding image ${index} to zip:`, error);
+					console.error(`Error adding image ${image.id} to zip:`, error);
 				}
 			});
 
@@ -224,7 +226,7 @@ export default function HeadshotDetailPage({
 			window.URL.revokeObjectURL(url);
 			document.body.removeChild(a);
 		} catch (error) {
-			console.error("Error creating zip file:", error);
+			console.error("Error creating zip file for all images:", error);
 		}
 	};
 

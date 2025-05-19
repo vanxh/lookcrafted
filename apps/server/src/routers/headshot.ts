@@ -14,6 +14,7 @@ import {
 	headshotRequestImage,
 } from "../db/schema";
 import { env } from "../env";
+import { exportImage } from "../lib/cloudflare";
 import { createCreemCheckout } from "../lib/creem";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 import type { upscaleHeadshot } from "../trigger/upscale-headshot";
@@ -399,5 +400,56 @@ export const headshotRouter = {
 			}
 
 			return upscaleResult.output;
+		}),
+
+	exportImage: protectedProcedure
+		.route({
+			method: "GET",
+			path: "/headshots/images/{imageId}/export",
+			tags: ["headshots"],
+			successStatus: 307,
+			outputStructure: "detailed",
+		})
+		.input(z.object({ imageId: z.string() }))
+		.output(z.object({ headers: z.record(z.string(), z.string()) }))
+		.handler(async ({ context, input }) => {
+			const { session, db } = context;
+
+			await ratelimitWithKey(
+				session.user.id,
+				30,
+				"10 m",
+				"ratelimit:headshot:exportImage",
+			);
+
+			const result = await db.query.headshotImage.findFirst({
+				where: eq(headshotImage.id, input.imageId),
+				columns: {
+					imageUrl: true,
+					upscaledImageUrl: true,
+				},
+				with: {
+					headshotRequest: {
+						columns: {
+							userId: true,
+						},
+					},
+				},
+			});
+
+			if (!result || result.headshotRequest.userId !== session.user.id) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Image not found",
+				});
+			}
+
+			const image = await exportImage(result.imageUrl.split("/")[4]);
+
+			return {
+				headers: {
+					location: result.upscaledImageUrl ?? result.imageUrl,
+				},
+				body: image,
+			};
 		}),
 };

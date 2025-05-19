@@ -95,3 +95,21 @@ export const uploadImage = async (
 
 	return data.result.id;
 };
+
+export const exportImage = async (imageId: string) => {
+	const url = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1/${imageId}/blob`;
+
+	const { data, error } = await betterFetch(url, {
+		method: "GET",
+		headers: {
+			Authorization: `Bearer ${env.CLOUDFLARE_API_TOKEN}`,
+			"X-Auth-Key": env.CLOUDFLARE_API_TOKEN,
+		},
+	});
+
+	if (error) {
+		throw new Error(error.message);
+	}
+
+	return data;
+};
