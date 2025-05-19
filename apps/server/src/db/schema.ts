@@ -194,6 +194,7 @@ export const headshotRequest = pgTable(
 		trainingStartedAt: timestamp("training_started_at"),
 		trainingCompletedAt: timestamp("training_completed_at"),
 		triggerPhrase: text("trigger_phrase"),
+		upscaleImages: boolean("upscale_images").notNull().default(false),
 
 		gender: genderEnum("gender").notNull(),
 		ageGroup: ageGroupEnum("age_group").notNull(),
@@ -264,6 +265,7 @@ export const headshotImage = pgTable(
 			.references(() => headshotRequest.id, { onDelete: "cascade" }),
 
 		imageUrl: text("image_url").notNull(),
+		upscaledImageUrl: text("upscaled_image_url"),
 		prompt: text("prompt"),
 		isFavorite: boolean("is_favorite").default(false),
 

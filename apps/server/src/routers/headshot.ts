@@ -16,6 +16,46 @@ import { env } from "../env";
 import { createCreemCheckout } from "../lib/creem";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
 
+const headshotRequestColumns = {
+	id: true,
+	userId: true,
+
+	createdAt: true,
+	updatedAt: true,
+
+	headshotCount: true,
+
+	gender: true,
+	ageGroup: true,
+	hairColor: true,
+	hairLength: true,
+	hairTexture: true,
+	ethnicity: true,
+	bodyType: true,
+
+	backgrounds: true,
+	outfits: true,
+
+	status: true,
+
+	regenerationCount: true,
+} as const;
+
+const headshotUploadColumns = {
+	id: true,
+	createdAt: true,
+	imageUrl: true,
+};
+
+const headshotImageColumns = {
+	id: true,
+	createdAt: true,
+	imageUrl: true,
+	upscaledImageUrl: true,
+	isFavorite: true,
+	regenerationIndex: true,
+};
+
 export const headshotRouter = {
 	getAll: protectedProcedure
 		.route({ method: "GET", path: "/headshots", tags: ["headshots"] })
@@ -31,49 +71,16 @@ export const headshotRouter = {
 
 			const result = await db.query.headshotRequest.findMany({
 				where: eq(headshotRequest.userId, session.user.id),
-				columns: {
-					id: true,
-					userId: true,
-
-					createdAt: true,
-					updatedAt: true,
-
-					headshotCount: true,
-
-					gender: true,
-					ageGroup: true,
-					hairColor: true,
-					hairLength: true,
-					hairTexture: true,
-					ethnicity: true,
-					bodyType: true,
-
-					backgrounds: true,
-					outfits: true,
-
-					status: true,
-
-					regenerationCount: true,
-				},
+				columns: headshotRequestColumns,
 				with: {
 					uploads: input.includeUploads
 						? {
-								columns: {
-									id: true,
-									createdAt: true,
-									imageUrl: true,
-								},
+								columns: headshotUploadColumns,
 							}
 						: undefined,
 					images: input.includeImages
 						? {
-								columns: {
-									id: true,
-									createdAt: true,
-									imageUrl: true,
-									isFavorite: true,
-									regenerationIndex: true,
-								},
+								columns: headshotImageColumns,
 							}
 						: undefined,
 				},
@@ -98,50 +105,16 @@ export const headshotRouter = {
 
 			const result = await db.query.headshotRequest.findFirst({
 				where: eq(headshotRequest.id, input.id),
-				columns: {
-					id: true,
-					userId: true,
-
-					createdAt: true,
-					updatedAt: true,
-					completedAt: true,
-
-					headshotCount: true,
-
-					gender: true,
-					ageGroup: true,
-					hairColor: true,
-					hairLength: true,
-					hairTexture: true,
-					ethnicity: true,
-					bodyType: true,
-
-					backgrounds: true,
-					outfits: true,
-
-					status: true,
-
-					regenerationCount: true,
-				},
+				columns: headshotRequestColumns,
 				with: {
 					uploads: input.includeUploads
 						? {
-								columns: {
-									id: true,
-									createdAt: true,
-									imageUrl: true,
-								},
+								columns: headshotUploadColumns,
 							}
 						: undefined,
 					images: input.includeImages
 						? {
-								columns: {
-									id: true,
-									createdAt: true,
-									imageUrl: true,
-									isFavorite: true,
-									regenerationIndex: true,
-								},
+								columns: headshotImageColumns,
 							}
 						: undefined,
 				},
