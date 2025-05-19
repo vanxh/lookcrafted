@@ -12,10 +12,6 @@ fal.config({
 	credentials: env.FALAI_API_KEY,
 });
 
-// const FAL_TRAINING_MODEL_ID = "fal-ai/flux-lora-portrait-trainer";
-const FAL_TRAINING_MODEL_ID = "fal-ai/turbo-flux-trainer";
-const FAL_LORA_MODEL_ID = "fal-ai/flux-lora";
-const FAL_LORA_TRIGGER_PHRASE = "ohwx";
 const FAL_UPSCALE_MODEL_ID = "fal-ai/recraft/upscale/crisp";
 
 export const upscaleHeadshot = schemaTask({

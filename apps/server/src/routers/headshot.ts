@@ -47,7 +47,7 @@ const headshotUploadColumns = {
 	id: true,
 	createdAt: true,
 	imageUrl: true,
-};
+} as const;
 
 const headshotImageColumns = {
 	id: true,
@@ -56,7 +56,7 @@ const headshotImageColumns = {
 	upscaledImageUrl: true,
 	isFavorite: true,
 	regenerationIndex: true,
-};
+} as const;
 
 export const headshotRouter = {
 	getAll: protectedProcedure
