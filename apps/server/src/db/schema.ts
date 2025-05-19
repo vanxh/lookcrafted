@@ -187,6 +187,7 @@ export const headshotRequest = pgTable(
 			.$onUpdate(() => new Date()),
 
 		headshotCount: integer("headshot_count").notNull(),
+		editingCredits: integer("editing_credits").notNull().default(0),
 
 		trainingSteps: integer("training_steps").notNull().default(1000),
 		trainingModelId: text("training_model_id"),
@@ -266,6 +267,7 @@ export const headshotImage = pgTable(
 
 		imageUrl: text("image_url").notNull(),
 		upscaledImageUrl: text("upscaled_image_url"),
+
 		prompt: text("prompt"),
 		isFavorite: boolean("is_favorite").default(false),
 

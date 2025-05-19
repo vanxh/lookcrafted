@@ -107,7 +107,7 @@ export const generateHeadshot = schemaTask({
 	retry: {
 		maxAttempts: 0,
 	},
-	maxDuration: 2 * 60 * 60,
+	maxDuration: 1 * 60 * 60,
 	run: async (payload) => {
 		const trainingResult = await processHeadshotTraining.triggerAndWait({
 			headshotRequestId: payload.headshotRequestId,

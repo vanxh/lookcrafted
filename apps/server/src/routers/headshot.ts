@@ -1,4 +1,5 @@
 import { ORPCError } from "@orpc/server";
+import { tasks } from "@trigger.dev/sdk/v3";
 import { and, desc, eq } from "drizzle-orm";
 import { z } from "zod";
 
@@ -15,6 +16,7 @@ import {
 import { env } from "../env";
 import { createCreemCheckout } from "../lib/creem";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
+import type { upscaleHeadshot } from "../trigger/upscale-headshot";
 
 const headshotRequestColumns = {
 	id: true,
@@ -345,5 +347,54 @@ export const headshotRouter = {
 				.where(eq(headshotImage.id, result.id));
 
 			return { success: true };
+		}),
+
+	upscaleImage: protectedProcedure
+		.route({
+			method: "POST",
+			path: "/headshots/images/{imageId}/upscale",
+			tags: ["headshots"],
+		})
+		.input(
+			z.object({
+				imageId: z.string(),
+			}),
+		)
+		.output(z.object({ upscaledImageUrl: z.string() }))
+		.handler(async ({ context, input }) => {
+			const { session, db } = context;
+
+			const result = await db.query.headshotImage.findFirst({
+				where: eq(headshotImage.id, input.imageId),
+				columns: {
+					id: true,
+				},
+				with: {
+					headshotRequest: {
+						columns: {
+							userId: true,
+						},
+					},
+				},
+			});
+
+			if (!result || result.headshotRequest.userId !== session.user.id) {
+				throw new ORPCError("NOT_FOUND", {
+					message: "Image not found",
+				});
+			}
+
+			const upscaleResult = await tasks.triggerAndWait<typeof upscaleHeadshot>(
+				"upscale-headshot",
+				{
+					headshotImageId: input.imageId,
+				},
+			);
+
+			if (!upscaleResult.ok) {
+				throw upscaleResult.error;
+			}
+
+			return upscaleResult.output;
 		}),
 };

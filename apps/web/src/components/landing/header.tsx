@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
 	{ href: "#showcase", label: "Examples" },
-	{ href: "/pricing", label: "Pricing" },
+	{ href: "#pricing", label: "Pricing" },
 	{
 		id: "headshots",
 		label: "Headshots",
@@ -65,7 +65,7 @@ export function LandingPageHeader() {
 													<li key={subItem.href}>
 														<NavigationMenuLink asChild>
 															<Link
-																href={subItem.href}
+																href="#pricing"
 																className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:focus:bg-gray-800 dark:focus:text-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-100"
 															>
 																<div className="text-nowrap font-medium text-sm leading-none dark:text-gray-300">
