@@ -492,17 +492,21 @@ export const generateHeadshotVariations = schemaTask({
 									);
 
 									const upscaledImage = await fetch(
-										upscaledFalImage.data.images[0].url,
+										upscaledFalImage.data.image.url,
 									);
 									const upscaledImageBuffer = Buffer.from(
 										await upscaledImage.arrayBuffer(),
 									);
-									upscaledImageId = await uploadImage(upscaledImageBuffer, {
-										...prompt.metadata,
-										headshotRequestId: payload.headshotRequestId,
-										userId: request.userId,
-										upscaled: true,
-									});
+									upscaledImageId = await uploadImage(
+										upscaledImageBuffer,
+										{
+											...prompt.metadata,
+											headshotRequestId: payload.headshotRequestId,
+											userId: request.userId,
+											upscaled: true,
+										},
+										upscaledFalImage.data.content_type,
+									);
 								} catch (error) {
 									console.error(
 										`Error upscaling image for prompt ${prompt.prompt} for headshot request ${payload.headshotRequestId}`,

@@ -5,9 +5,12 @@ import { formatDistance } from "date-fns";
 import {
 	ArrowLeft,
 	Download,
+	Edit,
 	Heart,
 	Loader2,
+	Maximize2Icon,
 	RefreshCw,
+	Scaling,
 	Share2,
 } from "lucide-react";
 import Image from "next/image";
@@ -29,6 +32,12 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { orpc } from "@/utils/orpc";
 import Loading from "./loading";
 
@@ -57,7 +66,7 @@ export default function HeadshotDetailPage({
 		}),
 	);
 
-	const toggleFavoriteMutation = useMutation(
+	const { mutate: toggleFavorite } = useMutation(
 		orpc.headshot.favoriteImage.mutationOptions({
 			onMutate: async ({ imageId, isFavorite }) => {
 				await queryClient.setQueryData(
@@ -87,12 +96,52 @@ export default function HeadshotDetailPage({
 		}),
 	);
 
-	const toggleFavorite = (imageId: string, currentFavoriteStatus: boolean) => {
-		toggleFavoriteMutation.mutate({
-			imageId,
-			isFavorite: !currentFavoriteStatus,
-		});
-	};
+	const { mutate: upscaleImage } = useMutation(
+		orpc.headshot.upscaleImage.mutationOptions({
+			onMutate: async ({ imageId }) => {
+				await queryClient.setQueryData(
+					orpc.headshot.getOne.queryOptions({
+						input: {
+							id,
+							includeUploads: true,
+							includeImages: true,
+						},
+					}).queryKey,
+					(old: typeof headshot) => {
+						return {
+							...old,
+							editingCredits: Math.max(0, (old?.editingCredits || 0) - 1),
+						};
+					},
+				);
+			},
+			onSuccess: (data, variables) => {
+				queryClient.setQueryData(
+					orpc.headshot.getOne.queryOptions({
+						input: {
+							id,
+							includeUploads: true,
+							includeImages: true,
+						},
+					}).queryKey,
+					(old: typeof headshot) => {
+						return {
+							...old,
+							images: old?.images.map((image) => {
+								if (image.id === variables.imageId) {
+									return {
+										...image,
+										upscaledImageUrl: data.upscaledImageUrl,
+									};
+								}
+								return image;
+							}),
+						};
+					},
+				);
+			},
+		}),
+	);
 
 	if (isLoading) {
 		return <Loading />;
@@ -153,7 +202,9 @@ export default function HeadshotDetailPage({
 
 			const fetchPromises = headshotImages.map(async (image, index) => {
 				try {
-					const response = await fetch(image.imageUrl);
+					const response = await fetch(
+						image.upscaledImageUrl ?? image.imageUrl,
+					);
 					const blob = await response.blob();
 					zip.file(`headshot_${index + 1}.jpg`, blob);
 				} catch (error) {
@@ -248,27 +299,45 @@ export default function HeadshotDetailPage({
 						</Link>
 					</Button>
 					<div>
-						<h1 className="line-clamp-2 font-bold text-gray-900 text-xl sm:text-2xl">
-							{capitalizeFirstLetter(headshot.gender)}{" "}
-							{formatAgeGroup(headshot.ageGroup)} Headshots
-						</h1>
-						<div className="flex flex-wrap items-center text-gray-500 text-sm">
-							<span className="mr-2">
-								Created{" "}
-								{formatDistance(new Date(headshot.createdAt), new Date(), {
-									addSuffix: true,
-								})}
-							</span>
-							<span className="rounded-full bg-gray-100 px-2 py-0.5 font-medium text-xs">
+						<div className="mb-1 flex items-center gap-2">
+							<h1 className="line-clamp-2 font-bold text-gray-900 text-xl sm:text-2xl">
+								{capitalizeFirstLetter(headshot.gender)}{" "}
+								{formatAgeGroup(headshot.ageGroup)} Headshots
+							</h1>
+							<span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 font-medium text-xs">
 								{capitalizeFirstLetter(headshot.status)}
 							</span>
-							{headshot.status === "completed" && headshot.completedAt && (
-								<span className="ml-2">
-									• Completed{" "}
+						</div>
+						<div className="flex flex-wrap items-center gap-2 text-gray-500 text-sm">
+							{headshot.status === "completed" && headshot.completedAt ? (
+								<span className="inline-flex items-center">
+									Completed{" "}
 									{formatDistance(new Date(headshot.completedAt), new Date(), {
 										addSuffix: true,
 									})}
 								</span>
+							) : (
+								<span className="inline-flex items-center">
+									Created{" "}
+									{formatDistance(new Date(headshot.createdAt), new Date(), {
+										addSuffix: true,
+									})}
+								</span>
+							)}
+							{isCompleted && headshot.editingCredits > 0 && (
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger asChild>
+											<span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2 py-0.5 font-medium text-blue-800 text-xs">
+												<Edit className="h-3 w-3" />
+												{headshot.editingCredits} Credits
+											</span>
+										</TooltipTrigger>
+										<TooltipContent>
+											Available editing credits for image customization
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
 							)}
 						</div>
 					</div>
@@ -326,19 +395,61 @@ export default function HeadshotDetailPage({
 								<Card key={image.id} className="overflow-hidden p-0">
 									<div className="relative aspect-[3/4] h-auto w-full">
 										<Image
-											src={image.imageUrl}
+											src={image.upscaledImageUrl ?? image.imageUrl}
 											alt="Headshot"
 											fill
 											className="object-cover"
 										/>
+										{image.upscaledImageUrl && (
+											<TooltipProvider>
+												<Tooltip>
+													<TooltipTrigger asChild>
+														<div className="absolute top-3 left-3 rounded-full bg-blue-600 px-2 py-2 text-white text-xs">
+															<Maximize2Icon className="size-3" />
+														</div>
+													</TooltipTrigger>
+													<TooltipContent>
+														Enhanced high-resolution image
+													</TooltipContent>
+												</Tooltip>
+											</TooltipProvider>
+										)}
 										<div className="absolute bottom-3 left-3 flex space-x-2">
+											{isCompleted &&
+												headshot.editingCredits > 0 &&
+												!image.upscaledImageUrl && (
+													<TooltipProvider>
+														<Tooltip>
+															<TooltipTrigger asChild>
+																<Button
+																	variant="secondary"
+																	size="icon"
+																	onClick={() => {
+																		posthog.capture("upscale_image", {
+																			headshotId: headshot.id,
+																			imageId: image.id,
+																		});
+																		upscaleImage({
+																			imageId: image.id,
+																		});
+																	}}
+																>
+																	<Scaling className="size-4" />
+																</Button>
+															</TooltipTrigger>
+															<TooltipContent>
+																Upscale to HD (uses 1 credit)
+															</TooltipContent>
+														</Tooltip>
+													</TooltipProvider>
+												)}
 											<Button
 												variant="secondary"
 												size="icon"
 												onClick={() =>
 													downloadImage(
-														image.imageUrl,
-														`headshot_${image.id}.jpg`,
+														image.upscaledImageUrl ?? image.imageUrl,
+														`headshot_${image.id}${image.upscaledImageUrl ? "_upscaled" : ""}.jpg`,
 													)
 												}
 											>
@@ -351,7 +462,10 @@ export default function HeadshotDetailPage({
 												variant="secondary"
 												className="h-8 w-8 rounded-full bg-white/90 shadow-sm hover:bg-white"
 												onClick={() =>
-													toggleFavorite(image.id, !!image.isFavorite)
+													toggleFavorite({
+														imageId: image.id,
+														isFavorite: !image.isFavorite,
+													})
 												}
 											>
 												<Heart

@@ -26,6 +26,7 @@ const headshotRequestColumns = {
 	updatedAt: true,
 
 	headshotCount: true,
+	editingCredits: true,
 
 	gender: true,
 	ageGroup: true,
@@ -118,6 +119,7 @@ export const headshotRouter = {
 					images: input.includeImages
 						? {
 								columns: headshotImageColumns,
+								orderBy: desc(headshotImage.isFavorite),
 							}
 						: undefined,
 				},
@@ -385,15 +387,15 @@ export const headshotRouter = {
 				});
 			}
 
-			const upscaleResult = await tasks.triggerAndWait<typeof upscaleHeadshot>(
+			const upscaleResult = await tasks.triggerAndPoll<typeof upscaleHeadshot>(
 				"upscale-headshot",
 				{
 					headshotImageId: input.imageId,
 				},
 			);
 
-			if (!upscaleResult.ok) {
-				throw upscaleResult.error;
+			if (upscaleResult.error || !upscaleResult.output) {
+				throw upscaleResult.error?.message ?? "Unknown Error";
 			}
 
 			return upscaleResult.output;

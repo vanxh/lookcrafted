@@ -62,11 +62,12 @@ export const deleteImage = async (imageId: string) => {
 export const uploadImage = async (
 	image: Buffer,
 	metadata?: Record<string, unknown>,
+	contentType?: string,
 ) => {
 	const url = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
 
 	const formData = new FormData();
-	const blob = new Blob([image], { type: "image/png" });
+	const blob = new Blob([image], { type: contentType ?? "image/png" });
 	formData.append("file", blob);
 	if (metadata) {
 		formData.append("metadata", JSON.stringify(metadata));
@@ -82,6 +83,7 @@ export const uploadImage = async (
 	});
 
 	if (!res.ok) {
+		console.error(await res.json());
 		throw new Error("Unable to upload image");
 	}
 

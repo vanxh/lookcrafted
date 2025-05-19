@@ -42,29 +42,47 @@ export const upscaleHeadshot = schemaTask({
 				},
 			},
 		});
+		console.log(`Upscaling headshot image ${image?.id}`);
 
 		if (!image) {
+			console.error(`Headshot image not found ${payload.headshotImageId}`);
 			throw new Error("Headshot image not found");
 		}
 
+		if (image.headshotRequest.editingCredits <= 0) {
+			console.error(`No editing credits remaining ${image.headshotRequest.id}`);
+			throw new Error("No editing credits remaining");
+		}
+
 		if (image.upscaledImageUrl) {
+			console.log(`Headshot image already upscaled ${image.id}`);
 			return { upscaledImageUrl: image.upscaledImageUrl };
 		}
 
+		console.log(
+			`Upscaling headshot image ${image.id} with ${FAL_UPSCALE_MODEL_ID}`,
+		);
 		const upscaledFalImage = await fal.subscribe(FAL_UPSCALE_MODEL_ID, {
 			input: {
-				image: image.imageUrl,
+				image_url: image.imageUrl,
 			},
 		});
 
-		const upscaledImage = await fetch(upscaledFalImage.data.images[0].url);
+		const upscaledImage = await fetch(upscaledFalImage.data.image.url);
 		const upscaledImageBuffer = Buffer.from(await upscaledImage.arrayBuffer());
-		const upscaledImageId = await uploadImage(upscaledImageBuffer, {
-			headshotRequestId: image.headshotRequest.id,
-			userId: image.headshotRequest.userId,
-		});
+		const upscaledImageId = await uploadImage(
+			upscaledImageBuffer,
+			{
+				headshotRequestId: image.headshotRequest.id,
+				userId: image.headshotRequest.userId,
+			},
+			upscaledFalImage.data.content_type,
+		);
 		const upscaledImageUrl = `https://imagedelivery.net/${env.CLOUDFLARE_ACCOUNT_HASH}/${upscaledImageId}/public`;
 
+		console.log(
+			`Updating headshot image ${image.id} with upscaled image ${upscaledImageUrl}`,
+		);
 		await db
 			.update(headshotImage)
 			.set({
@@ -72,6 +90,9 @@ export const upscaleHeadshot = schemaTask({
 			})
 			.where(eq(headshotImage.id, image.id));
 
+		console.log(
+			`Updating headshot request ${image.headshotRequest.id} with ${headshotRequest.editingCredits} - 1`,
+		);
 		await db
 			.update(headshotRequest)
 			.set({
