@@ -63,3 +63,5 @@ Tasks that have been finished. You can move items here temporarily before potent
 -   [x] Create and test a trigger to delete unpaid headshots. (Completed On: 2025-05-17)
 -   [x] Create and test a trigger to generate headshots. (Completed On: 2025-05-17)
 -   [x] Write handler for payment completed webhook. (Completed On: 2025-05-18)
+-   [x] Add favorite images to headshot images. (Completed On: 2025-05-19)
+-   [x] Add upscaling to headshot images. (Completed On: 2025-05-19)
