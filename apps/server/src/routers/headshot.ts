@@ -39,6 +39,7 @@ const headshotRequestColumns = {
 	outfits: true,
 
 	status: true,
+	completedAt: true,
 
 	regenerationCount: true,
 } as const;
