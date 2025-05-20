@@ -55,7 +55,7 @@ export function LoginBranding() {
 							alt={image.alt}
 							width={300}
 							height={400}
-							className="rounded-lg object-cover shadow-lg"
+							className="min-h-full rounded-lg object-cover shadow-lg"
 						/>
 					))}
 				</div>
