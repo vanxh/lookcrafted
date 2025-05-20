@@ -22,7 +22,7 @@ export const upscaleHeadshot = schemaTask({
 	retry: {
 		maxAttempts: 2,
 	},
-	maxDuration: 60,
+	maxDuration: 3 * 60,
 	run: async (payload) => {
 		const image = await db.query.headshotImage.findFirst({
 			where: (headshotImage, { eq }) =>
