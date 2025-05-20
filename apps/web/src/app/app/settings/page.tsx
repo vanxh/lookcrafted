@@ -41,7 +41,7 @@ export default function SettingsPage() {
 	const router = useRouter();
 	const { resolvedTheme, setTheme } = useTheme();
 
-	const { data: session, isPending, refetch } = authClient.useSession();
+	const { data: session, isPending } = authClient.useSession();
 	const [activeSection, setActiveSection] = useState("profile");
 
 	const avatarRef = useRef<HTMLDivElement>(null);
@@ -138,7 +138,6 @@ export default function SettingsPage() {
 				fetchOptions: {
 					onSuccess: () => {
 						toast.success("Profile updated successfully");
-						refetch();
 					},
 					onError: (error) => {
 						toast.error("Failed to update profile");
