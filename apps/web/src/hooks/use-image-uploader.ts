@@ -191,10 +191,10 @@ export function useImageUploader({
 			const faceArea = box.width * box.height;
 			const imageArea = imgEl.naturalWidth * imgEl.naturalHeight;
 			const faceRatio = faceArea / imageArea;
-			if (faceRatio < 0.05) {
+			if (faceRatio < 0.03) {
 				return {
 					error:
-						"Face is too small or too far. Please ensure face covers at least 5% of the image.",
+						"Face is too small or too far. Please ensure face covers at least 3% of the image.",
 				};
 			}
 
