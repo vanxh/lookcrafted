@@ -66,6 +66,11 @@ export const upscaleHeadshot = schemaTask({
 			input: {
 				image_url: image.imageUrl,
 			},
+			onEnqueue: async (requestId) => {
+				console.log(
+					`Updating headshot image ${image.id} with upscaled image ${requestId}`,
+				);
+			},
 		});
 
 		const upscaledImage = await fetch(upscaledFalImage.data.image.url);
