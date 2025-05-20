@@ -69,7 +69,7 @@ export default function HeadshotDetailPage({
 	const { mutate: toggleFavorite } = useMutation(
 		orpc.headshot.favoriteImage.mutationOptions({
 			onMutate: async ({ imageId, isFavorite }) => {
-				posthog.capture("toggle_favorite", {
+				posthog.capture("Toggle Favorite Headshot Image", {
 					headshotId: headshot?.id,
 					imageId,
 					isFavorite,
@@ -105,7 +105,7 @@ export default function HeadshotDetailPage({
 	const { mutate: upscaleImage } = useMutation(
 		orpc.headshot.upscaleImage.mutationOptions({
 			onMutate: async ({ imageId }) => {
-				posthog.capture("upscale_image", {
+				posthog.capture("Upscale Headshot Image", {
 					headshotId: headshot?.id,
 					imageId,
 				});
@@ -181,7 +181,7 @@ export default function HeadshotDetailPage({
 
 	const downloadImage = async (imageUrl: string, filename: string) => {
 		try {
-			posthog.capture("download_image", {
+			posthog.capture("Download Headshot Image", {
 				headshotId: headshot.id,
 				imageId: imageUrl,
 				filename,
@@ -204,7 +204,7 @@ export default function HeadshotDetailPage({
 
 	const downloadAllImages = async () => {
 		try {
-			posthog.capture("download_all_images", {
+			posthog.capture("Download All Headshot Images", {
 				headshotId: headshot.id,
 			});
 
@@ -438,7 +438,7 @@ export default function HeadshotDetailPage({
 																	variant="secondary"
 																	size="icon"
 																	onClick={() => {
-																		posthog.capture("upscale_image", {
+																		posthog.capture("Upscale Headshot Image", {
 																			headshotId: headshot.id,
 																			imageId: image.id,
 																		});

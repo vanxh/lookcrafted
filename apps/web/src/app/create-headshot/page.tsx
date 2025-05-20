@@ -8,6 +8,7 @@ import {
 	parseAsString,
 	useQueryStates,
 } from "nuqs";
+import { usePostHog } from "posthog-js/react";
 import { Suspense } from "react";
 import { toast } from "sonner";
 
@@ -47,6 +48,7 @@ const STEP_TITLES = [
 
 function CreateHeadshotPageComponent() {
 	const router = useRouter();
+	const posthog = usePostHog();
 
 	const [state, setState] = useQueryStates({
 		step: parseAsInteger.withDefault(1),
@@ -67,6 +69,9 @@ function CreateHeadshotPageComponent() {
 	const createHeadshotMutation = useMutation(
 		orpc.headshot.create.mutationOptions({
 			onSuccess: (data) => {
+				posthog.capture("Headshot Request Created", {
+					headshot_request_id: data.id,
+				});
 				toast.success("Headshot request created successfully!");
 				router.push(`/create-headshot?id=${data.id}&step=12`);
 			},
@@ -77,12 +82,11 @@ function CreateHeadshotPageComponent() {
 	);
 
 	const nextStep = async () => {
-		if (state.step === totalSteps) {
-			console.log("Form Submission Placeholder");
-			return;
-		}
-
 		if (!isStepValid()) return;
+
+		posthog.capture("Create Headshot Request Page Step", {
+			step: state.step,
+		});
 
 		if (state.step === 11) {
 			const data = await createHeadshotRequest();

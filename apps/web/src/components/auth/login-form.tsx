@@ -3,6 +3,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { KeyRound, Mail } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { usePostHog } from "posthog-js/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -22,6 +23,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export function LoginForm() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
+	const posthog = usePostHog();
 
 	const callbackURL = searchParams.get("callbackURL") ?? "/app";
 
@@ -38,10 +40,10 @@ export function LoginForm() {
 				callbackURL: `${window.location.origin}/${callbackURL}`,
 			}),
 		onSuccess: () => {
+			posthog.capture("Google Sign-In Initiated");
 			toast.success("Google login initiated!");
 		},
 		onError: (error: Error) => {
-			console.error("Google Sign-In Error:", error);
 			toast.error("Google login failed. Please try again.");
 		},
 	});
@@ -50,11 +52,13 @@ export function LoginForm() {
 		mutationFn: () =>
 			authClient.emailOtp.sendVerificationOtp({ email, type: "sign-in" }),
 		onSuccess: () => {
+			posthog.capture("Login OTP Sent", {
+				email,
+			});
 			toast.success(`OTP sent to ${email}!`);
 			setOtpSent(true);
 		},
 		onError: (error: Error) => {
-			console.error("Send OTP Error:", error);
 			toast.error("Failed to send OTP. Please try again.");
 		},
 	});
@@ -66,10 +70,12 @@ export function LoginForm() {
 				callbackURL: `${window.location.origin}/${callbackURL}`,
 			}),
 		onSuccess: () => {
+			posthog.capture("Login Magic Link Sent", {
+				email,
+			});
 			toast.success(`Magic link sent to ${email}!`);
 		},
 		onError: (error: Error) => {
-			console.error("Send Magic Link Error:", error);
 			toast.error("Failed to send magic link. Please try again.");
 		},
 	});
@@ -77,11 +83,13 @@ export function LoginForm() {
 	const verifyOtpMutation = useMutation({
 		mutationFn: () => authClient.signIn.emailOtp({ email, otp }),
 		onSuccess: () => {
+			posthog.capture("Login OTP Verified", {
+				email,
+			});
 			toast.success("OTP Verified! Logging in...");
 			router.push(callbackURL);
 		},
 		onError: (error: Error) => {
-			console.error("Verify OTP Error:", error);
 			toast.error("Invalid or expired OTP. Please try again.");
 		},
 	});

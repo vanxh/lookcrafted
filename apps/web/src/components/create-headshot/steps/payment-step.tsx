@@ -25,7 +25,7 @@ export function PaymentStep() {
 			return;
 		}
 
-		posthog.capture("checkout_started", {
+		posthog.capture("Start Checkout Session", {
 			headshotId,
 			plan,
 			userId: session.user.id,
