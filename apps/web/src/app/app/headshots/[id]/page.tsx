@@ -69,6 +69,12 @@ export default function HeadshotDetailPage({
 	const { mutate: toggleFavorite } = useMutation(
 		orpc.headshot.favoriteImage.mutationOptions({
 			onMutate: async ({ imageId, isFavorite }) => {
+				posthog.capture("toggle_favorite", {
+					headshotId: headshot?.id,
+					imageId,
+					isFavorite,
+				});
+
 				await queryClient.setQueryData(
 					orpc.headshot.getOne.queryOptions({
 						input: {
@@ -99,6 +105,11 @@ export default function HeadshotDetailPage({
 	const { mutate: upscaleImage } = useMutation(
 		orpc.headshot.upscaleImage.mutationOptions({
 			onMutate: async ({ imageId }) => {
+				posthog.capture("upscale_image", {
+					headshotId: headshot?.id,
+					imageId,
+				});
+
 				await queryClient.setQueryData(
 					orpc.headshot.getOne.queryOptions({
 						input: {
