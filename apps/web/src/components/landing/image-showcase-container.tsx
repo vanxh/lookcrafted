@@ -13,6 +13,8 @@ import Example3Before from "@/public/example-3-before.webp";
 import Example3After from "@/public/example-3.webp";
 import Example4Before from "@/public/example-4-before.webp";
 import Example4After from "@/public/example-4.webp";
+import Example5Before from "@/public/example-5-before.webp";
+import Example5After from "@/public/example-5.webp";
 
 const images = [
 	{
@@ -34,6 +36,11 @@ const images = [
 		before: Example3Before,
 		after: Example3After,
 		alt: "Example 3",
+	},
+	{
+		before: Example5Before,
+		after: Example5After,
+		alt: "Example 5",
 	},
 ];
 
