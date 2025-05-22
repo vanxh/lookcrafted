@@ -30,6 +30,8 @@ export const metadata: Metadata = {
 		"AI headshot generator",
 		"Photo AI",
 		"AI photo generator",
+		"selfie to headshot ai",
+		"remote team headshots",
 	],
 	openGraph: {
 		title:
