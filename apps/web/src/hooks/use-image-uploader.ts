@@ -6,8 +6,8 @@ import type { FileRejection } from "react-dropzone";
 import { env } from "@/env";
 import { orpc } from "@/utils/orpc";
 
-const MIN_IMAGES_DEFAULT = 8;
-const MAX_IMAGES_DEFAULT = 15;
+export const MIN_IMAGES_DEFAULT = 6;
+export const MAX_IMAGES_DEFAULT = 15;
 
 interface FaceDescriptorEntry {
 	id: string;

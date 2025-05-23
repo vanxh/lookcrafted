@@ -12,6 +12,8 @@ import { usePostHog } from "posthog-js/react";
 import { Suspense } from "react";
 import { toast } from "sonner";
 
+import type { CreateHeadshotRequestInput } from "@lookcrafted/constants";
+
 import { AppHeader } from "@/components/app/header";
 import { ProgressSidebar } from "@/components/create-headshot/progress-sidebar";
 import { AgeGroupStep } from "@/components/create-headshot/steps/age-group-step";
@@ -27,9 +29,12 @@ import { OutfitStep } from "@/components/create-headshot/steps/outfit-step";
 import { PaymentStep } from "@/components/create-headshot/steps/payment-step";
 import { PreviewStep } from "@/components/create-headshot/steps/preview-step";
 import { Button } from "@/components/ui/button";
+import {
+	MAX_IMAGES_DEFAULT,
+	MIN_IMAGES_DEFAULT,
+} from "@/hooks/use-image-uploader";
 import { cn } from "@/lib/utils";
 import { orpc } from "@/utils/orpc";
-import type { CreateHeadshotRequestInput } from "@lookcrafted/constants";
 
 const STEP_TITLES = [
 	"Gender",
@@ -153,8 +158,8 @@ function CreateHeadshotPageComponent() {
 			case 10:
 				return (
 					!!state.uploadedImageIds &&
-					state.uploadedImageIds.length >= 8 &&
-					state.uploadedImageIds.length <= 15
+					state.uploadedImageIds.length >= MIN_IMAGES_DEFAULT &&
+					state.uploadedImageIds.length <= MAX_IMAGES_DEFAULT
 				);
 			case 11:
 				return true;

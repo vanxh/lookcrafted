@@ -22,6 +22,9 @@ export function ImageUploadInstructions({
 				Please upload {minImages}-{maxImages} clear, front-facing photos of
 				yourself.
 			</p>
+			<p className="mt-1 text-muted-foreground text-xs">
+				We suggest uploading at least 8 images to ensure the best results.
+			</p>
 			<p className="mt-1 text-muted-foreground text-sm">
 				{completedImagesCount} / {maxImages} images uploaded successfully.
 				{completedImagesCount > 0 && completedImagesCount < minImages && (
