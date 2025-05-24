@@ -1,14 +1,12 @@
 import { CheckCircle2 } from "lucide-react";
 import Image from "next/image";
 
-import {
-	default as Example1After,
-	default as Example6After,
-} from "@/public/example-1.webp";
+import Example1After from "@/public/example-1.webp";
 import Example2After from "@/public/example-2.webp";
 import Example3After from "@/public/example-3.webp";
 import Example4After from "@/public/example-4.webp";
 import Example5After from "@/public/example-5.webp";
+import Example6After from "@/public/example-6.webp";
 
 const exampleImages = [
 	{ src: Example1After, alt: "Example AI Headshot 1" },
