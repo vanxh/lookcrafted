@@ -24,9 +24,10 @@ const navLinks = [
 		id: "headshots",
 		label: "Headshots",
 		subItems: [
-			{ href: "/headshots/personal", label: "Personal" },
-			{ href: "/headshots/teams", label: "For Teams" },
-			{ href: "/headshots/examples", label: "Examples" },
+			{ href: "#examples", label: "Personal" },
+			{ href: "#examples", label: "For Teams" },
+			{ href: "#examples", label: "Examples" },
+			{ href: "/linkedin-headshots", label: "LinkedIn Headshots" },
 		],
 	},
 ];
@@ -65,7 +66,7 @@ export function LandingPageHeader() {
 													<li key={subItem.href}>
 														<NavigationMenuLink asChild>
 															<Link
-																href="#pricing"
+																href={subItem.href}
 																className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 dark:focus:bg-gray-800 dark:focus:text-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-100"
 															>
 																<div className="text-nowrap font-medium text-sm leading-none dark:text-gray-300">
