@@ -25,6 +25,7 @@ export const env = createEnv({
 		CREEM_PREMIUM_PRODUCT_ID: z.string(),
 		FALAI_API_KEY: z.string(),
 		TRIGGER_SECRET_KEY: z.string(),
+		OPENAI_API_KEY: z.string(),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,

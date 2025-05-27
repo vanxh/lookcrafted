@@ -1,7 +1,9 @@
 import { Buffer } from "node:buffer";
 import { PassThrough } from "node:stream";
+import { openai } from "@ai-sdk/openai";
 import { fal } from "@fal-ai/client";
 import { schemaTask } from "@trigger.dev/sdk/v3";
+import { generateObject } from "ai";
 import archiver from "archiver";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
@@ -251,128 +253,55 @@ export const processHeadshotTraining = schemaTask({
 const generatePrompts = async (
 	request: typeof headshotRequest.$inferSelect,
 ) => {
-	const {
-		triggerPhrase,
-		gender,
-		ageGroup,
-		hairColor,
-		hairLength,
-		hairTexture,
-		ethnicity,
-		bodyType,
-		backgrounds,
-		outfits,
-		headshotCount,
-	} = request;
+	const { object } = await generateObject({
+		model: openai("gpt-4o"),
+		schema: z.array(
+			z.object({
+				prompt: z.string(),
+				background: z.string(),
+				outfit: z.string(),
+			}),
+		),
+		messages: [
+			{
+				role: "system",
+				content: `
+				You are a prompt generator for an AI headshot generator that uses custom LoRA models.
 
-	const generatedPrompts: {
-		prompt: string;
-		metadata?: Record<string, string | number>;
-	}[] = [];
-	const totalImagesToGenerate = headshotCount;
+				Your goal is to create realistic, photorealistic studio portrait prompts. The prompts will be used with a LoRA-trained image generation model, and must include a trigger phrase provided by the user.
 
-	const styleTerms = [
-		"studio lighting, realistic photography, high detail, sharp focus, photorealistic, 8k, professional look, clean skin, good composition",
-		"professional lighting, crisp details, natural skin tone, clean background, balanced composition",
-		"corporate portrait, modern photography, clear focus, flattering light",
-		"high-quality professional photo, sharp image, smooth skin, professional pose",
-	];
+				📌 Include this LoRA trigger exactly once in every prompt — ideally at the start or end of the description.
 
-	const expressionAngleTerms = [
-		"looking at camera, neutral expression",
-		"looking at camera, slight smile",
-		"looking at camera, confident smile",
-		"looking slightly away, neutral expression",
-		"looking slightly away, slight smile",
-		"3/4 view, looking at camera, neutral expression",
-		"shoulder up shot",
-		"chest up shot",
-		"head and shoulders portrait",
-		"close up portrait",
-	];
+				Each prompt must include:
+				- Subject appearance (age, ethnicity, gender, hair type, body type)
+				- Expression and pose
+				- Outfit and background (from user lists)
+				- Style keywords (e.g. "studio lighting", "soft shadows", "professional photo")
+				- The trigger phrase (from user input)
+							
+				⚠️ Ensure variation across:
+				- Expression and pose
+				- Wording and sentence structure
+				- Outfit/background combinations
+							
+				📦 Output format must be valid JSON:
+				\`\`\`json
+				{
+				  "prompts": [
+				    {
+				      "prompt": "<full text prompt>",
+				      "background": "<background>",
+				      "outfit": "<outfit>"
+				    }
+				  ]
+				}
+				\`\`\``,
+			},
+		],
+		prompt: JSON.stringify({ request }),
+	});
 
-	const userDescription = `${ethnicity} ${gender}, ${ageGroup} years old, with ${hairColor.toLowerCase()} ${hairLength.toLowerCase()} ${hairTexture.toLowerCase()} hair, ${bodyType.toLowerCase()} build`;
-
-	const totalCombinations = (backgrounds || []).length * (outfits || []).length;
-	const imagesPerCombination =
-		totalCombinations > 0
-			? Math.max(1, Math.floor(totalImagesToGenerate / totalCombinations))
-			: totalImagesToGenerate;
-
-	let promptCount = 0;
-
-	const effectiveBackgrounds = backgrounds || [];
-	const effectiveOutfits = outfits || [];
-
-	for (const bg of effectiveBackgrounds) {
-		for (const outfit of effectiveOutfits) {
-			for (let i = 0; i < imagesPerCombination; i++) {
-				if (promptCount >= totalImagesToGenerate) break;
-
-				const currentStyleTerms = styleTerms[promptCount % styleTerms.length];
-				const currentExpressionAngle =
-					expressionAngleTerms[promptCount % expressionAngleTerms.length];
-
-				let positivePrompt = `professional corporate headshot, studio portrait, ${currentStyleTerms}`;
-
-				positivePrompt += `, ${triggerPhrase}`;
-
-				positivePrompt += `, a ${userDescription}`;
-
-				positivePrompt += `, ${currentExpressionAngle}`;
-
-				positivePrompt += `, wearing a clean ${outfit} outfit`;
-				positivePrompt += `, with a clean ${bg} background`;
-
-				generatedPrompts.push({
-					prompt: positivePrompt.trim(),
-					metadata: {
-						background: bg,
-						outfit: outfit,
-						variationIndex: i,
-						combination: `${bg}-${outfit}`,
-					},
-				});
-
-				promptCount++;
-			}
-			if (promptCount >= totalImagesToGenerate) break;
-		}
-		if (promptCount >= totalImagesToGenerate) break;
-	}
-
-	while (promptCount < totalImagesToGenerate) {
-		for (const bg of effectiveBackgrounds) {
-			for (const outfit of effectiveOutfits) {
-				if (promptCount >= totalImagesToGenerate) break;
-
-				const currentStyleTerms = styleTerms[promptCount % styleTerms.length];
-				const currentExpressionAngle =
-					expressionAngleTerms[promptCount % expressionAngleTerms.length];
-
-				let positivePrompt = `professional corporate headshot, studio portrait, ${currentStyleTerms}`;
-				positivePrompt += `, ${triggerPhrase}`;
-				positivePrompt += `, a ${userDescription}`;
-				positivePrompt += `, ${currentExpressionAngle}`;
-				positivePrompt += `, wearing a clean ${outfit} outfit`;
-				positivePrompt += `, with a clean ${bg} background`;
-
-				generatedPrompts.push({
-					prompt: positivePrompt.trim(),
-					metadata: {
-						background: bg,
-						outfit: outfit,
-						variationIndex: promptCount,
-						combination: `${bg}-${outfit}`,
-					},
-				});
-				promptCount++;
-			}
-			if (promptCount >= totalImagesToGenerate) break;
-		}
-	}
-
-	return generatedPrompts.slice(0, totalImagesToGenerate);
+	return object;
 };
 
 export const generateHeadshotVariations = schemaTask({

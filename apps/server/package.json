@@ -14,6 +14,7 @@
 		"trigger:dev": "bunx trigger.dev@3.3.17 dev"
 	},
 	"dependencies": {
+		"@ai-sdk/openai": "^1.3.22",
 		"@better-auth/expo": "^1.2.7",
 		"@better-fetch/fetch": "^1.1.18",
 		"@fal-ai/client": "^1.4.0",
@@ -27,6 +28,7 @@
 		"@t3-oss/env-core": "^0.13.4",
 		"@trigger.dev/sdk": "^3.3.17",
 		"@upstash/ratelimit": "^2.0.5",
+		"ai": "^4.3.16",
 		"archiver": "^7.0.1",
 		"better-auth": "^1.2.7",
 		"creem": "^0.3.37",
