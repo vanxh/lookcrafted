@@ -213,7 +213,7 @@ export async function sendHeadshotAbandonmentEmail({
 		50: "YTAYML85DU",
 	}[discount];
 
-	const checkoutLink = `${env.FRONTEND_URL}/app/headshots/${headshotRequestId}/checkout?discount=${discountCode}`;
+	const checkoutLink = `${env.FRONTEND_URL}/create-headshot?id=${headshotRequestId}&discount=${discountCode}`;
 
 	return sendEmail(
 		to,

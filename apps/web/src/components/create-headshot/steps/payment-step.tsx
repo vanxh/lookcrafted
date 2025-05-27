@@ -9,6 +9,7 @@ export function PaymentStep() {
 	const router = useRouter();
 	const searchParams = useSearchParams();
 	const headshotId = searchParams.get("id");
+	const discount = searchParams.get("discount");
 
 	const posthog = usePostHog();
 
@@ -48,7 +49,7 @@ export function PaymentStep() {
 		// 	},
 		// });
 
-		const checkoutUrl = `${env.NEXT_PUBLIC_SERVER_URL}/v1/headshots/${headshotId}/checkout?plan=${plan}&referral=${referralId}`;
+		const checkoutUrl = `${env.NEXT_PUBLIC_SERVER_URL}/v1/headshots/${headshotId}/checkout?plan=${plan}&referral=${referralId}&discount=${discount}`;
 		void router.push(checkoutUrl);
 	};
 

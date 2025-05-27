@@ -1,5 +1,4 @@
 import { expo } from "@better-auth/expo";
-import { checkout, polar, portal, webhooks } from "@polar-sh/better-auth";
 import { tasks } from "@trigger.dev/sdk/v3";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
@@ -14,7 +13,6 @@ import {
 import { db } from "../db/index";
 import * as schema from "../db/schema";
 import { env } from "../env";
-import type { headshotPaid } from "../trigger/headshot-paid";
 import type { onboarding } from "../trigger/onboarding";
 import {
 	sendMagicLinkEmail,
@@ -24,7 +22,6 @@ import {
 	sendPasswordResetEmail,
 	sendVerificationEmail,
 } from "./email";
-import { polarClient } from "./polar";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -153,76 +150,6 @@ export const auth = betterAuth({
 		nextCookies(),
 		// @ts-ignore
 		expo(),
-		polar({
-			client: polarClient,
-			createCustomerOnSignUp: true,
-			use: [
-				checkout({
-					authenticatedUsersOnly: true,
-					products: [
-						{
-							productId: env.POLAR_STARTER_PRODUCT_ID,
-							slug: "starter",
-						},
-						{
-							productId: env.POLAR_BASIC_PRODUCT_ID,
-							slug: "basic",
-						},
-						{
-							productId: env.POLAR_PREMIUM_PRODUCT_ID,
-							slug: "premium",
-						},
-					],
-					successUrl: `${env.FRONTEND_URL}/app?checkout_id={CHECKOUT_ID}`,
-				}),
-				portal(),
-				webhooks({
-					secret: env.POLAR_WEBHOOK_SECRET,
-					onPayload: async (payload) => {
-						if (payload.type === "order.paid") {
-							const userId = (payload.data.customer.externalId ??
-								payload.data.metadata?.userId) as string;
-							const plan = {
-								[env.POLAR_STARTER_PRODUCT_ID]: "starter",
-								[env.POLAR_BASIC_PRODUCT_ID]: "basic",
-								[env.POLAR_PREMIUM_PRODUCT_ID]: "premium",
-							}[payload.data.productId ?? payload.data.product.id] as
-								| "starter"
-								| "basic"
-								| "premium";
-							const headshotRequestId = payload.data.metadata
-								?.headshotRequestId as string;
-
-							await tasks.trigger<typeof headshotPaid>("headshot-paid", {
-								headshotRequestId,
-								plan,
-								userId,
-							});
-						}
-					},
-					// onOrderPaid: async (payload) => {
-					// 	const userId = (payload.data.customer.externalId ??
-					// 		payload.data.metadata?.userId) as string;
-					// 	const plan = {
-					// 		[env.POLAR_STARTER_PRODUCT_ID]: "starter",
-					// 		[env.POLAR_BASIC_PRODUCT_ID]: "basic",
-					// 		[env.POLAR_PREMIUM_PRODUCT_ID]: "premium",
-					// 	}[payload.data.productId ?? payload.data.product.id] as
-					// 		| "starter"
-					// 		| "basic"
-					// 		| "premium";
-					// 	const headshotRequestId = payload.data.metadata
-					// 		?.headshotRequestId as string;
-
-					// 	await tasks.trigger<typeof headshotPaid>("headshot-paid", {
-					// 		headshotRequestId,
-					// 		plan,
-					// 		userId,
-					// 	});
-					// },
-				}),
-			],
-		}),
 		openAPI({}),
 	],
 	appName: "LookCrafted",
