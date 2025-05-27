@@ -486,7 +486,7 @@ export const generateHeadshotVariations = schemaTask({
 										FAL_UPSCALE_MODEL_ID,
 										{
 											input: {
-												image_url: image,
+												image_url: falImage.data.images[0].url,
 											},
 										},
 									);
