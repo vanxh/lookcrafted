@@ -30,7 +30,7 @@ export default function AppPage() {
 	}
 
 	return (
-		<div className="min-h-screen bg-white dark:bg-gray-900">
+		<div className="min-h-screen">
 			<div className="px-6 py-6">
 				<div className="mx-auto max-w-4xl text-center">
 					<div className="mb-4 inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold text-sm text-transparent">
