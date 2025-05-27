@@ -25,8 +25,14 @@ const nextConfig: NextConfig = {
 		],
 	},
 	skipTrailingSlashRedirect: true,
-	experimental: {
-		nodeMiddleware: true,
+	experimental: {},
+	webpack: (config) => {
+		config.resolve.fallback = {
+			...config.resolve.fallback,
+			fs: false,
+			encoding: false,
+		};
+		return config;
 	},
 };
 

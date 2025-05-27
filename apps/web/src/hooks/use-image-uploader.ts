@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import * as faceapi from "face-api.js";
-import heic2any from "heic2any";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FileRejection } from "react-dropzone";
 
@@ -53,6 +52,8 @@ const createImageElement = (dataUrl: string): Promise<HTMLImageElement> => {
 
 const convertHeicToJpeg = async (file: File): Promise<File> => {
 	try {
+		const heic2any = (await import("heic2any")).default;
+
 		const convertedBlob = (await heic2any({
 			blob: file,
 			toType: "image/jpeg",
