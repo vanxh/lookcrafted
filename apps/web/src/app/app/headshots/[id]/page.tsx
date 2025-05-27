@@ -408,7 +408,12 @@ export default function HeadshotDetailPage({
 								<Card key={image.id} className="overflow-hidden p-0">
 									<div className="relative aspect-[3/4] h-auto w-full">
 										<Image
-											src={image.upscaledImageUrl ?? image.imageUrl}
+											src={
+												image.upscaledImageUrl?.replace(
+													"public",
+													"portrait3x",
+												) ?? image.imageUrl.replace("public", "portrait3x")
+											}
 											alt="Headshot"
 											fill
 											className="object-cover"
@@ -527,7 +532,7 @@ export default function HeadshotDetailPage({
 							<Card key={upload.id} className="overflow-hidden p-0">
 								<div className="relative aspect-[3/4] h-auto w-full">
 									<Image
-										src={upload.imageUrl}
+										src={upload.imageUrl.replace("public", "portrait3x")}
 										alt="Reference image"
 										fill
 										className="object-cover"
