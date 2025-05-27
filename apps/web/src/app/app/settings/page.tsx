@@ -297,7 +297,7 @@ export default function SettingsPage() {
 
 	return (
 		<div className="min-h-screen">
-			<div className="px-6 py-4">
+			<div className="py-4">
 				<div className="mx-auto max-w-6xl">
 					<div className="mb-6 space-y-2">
 						<h1 className="font-bold text-3xl text-gray-900 dark:text-white">
@@ -649,18 +649,18 @@ export default function SettingsPage() {
 													{sessions.map((s) => (
 														<div
 															key={s.id}
-															className="flex items-center justify-between rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-700/50"
+															className="flex flex-col gap-3 rounded-xl border border-gray-200 bg-gray-50 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-700 dark:bg-gray-700/50"
 														>
 															<div className="flex items-center gap-3">
 																{s.device === "Mobile" ? (
-																	<Smartphone className="size-4 text-gray-600 dark:text-gray-400" />
+																	<Smartphone className="size-4 shrink-0 text-gray-600 dark:text-gray-400" />
 																) : s.device === "Tablet" ? (
-																	<Tablet className="size-4 text-gray-600 dark:text-gray-400" />
+																	<Tablet className="size-4 shrink-0 text-gray-600 dark:text-gray-400" />
 																) : (
-																	<Laptop className="size-4 text-gray-600 dark:text-gray-400" />
+																	<Laptop className="size-4 shrink-0 text-gray-600 dark:text-gray-400" />
 																)}
-																<div>
-																	<div className="flex items-center gap-2">
+																<div className="min-w-0 flex-1">
+																	<div className="flex flex-wrap items-center gap-2">
 																		<span className="text-gray-900 dark:text-white">
 																			{s.id === session.session.id
 																				? "Current Session"
@@ -681,6 +681,7 @@ export default function SettingsPage() {
 															<Button
 																size="sm"
 																variant="destructive"
+																className="shrink-0 self-start sm:self-center"
 																onClick={() =>
 																	s.id === session.session.id
 																		? handleSignOut()
@@ -689,12 +690,12 @@ export default function SettingsPage() {
 															>
 																{s.id === session.session.id ? (
 																	<>
-																		<LogOut className="size-4" />
+																		<LogOut className="mr-1 size-4" />
 																		Sign Out
 																	</>
 																) : (
 																	<>
-																		<X className="size-4" />
+																		<X className="mr-1 size-4" />
 																		Revoke
 																	</>
 																)}

@@ -35,7 +35,7 @@ export default function AppPage() {
 
 	return (
 		<div className="min-h-screen">
-			<div className="px-6 py-6">
+			<div className="py-6">
 				<div className="mx-auto max-w-4xl text-center">
 					<div className="mb-4 inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text font-semibold text-sm text-transparent">
 						<Sparkles className="h-4 w-4 text-blue-600 dark:text-blue-400" />
@@ -55,7 +55,7 @@ export default function AppPage() {
 				</div>
 			</div>
 
-			<div className="px-6 pb-12">
+			<div>
 				<div className="mx-auto max-w-6xl">
 					<div className="mb-12 grid gap-6 md:grid-cols-2">
 						<div className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 to-blue-700 p-8 text-white shadow-xl transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl dark:shadow-2xl">

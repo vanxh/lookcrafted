@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 export default function TeamsPage() {
 	return (
 		<div className="min-h-screen">
-			<div className="px-6 py-4">
+			<div className="py-4">
 				<div className="mx-auto max-w-6xl">
-					{/* Header */}
 					<div className="mb-6 flex items-center justify-between">
 						<div className="space-y-2">
 							<h1 className="font-bold text-3xl text-gray-900 dark:text-white">
@@ -28,24 +27,22 @@ export default function TeamsPage() {
 						</Button>
 					</div>
 
-					{/* Coming Soon Banner */}
-					<div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-6 text-white">
-						<div className="flex items-center gap-4">
-							<div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20">
-								<Crown className="h-6 w-6" />
+					<div className="mb-8 rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-white sm:p-6">
+						<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+							<div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/20 sm:h-12 sm:w-12">
+								<Crown className="h-5 w-5 sm:h-6 sm:w-6" />
 							</div>
-							<div>
-								<h3 className="font-semibold text-lg">
+							<div className="min-w-0 flex-1">
+								<h3 className="font-semibold text-base sm:text-lg">
 									Team Features Coming Soon
 								</h3>
-								<p className="text-blue-100">
+								<p className="text-blue-100 text-sm sm:text-base">
 									Advanced collaboration tools are currently in development
 								</p>
 							</div>
 						</div>
 					</div>
 
-					{/* Feature Preview Cards */}
 					<div className="mb-12 grid gap-6 md:grid-cols-3">
 						<div className="rounded-2xl border border-gray-200/60 bg-white p-6 shadow-sm dark:border-gray-700/60 dark:bg-gray-800">
 							<div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-xl bg-blue-100 dark:bg-blue-900/30">
@@ -87,7 +84,6 @@ export default function TeamsPage() {
 						</div>
 					</div>
 
-					{/* Main Empty State */}
 					<div className="rounded-2xl border border-gray-200/60 bg-white p-12 text-center shadow-sm dark:border-gray-700/60 dark:bg-gray-800">
 						<div className="mx-auto max-w-md">
 							<div className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-purple-100 dark:from-blue-900/30 dark:to-purple-900/30">
