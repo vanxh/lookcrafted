@@ -112,16 +112,11 @@ function UserMenuContent() {
 						asChild
 						className="rounded-lg p-2.5 transition-colors hover:bg-gray-50"
 					>
-						<Link
-							href="mailto:hello@lookcrafted.com?subject=I%20have%20a%20question"
-							className="flex cursor-pointer items-center"
-						>
+						<Link href="/contact" className="flex cursor-pointer items-center">
 							<div className="mr-3 flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100">
 								<HelpCircle className="h-4 w-4 text-gray-600" />
 							</div>
-							<span className="font-medium text-gray-700 text-sm">
-								Help center
-							</span>
+							<span className="font-medium text-gray-700 text-sm">Support</span>
 						</Link>
 					</DropdownMenuItem>
 
