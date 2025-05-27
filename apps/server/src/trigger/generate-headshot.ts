@@ -573,8 +573,6 @@ export const generateHeadshotVariations = schemaTask({
 					await sendHeadshotCompletedEmail({
 						to: user.email,
 						name: user.name || undefined,
-						gender: request.gender,
-						ageGroup: request.ageGroup,
 						headshots: headshotImages.length,
 						headshotGalleryLink: `${env.FRONTEND_URL}/app/headshots/${payload.headshotRequestId}`,
 					});

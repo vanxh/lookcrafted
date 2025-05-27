@@ -17,6 +17,7 @@ import { env } from "../env";
 import { exportImage } from "../lib/cloudflare";
 import { createCreemCheckout } from "../lib/creem";
 import { protectedProcedure, ratelimitWithKey } from "../lib/orpc";
+import type { headshotAbandonmentWorkflow } from "../trigger/headshot-abandonment";
 import type { upscaleHeadshot } from "../trigger/upscale-headshot";
 
 const headshotRequestColumns = {
@@ -175,6 +176,14 @@ export const headshotRouter = {
 				});
 			}
 
+			await tasks.trigger<typeof headshotAbandonmentWorkflow>(
+				"headshot-abandonment-workflow",
+				{
+					headshotRequestId: id,
+					userId: session.user.id,
+				},
+			);
+
 			return { id };
 		}),
 
@@ -261,6 +270,7 @@ export const headshotRouter = {
 				id: z.string(),
 				plan: z.enum(["starter", "basic", "premium"]),
 				referral: z.string().optional(),
+				discount: z.string().optional(),
 			}),
 		)
 		.output(z.object({ headers: z.record(z.string(), z.string()) }))
@@ -290,6 +300,7 @@ export const headshotRouter = {
 					email: session.user.email,
 					userId: session.user.id,
 					referral: input.referral,
+					discount: input.discount,
 				});
 
 				if (!checkout.checkoutUrl) {

@@ -11,12 +11,14 @@ export const createCreemCheckout = async ({
 	email,
 	userId,
 	referral,
+	discount,
 }: {
 	plan: "starter" | "basic" | "premium";
 	headshotRequestId: string;
 	email: string;
 	userId: string;
 	referral?: string;
+	discount?: string;
 }) => {
 	const productId = {
 		starter: env.CREEM_STARTER_PRODUCT_ID,
@@ -41,6 +43,7 @@ export const createCreemCheckout = async ({
 				plan,
 				...(referral ? { affonso_referral: referral } : {}),
 			},
+			discountCode: discount,
 		},
 		xApiKey: env.CREEM_API_KEY,
 	});

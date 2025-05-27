@@ -11,23 +11,23 @@ import {
 	Text,
 } from "@react-email/components";
 
-interface HeadshotCompletedEmailProps {
+interface HeadshotAbandonmentEmailProps {
 	name?: string;
-	headshots?: number;
-	headshotGalleryLink: string;
+	discount: number;
+	checkoutLink: string;
 }
 
-export default function HeadshotCompletedEmail({
+export default function HeadshotAbandonmentEmail({
 	name = "there",
-	headshots = 20,
-	headshotGalleryLink = "https://lookcrafted.com/app/headshots/123",
-}: HeadshotCompletedEmailProps) {
-	const title = "Your professional AI headshots are ready!";
+	discount,
+	checkoutLink,
+}: HeadshotAbandonmentEmailProps) {
+	const previewText = `Don't miss out! ${discount}% OFF your AI headshots`;
 
 	return (
 		<Html>
 			<Head />
-			<Preview>Your professional AI headshots are ready to view! ✨</Preview>
+			<Preview>{previewText}</Preview>
 			<Body style={main}>
 				<Container style={card}>
 					<Section style={{ textAlign: "center" }}>
@@ -37,40 +37,40 @@ export default function HeadshotCompletedEmail({
 							width="130"
 							style={{ margin: "0 auto", borderRadius: "8px" }}
 						/>
-						<Heading style={heading}>{title}</Heading>
+						<Heading style={heading}>
+							Don't miss out on your AI headshots!
+						</Heading>
 						<Text style={subheading}>
-							Your AI headshots have been successfully generated
+							Limited time: {discount}% OFF your professional headshots
 						</Text>
 						<Text style={bodyText}>
 							Hi {name},
 							<br />
 							<br />
-							Great news! We've just finished generating your professional AI
-							headshots. You now have {headshots} unique images ready to view
-							and download.
+							We noticed you started creating your AI headshots but haven't
+							completed your order yet.
 							<br />
 							<br />
-							Your headshots are stored in your account for 90 days. Make sure
-							to download any favorites to keep them permanently.
+							Don't let this opportunity slip away! For a limited time, we're
+							offering you <strong>{discount}% OFF</strong> your AI headshot
+							package.
 						</Text>
-						<Button href={headshotGalleryLink} style={button}>
-							View My Headshots →
+						<Button href={checkoutLink} style={button}>
+							Complete Your Order - {discount}% OFF →
 						</Button>
-
 						<Text style={note}>
-							Remember, you can favorite your best shots to easily find them
-							later, regenerate additional variations, or create entirely new
-							headshots from your LookCrafted dashboard.
+							This exclusive discount won't last long. Complete your order now
+							and get professional AI headshots that will make you stand out.
 						</Text>
 					</Section>
 
 					<Section style={{ marginTop: "40px", textAlign: "center" }}>
 						<Text style={footer}>
-							Need help? Visit our{" "}
+							Need help? Just reply to this email or visit our{" "}
 							<a href="https://lookcrafted.com/" style={link}>
 								Help Center
-							</a>{" "}
-							or reply to this email with any questions.
+							</a>
+							.
 						</Text>
 					</Section>
 				</Container>
@@ -124,34 +124,6 @@ const button = {
 	borderRadius: "8px",
 	textDecoration: "none",
 	display: "inline-block",
-	marginBottom: "32px",
-};
-
-const previewImagesContainer = {
-	marginTop: "24px",
-	marginBottom: "24px",
-};
-
-const previewText = {
-	fontSize: "16px",
-	color: "#374151",
-	marginBottom: "16px",
-	textAlign: "center" as const,
-};
-
-const imagePlaceholder = {
-	width: "100%",
-	height: "200px",
-	backgroundColor: "#f3f4f6",
-	borderRadius: "8px",
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "center",
-};
-
-const imagePlaceholderText = {
-	color: "#9ca3af",
-	fontSize: "14px",
 };
 
 const note = {

@@ -2,6 +2,7 @@ import type * as React from "react";
 import { Resend } from "resend";
 
 import EmailVerificationEmail from "../emails/email-verification";
+import HeadshotAbandonmentEmail from "../emails/headshot-abandonment";
 import HeadshotCompletedEmail from "../emails/headshot-completed";
 import MagicLinkEmail from "../emails/magic-link";
 import OrganizationCreatedEmail from "../emails/organization-created";
@@ -175,15 +176,11 @@ export async function sendOrganizationInvitationEmail({
 export async function sendHeadshotCompletedEmail({
 	to,
 	name,
-	gender,
-	ageGroup,
 	headshots,
 	headshotGalleryLink,
 }: {
 	to: string;
 	name?: string;
-	gender?: string;
-	ageGroup?: string;
 	headshots?: number;
 	headshotGalleryLink: string;
 }) {
@@ -192,11 +189,39 @@ export async function sendHeadshotCompletedEmail({
 		"Your AI headshots are ready!",
 		<HeadshotCompletedEmail
 			name={name}
-			gender={gender}
-			ageGroup={ageGroup}
 			headshots={headshots}
 			headshotGalleryLink={headshotGalleryLink}
 		/>,
 		["lookcrafted.com+e376a2314c@invite.trustpilot.com"],
+	);
+}
+
+export async function sendHeadshotAbandonmentEmail({
+	to,
+	name,
+	discount,
+	headshotRequestId,
+}: {
+	to: string;
+	name?: string;
+	discount: number;
+	headshotRequestId: string;
+}) {
+	const discountCode = {
+		15: "A9WHA3NCZZ",
+		30: "AYW21E8M55",
+		50: "YTAYML85DU",
+	}[discount];
+
+	const checkoutLink = `${env.FRONTEND_URL}/app/headshots/${headshotRequestId}/checkout?discount=${discountCode}`;
+
+	return sendEmail(
+		to,
+		`Don't miss out! ${discount}% OFF your AI headshots`,
+		<HeadshotAbandonmentEmail
+			name={name}
+			discount={discount}
+			checkoutLink={checkoutLink}
+		/>,
 	);
 }
