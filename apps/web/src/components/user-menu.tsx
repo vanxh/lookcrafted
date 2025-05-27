@@ -1,4 +1,4 @@
-import { LayoutDashboard, LogOut, Settings } from "lucide-react";
+import { HelpCircle, LayoutDashboard, LogOut, Settings } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense } from "react";
@@ -9,7 +9,6 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
-	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -48,47 +47,102 @@ function UserMenuContent() {
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent align="end" className="w-56">
-				<DropdownMenuLabel className="font-normal">
-					<div className="flex flex-col space-y-1">
-						<p className="font-medium text-sm">{session.user.name}</p>
-						<p className="text-muted-foreground text-xs">
+			<DropdownMenuContent
+				align="end"
+				className="w-64 rounded-2xl border border-gray-200/50 bg-white/95 p-4 shadow-xl backdrop-blur-sm"
+			>
+				<div className="mb-4 flex items-center space-x-3">
+					<Avatar className="h-12 w-12 ring-2 ring-blue-500/20">
+						<AvatarImage
+							src={session.user.image || ""}
+							alt={session.user.name || "User"}
+						/>
+						<AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 font-semibold text-sm text-white">
+							{initials}
+						</AvatarFallback>
+					</Avatar>
+
+					<div className="min-w-0 flex-1">
+						<h3 className="truncate font-semibold text-base text-gray-900">
+							{session.user.name || "User"}
+						</h3>
+						<p className="truncate text-gray-500 text-sm">
 							{session.user.email}
 						</p>
 					</div>
-				</DropdownMenuLabel>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem asChild>
-					<Link href="/app" className="flex cursor-pointer items-center">
-						<LayoutDashboard className="mr-2 h-4 w-4" />
-						<span>Dashboard</span>
-					</Link>
-				</DropdownMenuItem>
-				<DropdownMenuItem asChild>
-					<Link
-						href="/app/settings"
-						className="flex cursor-pointer items-center"
+				</div>
+
+				<div className="space-y-1">
+					<DropdownMenuItem
+						asChild
+						className="rounded-lg p-2.5 transition-colors hover:bg-gray-50"
 					>
-						<Settings className="mr-2 h-4 w-4" />
-						<span>Settings</span>
-					</Link>
-				</DropdownMenuItem>
-				<DropdownMenuSeparator />
-				<DropdownMenuItem
-					className="cursor-pointer text-destructive focus:text-destructive"
-					onClick={() => {
-						authClient.signOut({
-							fetchOptions: {
-								onSuccess: () => {
-									router.push("/");
+						<Link href="/app" className="flex cursor-pointer items-center">
+							<div className="mr-3 flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100">
+								<LayoutDashboard className="h-4 w-4 text-gray-600" />
+							</div>
+							<span className="font-medium text-gray-700 text-sm">
+								Dashboard
+							</span>
+						</Link>
+					</DropdownMenuItem>
+
+					<DropdownMenuItem
+						asChild
+						className="rounded-lg p-2.5 transition-colors hover:bg-gray-50"
+					>
+						<Link
+							href="/app/settings"
+							className="flex cursor-pointer items-center"
+						>
+							<div className="mr-3 flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100">
+								<Settings className="h-4 w-4 text-gray-600" />
+							</div>
+							<span className="font-medium text-gray-700 text-sm">
+								Settings
+							</span>
+						</Link>
+					</DropdownMenuItem>
+				</div>
+
+				<DropdownMenuSeparator className="my-3 bg-gray-200" />
+
+				<div className="space-y-1">
+					<DropdownMenuItem
+						asChild
+						className="rounded-lg p-2.5 transition-colors hover:bg-gray-50"
+					>
+						<Link
+							href="mailto:hello@lookcrafted.com?subject=I%20have%20a%20question"
+							className="flex cursor-pointer items-center"
+						>
+							<div className="mr-3 flex h-7 w-7 items-center justify-center rounded-lg bg-gray-100">
+								<HelpCircle className="h-4 w-4 text-gray-600" />
+							</div>
+							<span className="font-medium text-gray-700 text-sm">
+								Help center
+							</span>
+						</Link>
+					</DropdownMenuItem>
+
+					<DropdownMenuItem
+						className="cursor-pointer rounded-lg p-2.5 text-red-600 transition-colors hover:bg-red-50 focus:text-red-600"
+						onClick={() => {
+							authClient.signOut({
+								fetchOptions: {
+									onSuccess: () => {
+										router.push("/");
+									},
 								},
-							},
-						});
-					}}
-				>
-					<LogOut className="mr-2 h-4 w-4" />
-					<span>Sign Out</span>
-				</DropdownMenuItem>
+							});
+						}}
+					>
+						<div className="mr-3 flex h-7 w-7 items-center justify-center rounded-lg bg-red-100">
+							<LogOut className="h-4 w-4 text-red-600" />
+						</div>
+						<span className="font-medium text-sm">Sign out</span>
+					</DropdownMenuItem>
+				</div>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
