@@ -85,7 +85,7 @@ export function ImageDropzoneUI({
 			{icon}
 			<p className="text-gray-600 dark:text-gray-400">{message}</p>
 			<p className="text-gray-500 text-xs dark:text-gray-300">
-				PNG, JPG, WEBP supported.{" "}
+				PNG, JPG, WEBP, HEIC supported.{" "}
 				{maxImages - completedImagesCount > 0
 					? `Up to ${maxImages - completedImagesCount} more.`
 					: "No more images can be added."}

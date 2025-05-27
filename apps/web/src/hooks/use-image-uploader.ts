@@ -1,5 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import * as faceapi from "face-api.js";
+import heic2any from "heic2any";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { FileRejection } from "react-dropzone";
 
@@ -50,6 +51,35 @@ const createImageElement = (dataUrl: string): Promise<HTMLImageElement> => {
 	});
 };
 
+const convertHeicToJpeg = async (file: File): Promise<File> => {
+	try {
+		const convertedBlob = (await heic2any({
+			blob: file,
+			toType: "image/jpeg",
+			quality: 0.8,
+		})) as Blob;
+
+		return new File([convertedBlob], file.name.replace(/\.heic$/i, ".jpg"), {
+			type: "image/jpeg",
+			lastModified: file.lastModified,
+		});
+	} catch (error) {
+		console.error("Failed to convert HEIC file:", error);
+		throw new Error(
+			"Failed to convert HEIC image. Please try a different format.",
+		);
+	}
+};
+
+const isHeicFile = (file: File): boolean => {
+	return (
+		file.type === "image/heic" ||
+		file.type === "image/heif" ||
+		file.name.toLowerCase().endsWith(".heic") ||
+		file.name.toLowerCase().endsWith(".heif")
+	);
+};
+
 export function useImageUploader({
 	modelsLoaded,
 	initialUploadedImageIds,
@@ -85,7 +115,7 @@ export function useImageUploader({
 
 				for (const id of initialUploadedImageIds) {
 					if (!existingImageIdsInState.has(id)) {
-						const imageUrl = `https://imagedelivery.net/${cloudflareHash}/${id}/public`;
+						const imageUrl = `https://imagedelivery.net/${cloudflareHash}/${id}/portrait2x`;
 						nextProcessingFilesWorkingCopy.push({
 							id: id,
 							name: "Uploaded Image",
@@ -352,11 +382,16 @@ export function useImageUploader({
 				let validationResult: Awaited<ReturnType<typeof validateImage>>;
 
 				try {
+					let fileToProcess = file;
+					if (isHeicFile(file)) {
+						fileToProcess = await convertHeicToJpeg(file);
+					}
+
 					dataUrl = await new Promise<string>((resolve, reject) => {
 						const reader = new FileReader();
 						reader.onloadend = () => resolve(reader.result as string);
 						reader.onerror = reject;
-						reader.readAsDataURL(file);
+						reader.readAsDataURL(fileToProcess);
 					});
 
 					imgEl = await createImageElement(dataUrl);

@@ -171,7 +171,7 @@ export function PreviewStep() {
 							className="relative aspect-[3/4] overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-sm transition-shadow duration-300 hover:shadow-md"
 						>
 							<Image
-								src={`https://imagedelivery.net/${env.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH}/${imageId}/public`}
+								src={`https://imagedelivery.net/${env.NEXT_PUBLIC_CLOUDFLARE_ACCOUNT_HASH}/${imageId}/portrait2x`}
 								alt="Uploaded image"
 								fill
 								sizes="(max-width: 640px) 33vw, (max-width: 768px) 25vw, 16vw"
