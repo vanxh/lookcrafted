@@ -15,6 +15,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
 			priority: 1,
 		},
 		{
+			url: "https://lookcrafted.com/resume-headshots",
+			lastModified: new Date(),
+			changeFrequency: "monthly",
+			priority: 1,
+		},
+		{
 			url: "https://lookcrafted.com/pricing",
 			lastModified: new Date(),
 			changeFrequency: "monthly",

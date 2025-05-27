@@ -24,10 +24,14 @@ const navLinks = [
 		id: "headshots",
 		label: "Headshots",
 		subItems: [
-			{ href: "#examples", label: "Personal" },
-			{ href: "#examples", label: "For Teams" },
-			{ href: "#examples", label: "Examples" },
-			{ href: "/linkedin-headshots", label: "LinkedIn Headshots" },
+			{ id: "personal", href: "#examples", label: "Personal" },
+			{ id: "teams", href: "#examples", label: "For Teams" },
+			{
+				id: "linkedin",
+				href: "/linkedin-headshots",
+				label: "LinkedIn Headshots",
+			},
+			{ id: "resume", href: "/resume-headshots", label: "Resume Headshots" },
 		],
 	},
 ];
@@ -129,21 +133,26 @@ export function LandingPageHeader() {
 			{isMobileMenuOpen && (
 				<div className="absolute top-full right-0 left-0 z-50 w-full border-b bg-white p-4 shadow-lg lg:hidden dark:border-gray-800 dark:bg-gray-950 dark:shadow-black/20">
 					<nav className="grid gap-2 font-medium text-base">
-						{navLinks.map((link) => (
-							<Button
-								key={link.id || link.href}
-								variant="ghost"
-								className="w-full justify-start dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
-								asChild
-							>
-								<Link
-									href={link.href ?? link.subItems?.[0]?.href ?? "#"}
-									onClick={() => setIsMobileMenuOpen(false)}
+						{[
+							...navLinks.filter((link) => !link.subItems?.length),
+							...navLinks.flatMap((link) => link.subItems),
+						]
+							.filter((link) => link !== undefined)
+							.map((link) => (
+								<Button
+									key={link.id}
+									variant="ghost"
+									className="w-full justify-start dark:text-gray-300 dark:hover:bg-gray-800 dark:hover:text-white"
+									asChild
 								>
-									{link.label}
-								</Link>
-							</Button>
-						))}
+									<Link
+										href={link.href ?? link.subItems?.[0]?.href ?? "#"}
+										onClick={() => setIsMobileMenuOpen(false)}
+									>
+										{link.label}
+									</Link>
+								</Button>
+							))}
 						<hr className="my-2" />
 						<Button
 							className="w-full bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
