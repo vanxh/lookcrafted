@@ -1,3 +1,4 @@
+import { AffiliateSection } from "@/components/landing/affiliate-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { LandingPageFooter } from "@/components/landing/footer";
 import { LandingPageHeader } from "@/components/landing/header";
@@ -21,6 +22,10 @@ export default function PricingPage() {
 					</div>
 
 					<PricingTable />
+
+					<div className="mt-16 lg:mt-24">
+						<AffiliateSection />
+					</div>
 				</section>
 
 				<FaqSection />

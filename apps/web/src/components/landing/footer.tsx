@@ -68,7 +68,7 @@ export function LandingPageFooter() {
 						Privacy Policy
 					</Link>
 					<Link
-						href="https://lookcrafted.affonso.io"
+						href="/affiliate"
 						className="text-muted-foreground text-sm transition-colors hover:text-foreground"
 						target="_blank"
 						rel="noopener noreferrer"
