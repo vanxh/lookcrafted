@@ -12,6 +12,7 @@ import {
 import Link from "next/link";
 
 import LinkedIn from "@/components/icons/linkedin";
+import { AffiliateSection } from "@/components/landing/affiliate-section";
 import { CallToActionSection } from "@/components/landing/cta-section";
 import { FaqSection } from "@/components/landing/faq-section";
 import { LandingPageFooter } from "@/components/landing/footer";
@@ -582,6 +583,10 @@ export default function LinkedInHeadshotsPage() {
 							</p>
 						</div>
 						<PricingTable />
+
+						<div className="mt-16 lg:mt-24">
+							<AffiliateSection />
+						</div>
 					</div>
 				</section>
 
