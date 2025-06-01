@@ -77,6 +77,12 @@ export default function TermsPage() {
 						and delivered headshot packages are non-refundable.
 					</li>
 					<li>
+						<strong>Download Restriction:</strong> Refunds are only possible if
+						no headshots from your generated package have been downloaded. Once
+						any headshot is downloaded, the entire package becomes
+						non-refundable.
+					</li>
+					<li>
 						<strong>Exceptions:</strong> Refunds may be considered on a
 						case-by-case basis only in the event of a verifiable technical
 						failure on our part that prevents the successful delivery of your
