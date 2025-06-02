@@ -1,6 +1,11 @@
+import withMDX from "@next/mdx";
 import type { NextConfig } from "next";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
 const nextConfig: NextConfig = {
+	pageExtensions: ["js", "jsx", "mdx", "ts", "tsx"],
 	async rewrites() {
 		return [
 			{
@@ -22,6 +27,9 @@ const nextConfig: NextConfig = {
 			{
 				hostname: "imagedelivery.net",
 			},
+			{
+				hostname: "images.unsplash.com",
+			},
 		],
 	},
 	skipTrailingSlashRedirect: true,
@@ -36,4 +44,22 @@ const nextConfig: NextConfig = {
 	},
 };
 
-export default nextConfig;
+const withMDXConfig = withMDX({
+	options: {
+		remarkPlugins: [remarkGfm],
+		rehypePlugins: [
+			rehypeSlug,
+			[
+				rehypeAutolinkHeadings,
+				{
+					behavior: "wrap",
+					properties: {
+						className: ["anchor"],
+					},
+				},
+			],
+		],
+	},
+});
+
+export default withMDXConfig(nextConfig);
