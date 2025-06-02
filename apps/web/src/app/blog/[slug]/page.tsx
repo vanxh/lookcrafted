@@ -22,15 +22,16 @@ import { Button } from "@/components/ui/button";
 import { getAllPostSlugs, getPostData, getRelatedPosts } from "@/lib/blog";
 
 interface BlogPostPageProps {
-	params: {
+	params: Promise<{
 		slug: string;
-	};
+	}>;
 }
 
 export async function generateMetadata({
 	params,
 }: BlogPostPageProps): Promise<Metadata> {
-	const post = getPostData(params.slug);
+	const { slug } = await params;
+	const post = getPostData(slug);
 
 	if (!post) {
 		return {
@@ -196,8 +197,9 @@ const components = {
 	Link,
 };
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-	const post = getPostData(params.slug);
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+	const { slug } = await params;
+	const post = getPostData(slug);
 
 	if (!post) {
 		notFound();
