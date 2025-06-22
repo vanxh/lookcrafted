@@ -1,12 +1,12 @@
 import { authClient } from "@/lib/auth-client";
 import { createORPCClient } from "@orpc/client";
 import { RPCLink } from "@orpc/client/fetch";
-import { createORPCReactQueryUtils } from "@orpc/react-query";
 import type { RouterUtils } from "@orpc/react-query";
+import { createORPCReactQueryUtils } from "@orpc/react-query";
 import type { RouterClient } from "@orpc/server";
 import { QueryCache, QueryClient } from "@tanstack/react-query";
 import { createContext, useContext } from "react";
-import type { appRouter } from "../../server/api/routers";
+import type { appRouter } from "../../server/src/routers";
 
 type ORPCReactUtils = RouterUtils<RouterClient<typeof appRouter>>;
 
