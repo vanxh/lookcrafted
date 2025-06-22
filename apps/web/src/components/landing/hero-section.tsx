@@ -86,6 +86,23 @@ export function HeroSection() {
 							delivered fast.
 						</p>
 					</div>
+
+					<div className="flex justify-center">
+						<a
+							href="https://www.producthunt.com/products/lookcrafted?embed=true&utm_source=badge-featured&utm_medium=badge&utm_source=badge-lookcrafted"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<img
+								src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=981552&theme=light&t=1750627191853"
+								alt="LookCrafted - Studio&#0045;Quality&#0032;AI&#0032;Headshots&#0032;in&#0032;Minutes&#0044;&#0032;Not&#0032;Days&#0046; | Product Hunt"
+								style={{ width: "250px", height: "54px" }}
+								width="250"
+								height="54"
+							/>
+						</a>
+					</div>
+
 					<div className="flex w-full flex-col items-center gap-2 min-[400px]:flex-row min-[400px]:justify-center">
 						<Button
 							size="lg"
