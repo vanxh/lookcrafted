@@ -43,7 +43,12 @@ export const createCreemCheckout = async ({
 				plan,
 				...(referral ? { affonso_referral: referral } : {}),
 			},
-			discountCode: discount,
+			// discountCode: discount,
+			...(discount
+				? {
+						discountCode: discount,
+					}
+				: {}),
 		},
 		xApiKey: env.CREEM_API_KEY,
 	});
