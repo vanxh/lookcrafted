@@ -270,7 +270,7 @@ export const headshotRouter = {
 				id: z.string(),
 				plan: z.enum(["starter", "basic", "premium"]),
 				referral: z.string().optional(),
-				discount: z.string().optional(),
+				discount: z.string().optional().nullable(),
 			}),
 		)
 		.output(z.object({ headers: z.record(z.string(), z.string()) }))
@@ -300,7 +300,9 @@ export const headshotRouter = {
 					email: session.user.email,
 					userId: session.user.id,
 					referral: input.referral,
-					...(input.discount
+					...(input.discount &&
+					input.discount !== "undefined" &&
+					input.discount !== "null"
 						? {
 								discount: input.discount,
 							}
