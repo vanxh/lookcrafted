@@ -300,7 +300,11 @@ export const headshotRouter = {
 					email: session.user.email,
 					userId: session.user.id,
 					referral: input.referral,
-					discount: input.discount,
+					...(input.discount
+						? {
+								discount: input.discount,
+							}
+						: {}),
 				});
 
 				if (!checkout.checkoutUrl) {
