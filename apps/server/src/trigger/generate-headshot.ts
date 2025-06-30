@@ -266,7 +266,7 @@ const generatePrompts = async (
 		}),
 		system: `You are a prompt generator for an AI headshot generator that uses custom LoRA models.
 
-Your goal is to create realistic, photorealistic studio portrait prompts. The prompts will be used with a LoRA-trained image generation model, and must include a trigger phrase provided by the user.
+Your goal is to create ${request.headshotCount} realistic, photorealistic studio portrait prompts. The prompts will be used with a LoRA-trained image generation model, and must include a trigger phrase provided by the user.
 
 📌 Include this LoRA trigger exactly once in every prompt — ideally at the start or end of the description.
 
@@ -353,7 +353,7 @@ export const generateHeadshotVariations = schemaTask({
 				.where(eq(headshotRequest.id, payload.headshotRequestId));
 
 			console.log(
-				`Generating prompts for headshot request ${payload.headshotRequestId}`,
+				`Generating ${request.headshotCount} prompts for headshot request ${payload.headshotRequestId}`,
 			);
 			const prompts = await generatePrompts(request);
 			console.log(
