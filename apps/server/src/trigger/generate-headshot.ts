@@ -255,13 +255,15 @@ const generatePrompts = async (
 ) => {
 	const { object } = await generateObject({
 		model: openai("gpt-4o"),
-		schema: z.array(
-			z.object({
-				prompt: z.string(),
-				background: z.string(),
-				outfit: z.string(),
-			}),
-		),
+		schema: z.object({
+			prompts: z.array(
+				z.object({
+					prompt: z.string(),
+					background: z.string(),
+					outfit: z.string(),
+				}),
+			),
+		}),
 		system: `You are a prompt generator for an AI headshot generator that uses custom LoRA models.
 
 Your goal is to create realistic, photorealistic studio portrait prompts. The prompts will be used with a LoRA-trained image generation model, and must include a trigger phrase provided by the user.
@@ -295,7 +297,7 @@ Each prompt must include:
 		prompt: JSON.stringify({ request }),
 	});
 
-	return object;
+	return object.prompts;
 };
 
 export const generateHeadshotVariations = schemaTask({
