@@ -76,6 +76,15 @@ export function LandingPageFooter() {
 					>
 						Affiliate Program
 					</Link>
+					<Link
+						href="https://github.com/vanxh/lookcrafted"
+						className="text-muted-foreground text-sm transition-colors hover:text-foreground"
+						target="_blank"
+						rel="noopener noreferrer"
+						prefetch={false}
+					>
+						Github
+					</Link>
 				</nav>
 			</div>
 		</footer>
