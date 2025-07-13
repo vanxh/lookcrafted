@@ -1,77 +1,74 @@
-# LookCrafted
+<p align="center" style="margin-top: 120px">
+   <a href="/github">
+    <img width="100px" src="https://lookcrafted.com/logo.webp" alt="LookCrafted">
+   </a>
+</p>
 
-This project was created with [Better-T-Stack](https://github.com/AmanVarshney01/create-better-t-stack), a modern TypeScript stack that combines React, Next.js, Hono, tRPC, and more.
+<p align="center">
+   <!-- <a href="/discord"><img alt="Discord" src="https://img.shields.io/discord/1146392594948034682"></a> -->
+   <a href="https://github.com/vanxh/lookcrafted/stargazers"><img src="https://img.shields.io/github/stars/vanxh/lookcrafted" alt="Github Stars"></a>
+   <a href="https://github.com/vanxh/lookcrafted/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
+   <a href="https://github.com/vanxh/lookcrafted/pulse"><img src="https://img.shields.io/github/commit-activity/m/vanxh/lookcrafted" alt="Commits-per-month"></a>
+</p>
 
-## Features
+## About LookCrafted
 
-- **TypeScript** - For type safety and improved developer experience
-- **Next.js** - Full-stack React framework
-- **React Native** - Build mobile apps using React
-- **Expo** - Tools for React Native development
-- **TailwindCSS** - Utility-first CSS for rapid UI development
-- **shadcn/ui** - Reusable UI components
-- **Hono** - Lightweight, performant server framework
-- **tRPC** - End-to-end type-safe APIs
-- **Bun** - Runtime environment
-- **Drizzle** - TypeScript-first ORM
-- **PostgreSQL** - Database engine
-- **Authentication** - Email & password authentication with Better Auth
-- **Biome** - Linting and formatting
-- **Husky** - Git hooks for code quality
+LookCrafted is a Studio-Quality AI Headshots Generator.
+
+<a href="https://lookcrafted.com">
+   <img width="500px" src="https://lookcrafted.com/opengraph-image.png" alt="Lookcrafted example" />
+</a>
+
+## Contributing
+
+Do you want to help build a better and open source AI headshot generator. Check out out [contribution guidelines](https://github.com/vanxh/lookcrafted/blob/main/CONTRIBUTING.md)
+
+## Contact Us
+
+Have any questions?
+&nbsp;
+
+[![Book us with Cal.com](https://cal.com/book-with-cal-dark.svg)](https://cal.com/vanxh/15min)
 
 ## Getting Started
 
-First, install the dependencies:
+### Prerequisites
 
-```bash
+- [Node.js](https://nodejs.org/en/) >= 20.0.0
+- [bun](https://bun.com/) >= 1.2.0
+
+### Installation
+
+1. Clone the repo
+
+```sh
+git clone https://github.com/vanxh/lookcrafted
+```
+
+2. Install dependencies
+
+```sh
 bun install
 ```
 
-## Database Setup
+### Setup
 
-This project uses PostgreSQL with Drizzle ORM.
+1. Copy `.env.example` to `.env` in `apps/web` and `packages/backend`
 
-1. Make sure you have a PostgreSQL database set up.
-2. Update your `apps/server/.env` file with your PostgreSQL connection details.
-
-3. Apply the schema to your database:
-```bash
-bun db:push
+```sh
+cp .env.example .env
 ```
 
+2. Fill in the environment variables
 
-Then, run the development server:
+### Usage
 
-```bash
+1. Start the development server
+
+```sh
 bun dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) in your browser to see the web application.
-Use the Expo Go app to run the mobile application.
+## Top Contributors
 
-The API is running at [http://localhost:3000](http://localhost:3000).
-
-
-
-## Project Structure
-
-```
-lookcrafted/
-├── apps/
-│   ├── web/         # Frontend application (Next.js)
-│   ├── native/      # Mobile application (React Native, Expo)
-│   └── server/      # Backend API (Hono, tRPC)
-```
-
-## Available Scripts
-
-- `bun dev`: Start all applications in development mode
-- `bun build`: Build all applications
-- `bun dev:web`: Start only the web application
-- `bun dev:server`: Start only the server
-- `bun check-types`: Check TypeScript types across all apps
-- `bun dev:native`: Start the React Native/Expo development server
-- `bun db:push`: Push schema changes to database
-- `bun db:studio`: Open database studio UI
-- `bun check`: Run Biome formatting and linting
-- `bunx taze -r`: Update all dependencies
+[![Top Contributors](https://contrib.rocks/image?repo=vanxh/lookcrafted)](https://github.com/vanxh/lookcrafted/graphs/contributors)
