@@ -15,6 +15,7 @@ import Example2Before2 from "@/public/example-2-before-2.webp";
 import Example2Before3 from "@/public/example-2-before-3.webp";
 import Example2Before1 from "@/public/example-2-before.webp";
 import Example2After from "@/public/example-2.webp";
+import GitHub from "../icons/github";
 
 export function HeroSection() {
 	return (
@@ -67,6 +68,18 @@ export function HeroSection() {
 				</div>
 
 				<div className="mx-auto flex max-w-2xl flex-col items-center justify-start space-y-6">
+					<div className="flex justify-center">
+						<Link
+							href="https://github.com/vanxh/lookcrafted"
+							target="_blank"
+							rel="noopener noreferrer"
+							className="inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 font-medium text-sm text-white shadow-[0_4px_0_0_#333,0_6px_12px_0_rgba(0,0,0,0.3)] transition-all duration-150 hover:translate-y-0.5 hover:shadow-[0_2px_0_0_#333,0_4px_8px_0_rgba(0,0,0,0.4)] active:translate-y-1 active:shadow-[0_1px_0_0_#333,0_2px_4px_0_rgba(0,0,0,0.2)]"
+						>
+							<GitHub />
+							<span>Star on GitHub</span>
+						</Link>
+					</div>
+
 					<div className="space-y-2 text-center">
 						<div className="font-medium text-muted-foreground text-sm uppercase tracking-wider">
 							✨ Transform Your Selfies into Stunning Headshots with AI
